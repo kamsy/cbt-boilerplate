@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "antd";
 import { Link, Redirect } from "react-router-dom";
-import { url } from "../../App";
+import { url, fakeAuth } from "../../App";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
@@ -17,6 +17,7 @@ const schema = yup.object().shape({
 });
 
 export default () => {
+    const [redirectToReferrer, set_redirectToReferrer] = useState(false);
     const methods = useForm({
         resolver: yupResolver(schema)
     });
@@ -24,9 +25,12 @@ export default () => {
 
     const onSubmit = data => {
         console.log("data", data);
-        // window.location.pathname = `${url}dashboard`;
-        return CustomHistory.push({ pathname: `${url}dashboard` });
+        fakeAuth.authenticate();
+        set_redirectToReferrer(true);
+        localStorage.setItem("loggedIn", JSON.stringify(true));
     };
+    if (redirectToReferrer)
+        return <Redirect to={{ pathname: `${url}dashboard` }} />;
     return (
         <div className="login">
             <form

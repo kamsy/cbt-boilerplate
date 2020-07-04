@@ -16,7 +16,9 @@ import IdleTimer from "react-idle-timer";
 import Landing from "./pages/Landing";
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
-import CustomHistory from "./services/CustomHistory";
+import Dashboard from "./pages/Private/Dashboard";
+import Loans from "./pages/Private/Loans";
+import Payment from "./pages/Private/Payment";
 const { localStorage } = window;
 export const url = "/app/";
 // variable to hold auth status and also functions to convert it
@@ -70,26 +72,25 @@ class App extends Component {
     }
 
     static getDerivedStateFromProps = (props, state) => {
-        console.log("App -> staticgetDerivedStateFromProps -> state", state);
-        console.log("App -> staticgetDerivedStateFromProps -> props", props);
-        // const store = localStorage.getItem
-        const { storage, dispatch } = props;
-        const { loaded } = state;
+        const loggedIn = JSON.parse(localStorage.getItem("loggedIn"));
+        console.log(
+            "App -> staticgetDerivedStateFromProps -> loggedIn",
+            loggedIn
+        );
 
-        // if (storage === SUCCESS && loaded === false) {
-        //     fakeAuth.authenticate();
-        //     return {
-        //         loaded: true
-        //     };
-        // }
-        // if (storage === FAILURE && loaded === false) {
-        //     fakeAuth.signout();
-        //     clear();
-        //     dispatch(Actions.reset());
-        //     return {
-        //         loaded: true
-        //     };
-        // }
+        if (loggedIn) {
+            fakeAuth.authenticate();
+            return {
+                loaded: true
+            };
+        }
+        if (!loggedIn) {
+            fakeAuth.signout();
+            clear();
+            return {
+                loaded: true
+            };
+        }
 
         return state;
     };
@@ -124,7 +125,7 @@ class App extends Component {
                         debounce={10}
                         timeout={1000 * 60 * 10}
                     />
-                    <Router history={CustomHistory}>
+                    <Router>
                         <Switch>
                             <Route
                                 // if it falls on the localhost:3000/ or www.smartfuel.netlify.com/
@@ -132,6 +133,10 @@ class App extends Component {
                                 exact
                                 path="/"
                                 render={props => {
+                                    console.log(
+                                        "App -> render -> fakeAuth",
+                                        fakeAuth
+                                    );
                                     return fakeAuth.isAuthenticated ? (
                                         <Redirect
                                             push
@@ -148,7 +153,7 @@ class App extends Component {
                                     ) : (
                                         <Redirect
                                             to={{
-                                                pathname: `${url}signin`,
+                                                pathname: `${url}login`,
                                                 state: {
                                                     from: props.location
                                                 }
@@ -162,6 +167,10 @@ class App extends Component {
                                 exact
                                 path={url}
                                 render={props => {
+                                    console.log(
+                                        "App -> render -> fakeAuth",
+                                        fakeAuth
+                                    );
                                     return fakeAuth.isAuthenticated ? (
                                         <Redirect
                                             push
@@ -178,7 +187,7 @@ class App extends Component {
                                     ) : (
                                         <Redirect
                                             to={{
-                                                pathname: `${url}signin`,
+                                                pathname: `${url}login`,
                                                 state: {
                                                     from: props.location
                                                 }
@@ -198,7 +207,15 @@ class App extends Component {
                             />
                             <PrivateRoute
                                 path={`${url}dashboard`}
-                                component={Register}
+                                component={Dashboard}
+                            />
+                            <PrivateRoute
+                                path={`${url}loans`}
+                                component={Loans}
+                            />
+                            <PrivateRoute
+                                path={`${url}payment`}
+                                component={Payment}
                             />
 
                             {/*
