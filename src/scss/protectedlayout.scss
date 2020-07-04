@@ -1,0 +1,9 @@
+@import 'variables';
+@import 'mixins';
+
+
+.protected-layout {
+    background-color: $dark-blue;
+    height: 100vh;
+
+}
