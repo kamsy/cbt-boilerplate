@@ -71,7 +71,7 @@ export default () => {
             <div className="new-user-container">
                 <p>Don't have an account?</p>
                 <Link to={`${url}register`} className="signup-link">
-                    Sign up
+                    Register
                 </Link>
             </div>
         </div>

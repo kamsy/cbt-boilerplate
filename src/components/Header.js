@@ -1,5 +1,6 @@
 import React from "react";
-import { url, fakeAuth } from "../App";
+import { fakeAuth } from "../App";
+import { Link } from "react-router-dom";
 import { Menu, Dropdown } from "antd";
 import Avatar from "../assets/images/person.png";
 import PowerOffSvg from "../assets/svgs/PowerOffSvg";
@@ -9,7 +10,7 @@ import CustomHistory from "../services/CustomHistory.js";
 const menu = (
     <Menu>
         <Menu.Item key="0">
-            <a href="#">Account</a>
+            <Link to="/app/profile">Account</Link>
         </Menu.Item>
 
         <Menu.Divider />
@@ -19,7 +20,7 @@ const menu = (
             onClick={() => {
                 fakeAuth.signout();
                 clear();
-                CustomHistory.push({ pathname: url });
+                CustomHistory.push({ pathname: "/" });
                 return window.location.reload();
             }}>
             <PowerOffSvg />
@@ -27,10 +28,11 @@ const menu = (
         </Menu.Item>
     </Menu>
 );
-const Header = () => {
+const Header = ({ title }) => {
     return (
         <div className="header">
             <ul className="header-list">
+                <span className="nav-title">{title}</span>
                 <Dropdown
                     overlay={menu}
                     trigger={["click"]}

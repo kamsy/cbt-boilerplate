@@ -1,0 +1,55 @@
+@import 'variables';
+@import 'mixins';
+
+.loans {
+    .table-container {
+        .table {
+            width: 100%
+        }
+
+        tr {
+            border-bottom: 1px solid rgba($grey, 0.5);
+        }
+
+        th,
+        td {
+
+            &:nth-child(1) {
+                width: 20%
+            }
+
+            &:nth-child(2) {
+                width: 20%
+            }
+
+            &:nth-child(3) {
+                width: 20%
+            }
+
+            &:nth-child(4) {
+                width: 15%
+            }
+
+            &:nth-child(5) {
+                width: 15%
+            }
+
+            &:nth-child(6) {
+                width: 10%;
+                text-align: right;
+
+                .ellipsis {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        tbody {
+            tr {
+                &:last-of-type {
+                    border: none;
+                }
+            }
+        }
+    }
+}

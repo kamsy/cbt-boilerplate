@@ -1,0 +1,109 @@
+@import 'variables';
+@import 'mixins';
+
+.profile {
+    .ant-tabs {
+        &-tab-btn {
+            color: $grey !important;
+            -webkit-transition: 0.5s all ease-in-out;
+            transition: 0.5s all ease-in-out;
+            font-weight: 500
+        }
+
+        &-tab-active {
+            .ant-tabs-tab-btn {
+                color: $blue !important
+            }
+        }
+
+        &-ink-bar {
+            background: $blue !important
+        }
+    }
+
+    .ant-tabs-content-holder {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        background: $white;
+        @include shadowMixin;
+
+        .ant-tabs-tabpane {
+            padding: 24px 36px;
+        }
+
+        .pane-sub-header {
+            font-size: 16px;
+            font-weight: 400;
+            color: rgba(#000, 0.3)
+        }
+    }
+
+    .form {
+        &-inputs-container{
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: start;
+                -ms-flex-pack: start;
+                    justify-content: flex-start;
+            -webkit-columns: 2;
+            -ms-flex-wrap: wrap;
+                flex-wrap: wrap;
+            // columns: 2;
+        }
+
+        .input-unit {
+            position: relative;
+            margin-top: 32px;
+            min-width: 250px;
+            padding-right: 24px;
+            width: calc(100% / 3);
+
+            input {
+                height: 100%
+            }
+
+
+            .form-error-text {
+                margin: 0 0 -18px;
+                position: absolute;
+                bottom: 0;
+                color: $red;
+                font-size: 12px;
+                margin-top: 6px;
+                -webkit-transition: all 0.5s ease-in-out;
+                transition: all 0.5s ease-in-out;
+                -webkit-transform-origin: top;
+                transform-origin: top;
+
+                &.show {
+                    -webkit-transform: scaleY(1);
+                    transform: scaleY(1);
+                }
+
+                &.hide {
+                    -webkit-transform: scaleY(0);
+                    transform: scaleY(0)
+                }
+            }
+
+            .form-input {
+                -webkit-transition: all 0.5s ease-in-out;
+                transition: all 0.5s ease-in-out;
+                -webkit-transform-origin: top;
+                transform-origin: top;
+                height: 48px;
+                margin-top: 8px;
+
+                &.show-error {
+                    border-color: $red
+                }
+
+            }
+        }
+    }
+}

@@ -20,7 +20,8 @@ import Dashboard from "./pages/Private/Dashboard";
 import Loans from "./pages/Private/Loans";
 import Payment from "./pages/Private/Payment";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
-import { Frame, Scroll, useCycle, motion, AnimatePresence } from "framer";
+import { AnimatePresence } from "framer";
+import Profile from "./pages/Private/Profile";
 const { localStorage } = window;
 export const url = "/app/";
 // variable to hold auth status and also functions to convert it
@@ -201,7 +202,6 @@ class App extends Component {
                                         );
                                     }}
                                 />
-
                                 <Route exact path="/">
                                     <Landing />
                                 </Route>
@@ -220,24 +220,23 @@ class App extends Component {
                                 <PrivateRoute
                                     path={`${url}dashboard`}
                                     component={Dashboard}
-                                />
+                                    title="Dashboard"
+                                />{" "}
                                 <PrivateRoute
                                     path={`${url}loans`}
                                     component={Loans}
+                                    title="Loans"
                                 />
                                 <PrivateRoute
                                     path={`${url}payment`}
                                     component={Payment}
+                                    title="Bank & Card"
                                 />
-
-                                {/*
-                            <PrivateRoute
-                                exact
-                                title="Permissions"
-                                path={`${url}user-permissions`}
-                                component={UserPermission}
-                            /> */}
-
+                                <PrivateRoute
+                                    path={`${url}profile`}
+                                    component={Profile}
+                                    title="Account"
+                                />
                                 {/* <Route
                                 eaxct
                                 path={`${url}#/500`}

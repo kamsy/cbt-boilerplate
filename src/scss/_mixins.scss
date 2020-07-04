@@ -1,11 +1,30 @@
-@mixin screen($min,$max:false){
-    @if  $max{
-        @media screen and (max-width: $max + 'px')  and ( min-width: $min + 'px'){
-            @content
-        }
-    } @else{
-        @media screen and (max-width: $min + 'px'){
+@mixin screen($min, $max:false) {
+    @if $max {
+        @media screen and (max-width: $max + 'px') and (min-width: $min + 'px') {
             @content
         }
     }
+
+    @else {
+        @media screen and (max-width: $min + 'px') {
+            @content
+        }
+    }
+}
+
+@mixin shadowMixin {
+    -webkit-box-shadow: 3px 3px 20px hsla(0, 0%, 60%, .05);
+    box-shadow: 3px 3px 20px hsla(0, 0%, 60%, .09);
+}
+
+
+@mixin createCard($color) {
+    color: $color;
+    background: rgba($color, 0.3);
+    text-transform: capitalize;
+    border-radius: 4px;
+    padding: 8px 12px;
+    width: 90px;
+    display: inline-block;
+    text-align: center
 }
