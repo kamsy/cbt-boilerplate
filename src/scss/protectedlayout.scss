@@ -8,10 +8,36 @@
 
     .header{
         height: 72px;
-        background: $white;
-        opacity: 0.5;
+        background: rgba($white, 0.5);
         width: calc(100% - 200px);
-        margin-left: auto
+        margin-left: auto;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        padding: 0 24px;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+                -webkit-box-pack: end;
+                    -ms-flex-pack: end;
+                        justify-content: flex-end;
+                .ant-dropdown-link{
+                    cursor: pointer;
+                    img{
+                        width: 30px;
+                    }
+                }
+                .logout-btn{
+                    display: -webkit-box;
+                    display: -ms-flexbox;
+                    display: flex;
+                    -webkit-box-align: center;
+                        -ms-flex-align: center;
+                            align-items: center;
+                    svg{
+                        margin-right: 8px;
+                    }
+                }
     }
 
     .sidebar {
@@ -62,3 +88,5 @@
         width: calc(100% - 200px);
     }
 }
+
+
