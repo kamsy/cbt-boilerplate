@@ -1,7 +1,18 @@
 import React from "react";
+import { motion } from "framer";
+import { pageVariants } from "../../components/ProtectedLayout";
 
-const Payment = () => {
-    return <div></div>;
+const Payments = () => {
+    return (
+        <motion.div
+            className="main"
+            initial="initial"
+            animate="in"
+            exit="out"
+            variants={pageVariants}>
+            payments
+        </motion.div>
+    );
 };
 
-export default Payment;
+export default Payments;

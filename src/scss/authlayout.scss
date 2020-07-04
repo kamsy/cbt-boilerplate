@@ -6,17 +6,17 @@
     background-color: $dark-blue;
     height: 100vh;
     width: 100%;
-
-    @include screen(320, 500) {
-        overflow-y: scroll;
-    }
-
+    overflow-y: scroll;
 
     .login,
-    .signup {
+    .signup,.forgot {
         width: 450px;
         margin: 0 auto;
         padding: 10rem 0 0;
+
+        @include screen(501, 1439) {
+            padding: 5rem 0;
+        }
 
         @include screen(320, 500) {
             width: 90%;

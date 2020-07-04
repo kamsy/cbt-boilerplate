@@ -7,9 +7,12 @@
     width: 100%;
 
     .header{
+        position: fixed;
+        right: 0;
+        top: 0;
         height: 72px;
         background: rgba($white, 0.5);
-        width: calc(100% - 200px);
+        width: calc(100% - 150px);
         margin-left: auto;
         display: -webkit-box;
         display: -ms-flexbox;
@@ -21,6 +24,10 @@
                 -webkit-box-pack: end;
                     -ms-flex-pack: end;
                         justify-content: flex-end;
+                        &-list{
+                            margin: 0;
+                            padding: 0;
+                        }
                 .ant-dropdown-link{
                     cursor: pointer;
                     img{
@@ -44,8 +51,8 @@
         top: 0;
         left: 0;
         position: fixed;
-        padding: 6rem 0;
-        width: 200px;
+        padding: 5.5rem 0;
+        width: 150px;
         height: 100%;
         background: $dark-blue;
 
@@ -84,8 +91,13 @@
         }
     }
 
-    .main {
-        width: calc(100% - 200px);
+    .children-container {
+        padding: 5.5rem 24px 2rem;
+        margin-left: auto;
+        width: calc(100% - 150px);
+        .main{
+            background: red;
+        }
     }
 }
 

@@ -19,6 +19,8 @@ import Register from "./pages/Auth/Register";
 import Dashboard from "./pages/Private/Dashboard";
 import Loans from "./pages/Private/Loans";
 import Payment from "./pages/Private/Payment";
+import ForgotPassword from "./pages/Auth/ForgotPassword";
+import { Frame, Scroll, useCycle, motion, AnimatePresence } from "framer";
 const { localStorage } = window;
 export const url = "/app/";
 // variable to hold auth status and also functions to convert it
@@ -126,99 +128,109 @@ class App extends Component {
                         timeout={1000 * 60 * 10}
                     />
                     <Router>
-                        <Switch>
-                            <Route
-                                // if it falls on the localhost:3000/ or www.smartfuel.netlify.com/
+                        <AnimatePresence>
+                            <Switch>
+                                <Route
+                                    // if it falls on the localhost:3000/ or www.smartfuel.netlify.com/
 
-                                exact
-                                path="/"
-                                render={props => {
-                                    console.log(
-                                        "App -> render -> fakeAuth",
-                                        fakeAuth
-                                    );
-                                    return fakeAuth.isAuthenticated ? (
-                                        <Redirect
-                                            push
-                                            to={{
-                                                pathname:
-                                                    props.location.hash !== ""
-                                                        ? `/${props.location.hash}`
-                                                        : `${url}dashboard`,
-                                                state: {
-                                                    from: props.location
-                                                }
-                                            }}
-                                        />
-                                    ) : (
-                                        <Redirect
-                                            to={{
-                                                pathname: `${url}login`,
-                                                state: {
-                                                    from: props.location
-                                                }
-                                            }}
-                                        />
-                                    );
-                                }}
-                            />
-                            <Route
-                                // if it falls on the localhost:3000/admin or www.smartfuel.netlify.com/admin
-                                exact
-                                path={url}
-                                render={props => {
-                                    console.log(
-                                        "App -> render -> fakeAuth",
-                                        fakeAuth
-                                    );
-                                    return fakeAuth.isAuthenticated ? (
-                                        <Redirect
-                                            push
-                                            to={{
-                                                pathname:
-                                                    props.location.hash !== ""
-                                                        ? `${url}${props.location.hash}`
-                                                        : `${url}dashboard`,
-                                                state: {
-                                                    from: props.location
-                                                }
-                                            }}
-                                        />
-                                    ) : (
-                                        <Redirect
-                                            to={{
-                                                pathname: `${url}login`,
-                                                state: {
-                                                    from: props.location
-                                                }
-                                            }}
-                                        />
-                                    );
-                                }}
-                            />
+                                    exact
+                                    path="/"
+                                    render={props => {
+                                        console.log(
+                                            "App -> render -> fakeAuth",
+                                            fakeAuth
+                                        );
+                                        return fakeAuth.isAuthenticated ? (
+                                            <Redirect
+                                                push
+                                                to={{
+                                                    pathname:
+                                                        props.location.hash !==
+                                                        ""
+                                                            ? `/${props.location.hash}`
+                                                            : `${url}dashboard`,
+                                                    state: {
+                                                        from: props.location
+                                                    }
+                                                }}
+                                            />
+                                        ) : (
+                                            <Redirect
+                                                to={{
+                                                    pathname: `${url}login`,
+                                                    state: {
+                                                        from: props.location
+                                                    }
+                                                }}
+                                            />
+                                        );
+                                    }}
+                                />
+                                <Route
+                                    // if it falls on the localhost:3000/admin or www.smartfuel.netlify.com/admin
+                                    exact
+                                    path={url}
+                                    render={props => {
+                                        console.log(
+                                            "App -> render -> fakeAuth",
+                                            fakeAuth
+                                        );
+                                        return fakeAuth.isAuthenticated ? (
+                                            <Redirect
+                                                push
+                                                to={{
+                                                    pathname:
+                                                        props.location.hash !==
+                                                        ""
+                                                            ? `${url}${props.location.hash}`
+                                                            : `${url}dashboard`,
+                                                    state: {
+                                                        from: props.location
+                                                    }
+                                                }}
+                                            />
+                                        ) : (
+                                            <Redirect
+                                                to={{
+                                                    pathname: `${url}login`,
+                                                    state: {
+                                                        from: props.location
+                                                    }
+                                                }}
+                                            />
+                                        );
+                                    }}
+                                />
 
-                            <Route exact path="/">
-                                <Landing />
-                            </Route>
-                            <AuthRoute path={`${url}login`} component={Login} />
-                            <AuthRoute
-                                path={`${url}register`}
-                                component={Register}
-                            />
-                            <PrivateRoute
-                                path={`${url}dashboard`}
-                                component={Dashboard}
-                            />
-                            <PrivateRoute
-                                path={`${url}loans`}
-                                component={Loans}
-                            />
-                            <PrivateRoute
-                                path={`${url}payment`}
-                                component={Payment}
-                            />
+                                <Route exact path="/">
+                                    <Landing />
+                                </Route>
+                                <AuthRoute
+                                    path={`${url}login`}
+                                    component={Login}
+                                />
+                                <AuthRoute
+                                    path={`${url}forgot-password`}
+                                    component={ForgotPassword}
+                                />
+                                <AuthRoute
+                                    path={`${url}register`}
+                                    component={Register}
+                                />
+                                <PrivateRoute
+                                    path={`${url}dashboard`}
+                                    component={Dashboard}
+                                />
+                                <PrivateRoute
+                                    path={`${url}loans`}
+                                    component={Loans}
+                                />
+                                <PrivateRoute
+                                    path={`${url}payment`}
+                                    component={Payment}
+                                />
 
-                            {/*
+                                {/*
                             <PrivateRoute
                                 exact
                                 title="Permissions"
@@ -226,7 +238,7 @@ class App extends Component {
                                 component={UserPermission}
                             /> */}
 
-                            {/* <Route
+                                {/* <Route
                                 eaxct
                                 path={`${url}#/500`}
                                 component={Page_500}
@@ -241,8 +253,8 @@ class App extends Component {
                                 path={`${url}#/404`}
                                 component={Page_404}
                             /> */}
-                            <Route path="*"></Route>
-                            {/* render={props => (
+                                <Route path="*"></Route>
+                                {/* render={props => (
                                     <Redirect
                                         to={{
                                             pathname: `${url}#/404`
@@ -251,7 +263,8 @@ class App extends Component {
                                     />
                                 )}
                             /> */}
-                        </Switch>
+                            </Switch>
+                        </AnimatePresence>
                     </Router>
                 </Suspense>
             );

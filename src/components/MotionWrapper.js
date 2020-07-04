@@ -1,8 +1,9 @@
 import React from "react";
 import { motion } from "framer";
-import { pageVariants } from "../../components/ProtectedLayout";
+import { pageVariants } from "./ProtectedLayout";
 
-const Dashboard = () => {
+const Dashboard = ({ children }) => {
+    console.log("Dashboard -> children", children);
     return (
         <motion.div
             className="main"
@@ -10,7 +11,7 @@ const Dashboard = () => {
             animate="in"
             exit="out"
             variants={pageVariants}>
-            dashboard
+            {children}
         </motion.div>
     );
 };

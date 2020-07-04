@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 import CustomInput from "../../components/CustomInput";
-import CustomHistory from "../../services/CustomHistory";
 
 const schema = yup.object().shape({
     username: yup.string().required("Enter your username!"),
