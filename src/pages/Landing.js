@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "../scss/landing.scss";
 import LandingHeader from "../components/LandingHeader";
 import { Link } from "react-router-dom";
-import { Button, Input, Select } from "antd";
+import { Button } from "antd";
 import { fakeAuth, url } from "../App";
 import CustomHistory from "../services/CustomHistory";
 import IphoneX from "../assets/images/iphone-x.png";
@@ -12,7 +12,7 @@ import Illustration3 from "../assets/images/Illustration3.png";
 import EllipsesSvg from "../assets/svgs/EllipsesSvg";
 import Calculator from "../components/Calculator";
 
-export default props => {
+export default () => {
     useEffect(() => {
         const header = document.querySelector(".landing-page-header");
         window.addEventListener("scroll", () => {
@@ -24,34 +24,10 @@ export default props => {
             }
         });
         if (fakeAuth.isAuthenticated) {
-            CustomHistory.goBack();
+            CustomHistory.push({ pathname: url });
         }
     }, []);
 
-    const _onChange = e => {
-        const { value } = e.target;
-        const reg = /^-?\d*(\.\d*)?$/;
-        if (
-            (!isNaN(value) && reg.test(value)) ||
-            value === "" ||
-            value === "-"
-        ) {
-            _onChange(value);
-        }
-    };
-
-    // '.' at the end or only '-' in the input box.
-    const _onBlur = () => {
-        const { value, onBlur, onChange } = props;
-        let valueTemp = value;
-        if (value.charAt(value.length - 1) === "." || value === "-") {
-            valueTemp = value.slice(0, -1);
-        }
-        _onChange(valueTemp.replace(/0*(\d+)/, "$1"));
-        if (onBlur) {
-            _onBlur();
-        }
-    };
     return (
         <div className="landing-page">
             <LandingHeader />
