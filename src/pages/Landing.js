@@ -1,16 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../scss/landing.scss";
 import LandingHeader from "../components/LandingHeader";
-import { Button } from "antd";
-import { fakeAuth } from "../App";
+import { Link } from "react-router-dom";
+import { Button, Input, Select } from "antd";
+import { fakeAuth, url } from "../App";
 import CustomHistory from "../services/CustomHistory";
 import IphoneX from "../assets/images/iphone-x.png";
 import Illustration1 from "../assets/images/Illustration1.png";
 import Illustration2 from "../assets/images/Illustration2.png";
 import Illustration3 from "../assets/images/Illustration3.png";
 import EllipsesSvg from "../assets/svgs/EllipsesSvg";
+import Calculator from "../components/Calculator";
 
-export default () => {
+export default props => {
     useEffect(() => {
         const header = document.querySelector(".landing-page-header");
         window.addEventListener("scroll", () => {
@@ -25,6 +27,31 @@ export default () => {
             CustomHistory.goBack();
         }
     }, []);
+
+    const _onChange = e => {
+        const { value } = e.target;
+        const reg = /^-?\d*(\.\d*)?$/;
+        if (
+            (!isNaN(value) && reg.test(value)) ||
+            value === "" ||
+            value === "-"
+        ) {
+            _onChange(value);
+        }
+    };
+
+    // '.' at the end or only '-' in the input box.
+    const _onBlur = () => {
+        const { value, onBlur, onChange } = props;
+        let valueTemp = value;
+        if (value.charAt(value.length - 1) === "." || value === "-") {
+            valueTemp = value.slice(0, -1);
+        }
+        _onChange(valueTemp.replace(/0*(\d+)/, "$1"));
+        if (onBlur) {
+            _onBlur();
+        }
+    };
     return (
         <div className="landing-page">
             <LandingHeader />
@@ -32,8 +59,8 @@ export default () => {
                 <div className="section-1-sub">
                     <h1>Getting loans just got easier</h1>
                     <p>
-                        Apply for up to 5million naira with loan tenors of up to
-                        18months and have your money sent straight to your bank
+                        Apply for up to ₦100,000 with loan tenors of up to
+                        90days and have your money sent straight to your bank
                         account in minutes.
                     </p>
                     <Button className="view-pricing-btn">View Pricing</Button>
@@ -90,7 +117,21 @@ export default () => {
                 </div>
             </div>
             <div className="section-3">
-                <EllipsesSvg />
+                <div className="ellipse-svg-cont">
+                    <EllipsesSvg />
+                </div>
+                <div className="section-3-sub">
+                    <h1>Simple & Fair Pricing</h1>
+                    <p>
+                        Quick Credit offers a super-fast loan solution without
+                        paperwork and no delay to meet your urgent financial
+                        needs within 24 hours.
+                    </p>
+                    <Link to={`${url}register`} className="to-register-link">
+                        Get Started
+                    </Link>
+                    <Calculator />
+                </div>
             </div>
             <div className="section-4"></div>
             <div className="section-5"></div>

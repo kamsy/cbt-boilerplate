@@ -76,10 +76,6 @@ class App extends Component {
 
     static getDerivedStateFromProps = (props, state) => {
         const loggedIn = JSON.parse(localStorage.getItem("loggedIn"));
-        console.log(
-            "App -> staticgetDerivedStateFromProps -> loggedIn",
-            loggedIn
-        );
 
         if (loggedIn) {
             fakeAuth.authenticate();

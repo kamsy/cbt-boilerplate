@@ -14,11 +14,15 @@
         position: fixed;
         width: 100%;
         top: 0;
-        height: 100px;
+        height: 72px;
         z-index: 5;
+        -webkit-transition: background 0.5s ease-in-out;
+        transition: background 0.5s ease-in-out;
+
         &.show-bg {
+            -webkit-transition: background 1s ease-in-out;
+            transition: background 1s ease-in-out;
             background: rgba($white, 0.9);
-            height: 72px;
         }
 
         &-sub {
@@ -269,6 +273,270 @@
     }
 
     .section-3 {
-        background: $dark-blue
+        background: $dark-blue;
+        z-index: 1;
+        position: relative;
+
+        .section-3-sub {
+            @extend %widthControl;
+            padding: 115px 123px;
+            position: relative;
+
+            h1 {
+                font-style: normal;
+                font-weight: 600;
+                font-size: 48px;
+                line-height: 120%;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                letter-spacing: -0.02em;
+                color: $white;
+                max-width: 298px;
+            }
+
+            p {
+                font-style: normal;
+                font-weight: normal;
+                font-size: 18px;
+                line-height: 137.5%;
+                color: rgba($white, 0.8);
+                max-width: 421px;
+            }
+
+            .to-register-link {
+                color: $white;
+                background: $dark-blue;
+                padding: 12px;
+                border-radius: 10px;
+                border: 2px solid $white;
+                width: 176px;
+                height: 59px;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                justify-content: center;
+                margin-top: 50px;
+                font-weight: bold;
+                font-size: 16px
+            }
+
+            .calculator {
+                background: $blue;
+                border-radius: 10px;
+                border-bottom-right-radius: 0;
+                border-bottom-left-radius: 0;
+                position: absolute;
+                right: 40px;
+                bottom: 0;
+                padding: 82px 50px;
+
+                &-sub {
+                    width: 490px;
+                }
+
+                label {
+                    font-style: normal;
+                    font-weight: bold;
+                    font-size: 13px;
+                    line-height: 137.5%;
+                    /* or 18px */
+
+                    display: -webkit-box;
+
+                    display: -ms-flexbox;
+
+                    display: flex;
+                    -webkit-box-align: start;
+                    -ms-flex-align: start;
+                    align-items: flex-start;
+                    color: rgba($white, 0.8);
+                    -webkit-box-orient: vertical;
+                    -webkit-box-direction: normal;
+                    -ms-flex-direction: column;
+                    flex-direction: column;
+                    text-transform: uppercase;
+                    margin-bottom: 36px;
+                    position: relative;
+
+
+                    input {
+                        margin-top: 12px;
+                        background: #00297A;
+                        height: 56px;
+                        border: none;
+                        border-radius: 5px;
+                        color: $white;
+                        font-weight: bold;
+                        font-size: 22px;
+                        padding-left: 24px;
+
+                        &::-webkit-input-placeholder {
+                            opacity: 0.3
+                        }
+
+                        &:-ms-input-placeholder {
+                            opacity: 0.3
+                        }
+
+                        &::-ms-input-placeholder {
+                            opacity: 0.3
+                        }
+
+                        &::placeholder {
+                            opacity: 0.3
+                        }
+
+                    }
+
+
+                    .form-error-text {
+                        margin: 0 0 -18px;
+                        position: absolute;
+                        bottom: 0;
+                        color: $red;
+                        font-weight: bold;
+                        font-size: 12px;
+                        margin-top: 6px;
+                        -webkit-transition: all 0.5s ease-in-out;
+                        transition: all 0.5s ease-in-out;
+                        -webkit-transform-origin: top;
+                        transform-origin: top;
+                        text-transform: none;
+
+                        &.show {
+                            -webkit-transform: scaleY(1);
+                            transform: scaleY(1);
+                        }
+
+                        &.hide {
+                            -webkit-transform: scaleY(0);
+                            transform: scaleY(0)
+                        }
+                    }
+
+                    .ant-select {
+                        margin-top: 12px;
+                        width: 100%;
+
+                        svg {
+                            fill: $white
+                        }
+
+                        &-selector {
+                            background: #00297A;
+                            height: 56px;
+                            border: none;
+                            border-radius: 5px;
+                            color: $white;
+                            font-weight: bold;
+                            font-size: 22px;
+                            padding-left: 24px;
+                        }
+
+                        &-selection {
+                            &-placeholder {
+                                display: -webkit-box;
+                                display: -ms-flexbox;
+                                display: flex;
+                                -webkit-box-align: center;
+                                -ms-flex-align: center;
+                                align-items: center;
+                                color: $white;
+                                opacity: 0.3;
+                            }
+
+                            &-item {
+                                display: -webkit-box;
+                                display: -ms-flexbox;
+                                display: flex;
+                                -webkit-box-align: center;
+                                -ms-flex-align: center;
+                                align-items: center;
+                                color: $white;
+                            }
+                        }
+                    }
+
+                }
+
+
+                .breakdown {
+                    margin: 40px 0 32px;
+                    display: -webkit-box;
+                    display: -ms-flexbox;
+                    display: flex;
+                    -ms-flex-wrap: wrap;
+                    flex-wrap: wrap;
+
+                    .left,
+                    .right {
+                        width: 50%;
+
+                        p {
+                            font-size: 16px;
+                            font-weight: bold;
+                            text-transform: uppercase;
+                            line-height: 25px
+                        }
+                    }
+                }
+
+                .assurance {
+
+                    .top,
+                    .bottom {
+                        display: -webkit-box;
+                        display: -ms-flexbox;
+                        display: flex;
+                        -webkit-box-pack: justify;
+                            -ms-flex-pack: justify;
+                                justify-content: space-between;
+
+                        p {
+                            display: inline-block;
+                            max-width: 50%;
+                            font-size: 16px;
+                            font-weight: normal;
+                            position: relative;
+
+                            &::after {
+                                content: '';
+                                position: absolute;
+                                height: 8px;
+                                width: 16px;
+                                border-radius: 2px;
+                                border: 3px solid $white;
+                                border-left-width: 0;
+                                border-bottom-width: 0;
+                                -webkit-transform: rotate(135deg);
+                                transform: rotate(135deg);
+                                right: -28px;
+                                top: 4px;
+                            }
+                        }
+                    }
+
+                    .top>p:first-of-type::after{
+                        right: 10px
+                    }
+                }
+            }
+        }
+
+        .ellipse-svg-cont {
+            position: absolute;
+            top: 20px;
+            left: -156px;
+            z-index: -1;
+        }
     }
 }

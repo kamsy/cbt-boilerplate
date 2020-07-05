@@ -1,5 +1,5 @@
 import React from "react";
-import { fakeAuth } from "../App";
+import { fakeAuth, url } from "../App";
 import { Link } from "react-router-dom";
 import { Menu, Dropdown } from "antd";
 import Avatar from "../assets/images/person.png";
@@ -20,7 +20,7 @@ const menu = (
             onClick={() => {
                 fakeAuth.signout();
                 clear();
-                CustomHistory.push({ pathname: "/" });
+                CustomHistory.push({ pathname: url });
                 return window.location.reload();
             }}>
             <PowerOffSvg />
