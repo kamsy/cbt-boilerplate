@@ -90,6 +90,9 @@ body {
             padding: 8px 24px;
             -webkit-transition: background 0.5s ease-in-out;
             transition: background 0.5s ease-in-out;
+            svg{
+                margin-right: 8px;
+            }
 
             &:hover {
                 background: $blue;

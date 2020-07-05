@@ -1,3 +1,5 @@
+@import "variables";
+
 @mixin screen($min, $max:false) {
     @if $max {
         @media screen and (max-width: $max + 'px') and (min-width: $min + 'px') {
@@ -27,4 +29,21 @@
     width: 90px;
     display: inline-block;
     text-align: center
+}
+
+
+
+@mixin hoverMixin {
+    cursor: pointer;
+    -webkit-transition: all 1s ease-out;
+    transition: all 1s ease-out;
+
+    &:hover {
+        -webkit-box-shadow: -4px 8px 30px rgba(0, 51, 153, 0.2), -4px 8px 6px rgba(0, 51, 153, 0.05);
+        box-shadow: -4px 8px 30px rgba(0, 51, 153, 0.2), -4px 8px 6px rgba(0, 51, 153, 0.05);
+        -webkit-transform: scale(1.03);
+        transform: scale(1.03);
+        border-width: 0;
+        border-color: transparent;
+    }
 }

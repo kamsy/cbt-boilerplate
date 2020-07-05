@@ -1,6 +1,7 @@
 import React from "react";
 import { url } from "../App";
 import { NavLink } from "react-router-dom";
+import CreditCardSvg from "../assets/svgs/CreditCardSvg";
 
 const Sidebar = () => {
     const _listGen = (path, label) => {
@@ -10,29 +11,13 @@ const Sidebar = () => {
                     activeClassName="active-route"
                     to={`${url}${path}`}
                     className="sidebar-link">
-                    {/* {icon === "dashboard" ? (
-                        <DashboardSvg />
-                    ) : icon === "organizations" ? (
-                        <OrganizationSvg />
-                    ) : icon === "users" ? (
-                        <UserProfileSvg />
-                    ) : icon === "bullet" ? null : icon === "cms" ? (
-                        <CMSSvg />
-                    ) : icon === "decals" ? (
-                        <DecalsSvg />
-                    ) : icon === "roles" ? (
-                        <RolesSvg />
-                    ) : icon === "whitelist" ? (
-                        <WhiteListSvg />
-                    ) : icon === "cards" ? (
-                        <SidebarCardSvg />
-                    ) : icon === "reports" ? (
-                        <ReportsSvg />
-                    ) : icon === "audits" ? (
-                        <AuditsSvg />
+                    {path === "dashboard" ? (
+                        <CreditCardSvg />
+                    ) : path === "organizations" ? (
+                        <CreditCardSvg />
                     ) : (
-                        <ArtworkSvg />
-                    )} */}
+                        <CreditCardSvg />
+                    )}
                     <span className="sidebar-link-name">{label}</span>
                 </NavLink>
             </li>

@@ -131,52 +131,15 @@ class App extends Component {
                     <Router>
                         <AnimatePresence>
                             <Switch>
-                                <Route
-                                    // if it falls on the localhost:3000/ or www.smartfuel.netlify.com/
-
-                                    exact
-                                    path="/"
-                                    render={props => {
-                                        console.log(
-                                            "App -> render -> fakeAuth",
-                                            fakeAuth
-                                        );
-                                        return fakeAuth.isAuthenticated ? (
-                                            <Redirect
-                                                push
-                                                to={{
-                                                    pathname:
-                                                        props.location.hash !==
-                                                        ""
-                                                            ? `/${props.location.hash}`
-                                                            : `${url}dashboard`,
-                                                    state: {
-                                                        from: props.location
-                                                    }
-                                                }}
-                                            />
-                                        ) : (
-                                            <Redirect
-                                                to={{
-                                                    pathname: `${url}login`,
-                                                    state: {
-                                                        from: props.location
-                                                    }
-                                                }}
-                                            />
-                                        );
-                                    }}
-                                />
+                                <Route exact path="/">
+                                    <Landing />
+                                </Route>
                                 <Route
                                     // if it falls on the localhost:3000/admin or www.smartfuel.netlify.com/admin
                                     exact
                                     path={url}
-                                    render={props => {
-                                        console.log(
-                                            "App -> render -> fakeAuth",
-                                            fakeAuth
-                                        );
-                                        return fakeAuth.isAuthenticated ? (
+                                    render={props =>
+                                        fakeAuth.isAuthenticated ? (
                                             <Redirect
                                                 push
                                                 to={{
@@ -199,12 +162,9 @@ class App extends Component {
                                                     }
                                                 }}
                                             />
-                                        );
-                                    }}
+                                        )
+                                    }
                                 />
-                                <Route exact path="/">
-                                    <Landing />
-                                </Route>
                                 <AuthRoute
                                     path={`${url}login`}
                                     component={Login}

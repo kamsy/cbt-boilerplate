@@ -1,0 +1,274 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;700;800&display=swap');
+@import 'variables';
+@import 'mixins';
+
+%widthControl {
+    max-width: 1200px;
+    margin: 0 calc((100% - 1200px) / 2);
+}
+
+.landing-page {
+    font-family: 'Work Sans', sans-serif;
+
+    &-header {
+        position: fixed;
+        width: 100%;
+        top: 0;
+        height: 100px;
+        z-index: 5;
+        &.show-bg {
+            background: rgba($white, 0.9);
+            height: 72px;
+        }
+
+        &-sub {
+            height: inherit;
+            @extend %widthControl;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            padding: 0 40px;
+            -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -webkit-transition: all 0.5s ease-in-out;
+            transition: all 0.5s ease-in-out;
+
+
+            ul {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                height: 100%;
+
+                a {
+                    color: #333333;
+                    text-transform: uppercase;
+                    margin-left: 27px;
+                    font-weight: bold
+                }
+
+                li:last-of-type {
+                    a {
+                        color: $green;
+                        padding: 12px;
+                        border-radius: 10px;
+                        border: 2px solid $green;
+                        text-transform: capitalize
+                    }
+                }
+            }
+        }
+    }
+
+
+    .section-1 {
+        background: $light-green;
+        padding-top: 140px;
+
+        &-sub {
+            @extend %widthControl;
+            height: 100%;
+
+            h1 {
+                font-weight: bold;
+                max-width: 488px;
+                margin: 0 auto;
+                font-size: 69px;
+                text-align: center;
+                line-height: 69px;
+                letter-spacing: -0.02em;
+                color: #333333;
+
+            }
+
+            p {
+                margin: 12px auto 0;
+                max-width: 687px;
+                top: 371px;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 21px;
+                line-height: 140%;
+
+                display: -webkit-box;
+
+                display: -ms-flexbox;
+
+                display: flex;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                text-align: center;
+
+                color: #4A4A4A;
+            }
+
+            .view-pricing-btn {
+                border: none;
+                background: $dark-green;
+                color: $white;
+                width: 187px;
+                margin: 32px auto 0;
+                height: 59px;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                justify-content: center;
+                padding: 20px 41px;
+                border-radius: 10px;
+                font-size: 16px;
+                font-weight: bolder;
+            }
+
+            .iphone-ss {
+                display: block;
+                margin: 80px auto 0;
+            }
+        }
+    }
+
+    .section-2 {
+        @extend %widthControl;
+        padding-top: 250px;
+        overflow-x: hidden;
+
+        &-sub {
+            position: relative;
+
+            .bubble {
+                position: absolute;
+                top: -180px;
+                z-index: -1;
+                left: -54px;
+                background: $light-green;
+                width: 170px;
+                height: 170px;
+                border-radius: 50%;
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    background: $light-green;
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    right: -70px;
+                    top: 140px;
+                }
+            }
+
+            .small-header {
+                font-style: normal;
+                font-weight: bold;
+                font-size: 13px;
+                line-height: 137.5%;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                text-align: center;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                color: $blue;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                justify-content: center;
+            }
+
+            .process {
+                &-header {
+                    font-style: normal;
+                    font-weight: 600;
+                    font-size: 40px;
+                    line-height: 120%;
+                    display: -webkit-box;
+                    display: -ms-flexbox;
+                    display: flex;
+                    -webkit-box-align: center;
+                    -ms-flex-align: center;
+                    align-items: center;
+                    -webkit-box-pack: center;
+                    -ms-flex-pack: center;
+                    justify-content: center;
+                    text-align: center;
+                    letter-spacing: -0.02em;
+                    margin-top: 16px;
+                    color: #333333;
+                }
+
+                &-card {
+                    @include hoverMixin;
+                    width: 359px;
+                    // height: 494px;
+                    background: $white;
+                    padding: 48px;
+                    margin: 0 10.5px;
+                    border: 1px solid $grey;
+                    border-radius: 10px;
+                    display: -webkit-box;
+                    display: -ms-flexbox;
+                    display: flex;
+                    -webkit-box-orient: vertical;
+                    -webkit-box-direction: normal;
+                    -ms-flex-direction: column;
+                    flex-direction: column;
+                    -webkit-box-align: center;
+                    -ms-flex-align: center;
+                    align-items: center;
+
+                    p {
+                        margin: 20px 0 16px;
+                        font-style: normal;
+                        font-weight: bold;
+                        font-size: 24px;
+                        line-height: 120%;
+                        text-align: center;
+                        color: #333333;
+                    }
+
+                    span {
+                        max-width: 274px;
+                        font-style: normal;
+                        font-weight: normal;
+                        font-size: 16px;
+                        line-height: 22px;
+                        text-align: center;
+                        color: #4A4A4A;
+                    }
+
+                    &s-container {
+                        margin: 58px 0 200px;
+                        display: -webkit-box;
+                        display: -ms-flexbox;
+                        display: flex;
+                        -webkit-box-pack: center;
+                        -ms-flex-pack: center;
+                        justify-content: center;
+                    }
+
+                }
+            }
+        }
+    }
+
+    .section-3 {
+        background: $dark-blue
+    }
+}

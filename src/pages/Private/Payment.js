@@ -13,7 +13,10 @@ const Payments = () => {
     const _addPane = ({ tab }) => {};
     const _renderEmptyState = tab => (
         <div className="empty-state">
-            <span>You have not added {tab}</span>{" "}
+            <span>
+                You have not added {tab},<br /> Click the button below to add a{" "}
+                {tab}.
+            </span>
             <Button className="custom-btn" onClick={() => _addPane({ tab })}>
                 Add {tab}
             </Button>

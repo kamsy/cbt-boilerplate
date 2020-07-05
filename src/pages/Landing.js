@@ -1,5 +1,102 @@
-import React from "react";
+import React, { useEffect } from "react";
+import "../scss/landing.scss";
+import LandingHeader from "../components/LandingHeader";
+import { Button } from "antd";
+import { fakeAuth } from "../App";
+import CustomHistory from "../services/CustomHistory";
+import IphoneX from "../assets/images/iphone-x.png";
+import Illustration1 from "../assets/images/Illustration1.png";
+import Illustration2 from "../assets/images/Illustration2.png";
+import Illustration3 from "../assets/images/Illustration3.png";
+import EllipsesSvg from "../assets/svgs/EllipsesSvg";
 
 export default () => {
-    return <div>testing</div>;
+    useEffect(() => {
+        const header = document.querySelector(".landing-page-header");
+        window.addEventListener("scroll", () => {
+            const scroll_pos = window.pageYOffset;
+            if (scroll_pos > 50) {
+                header.classList.add("show-bg");
+            } else {
+                header.classList.remove("show-bg");
+            }
+        });
+        if (fakeAuth.isAuthenticated) {
+            CustomHistory.goBack();
+        }
+    }, []);
+    return (
+        <div className="landing-page">
+            <LandingHeader />
+            <div className="section-1">
+                <div className="section-1-sub">
+                    <h1>Getting loans just got easier</h1>
+                    <p>
+                        Apply for up to 5million naira with loan tenors of up to
+                        18months and have your money sent straight to your bank
+                        account in minutes.
+                    </p>
+                    <Button className="view-pricing-btn">View Pricing</Button>
+                    <img
+                        src={IphoneX}
+                        alt="cropped iphone x"
+                        className="iphone-ss"
+                    />
+                </div>
+            </div>
+            <div className="section-2">
+                <div className="section-2-sub">
+                    <span className="bubble" />
+                    <span className="small-header">how it works</span>
+                    <span className="process-header">
+                        Fast & Easy Application Process
+                    </span>
+                    <div className="process-cards-container">
+                        <div className="process-card">
+                            <img
+                                src={Illustration1}
+                                alt="woman taking a selfie illustration"
+                            />
+                            <p>Create Account</p>
+                            <span>
+                                Register through our website, our MoneyPal app
+                                or by chatting Zee on Whatsapp
+                            </span>
+                        </div>
+                        <div className="process-card">
+                            <img
+                                src={Illustration2}
+                                alt="man beside giant iphone x-series illustration"
+                            />
+                            <p>Apply for a loan</p>
+                            <span>
+                                Fill out our brief application form with your
+                                information and we’ll review your application
+                                within Five (5) minutes.
+                            </span>
+                        </div>
+                        <div className="process-card">
+                            <img
+                                src={Illustration3}
+                                alt="man spraying cash on a giant credit card illustration"
+                            />
+                            <p>Receive funds</p>
+                            <span>
+                                Once approved, funds are typically received
+                                within 5 minutes.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="section-3">
+                <EllipsesSvg />
+            </div>
+            <div className="section-4"></div>
+            <div className="section-5"></div>
+            <div className="section-6"></div>
+            <div className="section-7"></div>
+            <div className="section-8"></div>
+        </div>
+    );
 };
