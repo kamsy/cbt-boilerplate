@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "../scss/landing.scss";
 import LandingHeader from "../components/LandingHeader";
 import { Link } from "react-router-dom";
-import { Button } from "antd";
+import { Button, Collapse } from "antd";
 import { fakeAuth, url } from "../App";
 import CustomHistory from "../services/CustomHistory";
 import IphoneX from "../assets/images/iphone-x.png";
@@ -11,6 +11,14 @@ import Illustration2 from "../assets/images/Illustration2.png";
 import Illustration3 from "../assets/images/Illustration3.png";
 import EllipsesSvg from "../assets/svgs/EllipsesSvg";
 import Calculator from "../components/Calculator";
+import Puzzle from "../assets/svgs/Puzzle";
+import PaintBrush from "../assets/svgs/PaintBrush";
+import SandClock from "../assets/svgs/SandClock";
+import Dial from "../assets/svgs/Dial";
+import TracedPathSvg from "../assets/svgs/TracedPathSvg";
+import { PlusOutlined, MinusOutlined } from "@ant-design/icons";
+
+const { Panel } = Collapse;
 
 export default () => {
     useEffect(() => {
@@ -50,8 +58,8 @@ export default () => {
             <div className="section-2">
                 <div className="section-2-sub">
                     <span className="bubble" />
-                    <span className="small-header">how it works</span>
-                    <span className="process-header">
+                    <span className="small-text">how it works</span>
+                    <span className="big-text">
                         Fast & Easy Application Process
                     </span>
                     <div className="process-cards-container">
@@ -109,9 +117,90 @@ export default () => {
                     <Calculator />
                 </div>
             </div>
-            <div className="section-4"></div>
-            <div className="section-5"></div>
-            <div className="section-6"></div>
+            <div className="section-4">
+                <div className="floating-text">
+                    <span>Quick Credit</span>
+                </div>
+                <div className="section-4-sub">
+                    <span className="small-text">Best Software</span>
+                    <span className="big-text">Why Choose Us</span>
+
+                    <div className="reason-container">
+                        <div className="top">
+                            <div className="reason">
+                                <Puzzle />
+                                <p>We're flexible</p>
+                                <span>
+                                    You can save interest by repaying your short
+                                    term loan early. If things go wrong, we're
+                                    here to help you.
+                                </span>
+                            </div>
+                            <div className="reason">
+                                <PaintBrush />
+                                <p>We're committed to you</p>
+                                <span>
+                                    Easy navigation and user experience. Access
+                                    to QuickCredit services with ease
+                                </span>
+                            </div>
+                        </div>
+                        <div className="bottom">
+                            <div className="reason">
+                                <SandClock />
+                                <p>We're transparent</p>
+                                <span>
+                                    There are no hidden charges. We make all our
+                                    fees completely clear upfront before you
+                                    apply.
+                                </span>
+                            </div>
+                            <div className="reason">
+                                <Dial />
+                                <p>We're here to help</p>
+                                <span>
+                                    Get extensive details of requested loan
+                                    facility real-time .
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="section-5">
+                <div className="traced-path-cont">
+                    <TracedPathSvg />
+                </div>
+                <div className="links-to-stores"></div>
+            </div>
+            <div className="section-6">
+                <span className="small-text">FAQ</span>
+                <span className="big-text">Frequently Asked Questions</span>
+                <span className="bubble" />
+                <Collapse
+                    accordion
+                    expandIconPosition="right"
+                    bordered={false}
+                    expandIcon={() => {}}>
+                    <Panel header="What is QuickCredit?" key="1">
+                        <p>a</p>
+                    </Panel>
+                    <Panel header="What is the minimum loan amount?" key="2">
+                        <p>b</p>
+                    </Panel>
+                    <Panel header="What is the maximum loan amount" key="3">
+                        <p>c</p>
+                    </Panel>
+                    <Panel
+                        header="What is the maximum tenure for QuickCredit"
+                        key="4">
+                        <p>d</p>
+                    </Panel>
+                </Collapse>
+                <Link to={`${url}register`} className="push-to-reg">
+                    How can I access the Quick Credit loan?
+                </Link>
+            </div>
             <div className="section-7"></div>
             <div className="section-8"></div>
         </div>

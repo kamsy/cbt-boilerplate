@@ -6,6 +6,9 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
+
+import { motion } from "framer";
+import { pageVariants } from "../../components/ProtectedLayout";
 const schema = yup.object().shape({
     username: yup.string().required("Enter your username!"),
     email: yup
@@ -29,7 +32,23 @@ export default () => {
         console.log("data", data);
     };
     return (
-        <div className="signup ">
+        <motion.div
+            className="signup"
+            initial="initial"
+            animate="in"
+            exit="out"
+            variants={{
+                initial: {
+                    transformOrigin: "bottom",
+                    transform: "scaleY(0)"
+                },
+                in: {
+                    transform: "scaleY(1)"
+                },
+                out: {
+                    transform: "scaleY(0)"
+                }
+            }}>
             <form
                 className="form-register form"
                 name="register-form"
@@ -89,6 +108,6 @@ export default () => {
                     Log in
                 </Link>
             </div>
-        </div>
+        </motion.div>
     );
 };

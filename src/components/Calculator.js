@@ -7,9 +7,7 @@ const { Option } = Select;
 
 export default () => {
     const [input_val, set_input_val] = useState("");
-
     const _onChange = ({ value }) => set_input_val(value);
-
     const _handleDuration = val => {
         console.log(val);
     };
@@ -51,7 +49,10 @@ export default () => {
                     <div className="left">
                         <p>
                             you'll payback <br />
-                            {_formatMoney(input_val * 0.05 + input_val || 0)}
+                            {_formatMoney(
+                                Number(input_val) * 0.05 + Number(input_val) ||
+                                    0
+                            )}
                         </p>
                     </div>
                     <div className="right">

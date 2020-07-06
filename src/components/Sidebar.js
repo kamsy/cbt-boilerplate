@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { url } from "../App";
 import { NavLink } from "react-router-dom";
-import CreditCardSvg from "../assets/svgs/CreditCardSvg";
 import { DashboardOutlined, WalletOutlined } from "@ant-design/icons";
 import Envelope from "../assets/svgs/Envelope";
 import LoanHistory from "../assets/svgs/LoanHistory";
