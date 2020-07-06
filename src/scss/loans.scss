@@ -2,6 +2,60 @@
 @import 'mixins';
 
 .loans {
+    .link-container {
+        margin-bottom: 24px;
+        width: 100%;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: end;
+        -ms-flex-pack: end;
+        justify-content: flex-end;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+
+        a {
+            color: $white;
+            position: relative;
+            background: $blue;
+            overflow: hidden;
+            border: noe;
+            border-radius: 4px;
+            z-index: 0;
+            padding: 6px 12px;
+
+            &::after {
+                content: '';
+                position: absolute;
+                z-index: -1;
+                background: $dark-blue;
+                opacity: 0.3;
+                border-radius: 50% 50% 0 0;
+                width: 100%;
+                height: 0%;
+                left: 0;
+                bottom: 0;
+                -webkit-transition: all 0.5s ease-in-out;
+                transition: all 0.5s ease-in-out;
+            }
+
+
+            &:hover,
+            &:active {
+                color: $white;
+
+                &::after {
+                    height: 200%;
+                    z-index: -1;
+                }
+            }
+        }
+
+
+
+    }
+
     .table-container {
         .table {
             width: 100%

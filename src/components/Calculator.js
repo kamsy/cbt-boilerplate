@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "../scss/landing.scss";
 import { Input, Select } from "antd";
-
 import NumberFormat from "react-number-format";
 import { _formatMoney } from "../services/utils";
 const { Option } = Select;
@@ -11,7 +10,7 @@ export default () => {
 
     const _onChange = ({ value }) => set_input_val(value);
 
-    const _handleChange = val => {
+    const _handleDuration = val => {
         console.log(val);
     };
     return (
@@ -40,7 +39,7 @@ export default () => {
                 <label>
                     duration
                     <Select
-                        onChange={_handleChange}
+                        onChange={_handleDuration}
                         placeholder="Select Period">
                         <Option value="30">30 days</Option>
                         <Option value="60">60 days</Option>
@@ -52,13 +51,13 @@ export default () => {
                     <div className="left">
                         <p>
                             you'll payback <br />
-                            {_formatMoney(input_val || 0)}
+                            {_formatMoney(input_val * 0.05 + input_val || 0)}
                         </p>
                     </div>
                     <div className="right">
                         <p>
                             quickcredit fee <br />
-                            {_formatMoney(input_val || 0)}
+                            5%
                         </p>
                     </div>
                 </div>

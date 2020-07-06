@@ -5,18 +5,18 @@ import Header from "./Header";
 
 export const pageVariants = {
     initial: {
-        transformOrigin: "bottom",
-        transform: "scaleY(0)"
+        // transformOrigin: "bottom",
+        // transform: "scaleY(0)",
         // transition: "0.5s all",
-        // opacity: 0
+        opacity: 0
     },
     in: {
-        // opacity: 1,
-        transform: "scaleY(1)"
+        opacity: 1
+        // transform: "scaleY(1)"
     },
     out: {
-        // opacity: 0,
-        transform: "scaleY(0)"
+        opacity: 0
+        // transform: "scaleY(0)"
     }
 };
 export default ({ children, title }) => {

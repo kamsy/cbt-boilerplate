@@ -1,11 +1,11 @@
 import React from "react";
-import { Button } from "antd";
 import { Link } from "react-router-dom";
 import { url } from "../../App";
 import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import CustomInput from "../../components/CustomInput";
+import CustomButton from "../../components/CustomButton";
 const schema = yup.object().shape({
     username: yup.string().required("Enter your username!"),
     email: yup
@@ -77,9 +77,11 @@ export default () => {
                         control
                     }}
                 />
-                <Button className="submit-btn" onClick={handleSubmit(onSubmit)}>
-                    Register
-                </Button>
+
+                <CustomButton
+                    text="Register"
+                    onClick={handleSubmit(onSubmit)}
+                />
             </form>
             <div className="old-user-container">
                 <p>Already have an account?</p>

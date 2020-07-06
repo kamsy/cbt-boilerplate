@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Button, message } from "antd";
+import { message } from "antd";
 import { Link, Redirect } from "react-router-dom";
 import { url } from "../../App";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 import CustomInput from "../../components/CustomInput";
+import CustomButton from "../../components/CustomButton";
 
 const schema = yup.object().shape({
     email: yup
@@ -52,9 +53,10 @@ export default () => {
                     }}
                 />
 
-                <Button className="submit-btn" onClick={handleSubmit(onSubmit)}>
-                    Reset Password
-                </Button>
+                <CustomButton
+                    text="Reset Password"
+                    onClick={handleSubmit(onSubmit)}
+                />
             </form>
             <div className="new-user-container">
                 <p>Remember your password?</p>

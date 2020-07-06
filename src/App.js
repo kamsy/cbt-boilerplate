@@ -1,6 +1,7 @@
 import React, { Component, Suspense } from "react";
 import { clear } from "./services/localStorageHelper";
 import "antd/dist/antd.css";
+import "./scss/global.scss";
 // layouts
 import ProtectedLayout from "./components/ProtectedLayout";
 import AuthLayout from "./components/AuthLayout";
@@ -18,10 +19,11 @@ import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import Dashboard from "./pages/Private/Dashboard";
 import Loans from "./pages/Private/Loans";
-import Payment from "./pages/Private/Payment";
+import Wallet from "./pages/Private/Wallet";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import { AnimatePresence } from "framer";
 import Profile from "./pages/Private/Profile";
+import CreateLoan from "./pages/Private/CreateLoan";
 const { localStorage } = window;
 export const url = "/app/";
 // variable to hold auth status and also functions to convert it
@@ -177,16 +179,21 @@ class App extends Component {
                                     path={`${url}dashboard`}
                                     component={Dashboard}
                                     title="Dashboard"
-                                />{" "}
+                                />
+                                <PrivateRoute
+                                    path={`${url}create-loan`}
+                                    component={CreateLoan}
+                                    title="Request Loan"
+                                />
                                 <PrivateRoute
                                     path={`${url}loans`}
                                     component={Loans}
-                                    title="Loans"
+                                    title="Loan History"
                                 />
                                 <PrivateRoute
-                                    path={`${url}payment`}
-                                    component={Payment}
-                                    title="Bank & Card"
+                                    path={`${url}wallet`}
+                                    component={Wallet}
+                                    title="Wallet Info"
                                 />
                                 <PrivateRoute
                                     path={`${url}profile`}

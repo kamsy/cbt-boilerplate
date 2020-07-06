@@ -2,19 +2,19 @@ import React from "react";
 import { motion } from "framer";
 import { pageVariants } from "../../components/ProtectedLayout";
 import { Tabs, Button } from "antd";
-import "../../scss/payment.scss";
+import "../../scss/wallet.scss";
 
 const { TabPane } = Tabs;
 function callback(key) {
     console.log(key);
 }
 
-const Payments = () => {
+const Wallet = () => {
     const _addPane = ({ tab }) => {};
     const _renderEmptyState = tab => (
         <div className="empty-state">
             <span>
-                You have not added {tab},<br /> Click the button below to add a{" "}
+                You have not added a{tab},<br /> Click the button below to add a{" "}
                 {tab}.
             </span>
             <Button className="custom-btn" onClick={() => _addPane({ tab })}>
@@ -24,11 +24,12 @@ const Payments = () => {
     );
     return (
         <motion.div
-            className="main payment"
+            className="main wallet"
             initial="initial"
             animate="in"
             exit="out"
             variants={pageVariants}>
+            <div className="wallet-info-container"></div>
             <Tabs defaultActiveKey="1" onChange={callback}>
                 <TabPane tab="Bank" key="1">
                     {_renderEmptyState("bank")}
@@ -41,4 +42,4 @@ const Payments = () => {
     );
 };
 
-export default Payments;
+export default Wallet;

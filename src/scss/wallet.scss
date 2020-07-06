@@ -1,8 +1,24 @@
 @import 'variables';
 @import 'mixins';
 
-.payment {
+.wallet {
+    padding-bottom: 2rem;
+    .wallet-info-container {
+        background: $white;
+        height: 300px;
+        border-radius: 4px;
+        @include shadowMixin;
+        margin-bottom: 24px;
+        width: 400px;
+    }
+
     .ant-tabs {
+        &-nav{
+            &::before{
+                border-color: $grey;
+                opacity: 0.5
+            }
+        }
         &-tab-btn {
             color: $grey !important;
             -webkit-transition: 0.5s all ease-in-out;
@@ -46,7 +62,8 @@
             -webkit-box-pack: center;
             -ms-flex-pack: center;
             justify-content: center;
-            span{
+
+            span {
                 text-align: center
             }
 

@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Button } from "antd";
 import { Link, Redirect } from "react-router-dom";
 import { url, fakeAuth } from "../../App";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 import CustomInput from "../../components/CustomInput";
+import AuthServices from "../../services/authServices";
+import CustomButton from "../../components/CustomButton";
 
 const schema = yup.object().shape({
     username: yup.string().required("Enter your username!"),
@@ -64,9 +65,7 @@ export default () => {
                 <Link to={`${url}forgot-password`} className="forgot-pw-link">
                     Forgot password?
                 </Link>
-                <Button className="submit-btn" onClick={handleSubmit(onSubmit)}>
-                    Log in
-                </Button>
+                <CustomButton text="Log in" onClick={handleSubmit(onSubmit)} />
             </form>
             <div className="new-user-container">
                 <p>Don't have an account?</p>

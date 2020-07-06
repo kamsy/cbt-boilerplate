@@ -4,7 +4,9 @@ import { pageVariants } from "../../components/ProtectedLayout";
 import { _formatMoney } from "../../services/utils";
 import { EllipsisOutlined } from "@ant-design/icons";
 import { Dropdown, Menu } from "antd";
+import { Link } from "react-router-dom";
 import "../../scss/loans.scss";
+import { url } from "../../App";
 
 const Loans = () => {
     const menu = (
@@ -26,6 +28,9 @@ const Loans = () => {
             animate="in"
             exit="out"
             variants={pageVariants}>
+            <div className="link-container">
+                <Link to={`${url}create-loan`}>Request Loan</Link>
+            </div>
             <div className="table-container">
                 <table className="table">
                     <thead className="table-header">

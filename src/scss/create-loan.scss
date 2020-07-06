@@ -1,0 +1,232 @@
+@import 'variables';
+@import 'mixins';
+
+.create-loan {
+    p {
+        font-size: 16px;
+
+        strong {
+            font-size: 12px
+        }
+
+        &.penalty-note {
+            margin-top: 12px
+        }
+    }
+
+    .loan-form-container {
+        background: $white;
+        border-radius: 4px;
+        @include shadowMixin;
+        padding: 16px;
+
+        form {
+            width: 100%;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+        }
+
+        .left-col,
+        .right-col {
+            width: 50%;
+            padding: 16px;
+
+            @include screen(929) {
+                width: 100%;
+            }
+        }
+
+
+
+        .right-col {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+
+            .uploader {
+                width: 46.5%;
+                min-width: 177px;
+
+                @include screen(500) {
+                    width: 100%;
+                }
+            }
+
+            label {
+                display: inline-block;
+                margin-bottom: 0;
+
+                span {
+                    display: block;
+                    margin-bottom: 8px;
+                }
+
+
+            }
+
+            .ant-upload {
+                input+div {
+                    display: -webkit-box;
+                    display: -ms-flexbox;
+                    display: flex;
+                    -webkit-box-orient: vertical;
+                    -webkit-box-direction: normal;
+                    -ms-flex-direction: column;
+                    flex-direction: column;
+                    -webkit-box-align: center;
+                    -ms-flex-align: center;
+                    align-items: center;
+                    -webkit-box-pack: center;
+                    -ms-flex-pack: center;
+                    justify-content: center;
+                    height: 100%;
+                }
+
+                &-picture-card-wrapper {
+                    height: 144px;
+                    margin-bottom: 36px;
+                }
+
+                &-select-picture-card {
+                    width: 100%;
+                    height: 100%
+                }
+
+                &-text {
+                    font-size: 12px;
+                    text-transform: none
+                }
+            }
+        }
+
+        label {
+            font-style: normal;
+            font-weight: normal;
+            font-size: 12px;
+            line-height: 137.5%;
+            /* or 18px */
+
+            display: -webkit-box;
+
+            display: -ms-flexbox;
+
+            display: flex;
+            -webkit-box-align: start;
+            -ms-flex-align: start;
+            align-items: flex-start;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            text-transform: uppercase;
+            margin-bottom: 36px;
+            position: relative;
+
+            span {
+                display: inline;
+
+                small {
+                    text-transform: none;
+                    font-size: 11px;
+                }
+            }
+
+
+            input {
+                margin-top: 12px;
+                height: 40px;
+                font-weight: normal
+            }
+
+
+            .form-error-text {
+                margin: 0 0 -18px;
+                position: absolute;
+                bottom: 0;
+                color: $red;
+                font-weight: bold;
+                font-size: 12px;
+                margin-top: 6px;
+                -webkit-transition: all 0.5s ease-in-out;
+                transition: all 0.5s ease-in-out;
+                -webkit-transform-origin: top;
+                transform-origin: top;
+                text-transform: none;
+
+                &.show {
+                    -webkit-transform: scaleY(1);
+                    transform: scaleY(1);
+                }
+
+                &.hide {
+                    -webkit-transform: scaleY(0);
+                    transform: scaleY(0)
+                }
+            }
+
+            .ant-select {
+                margin-top: 12px;
+                width: 100%;
+
+                &-selector {
+                    height: 40px;
+                    font-weight: normal;
+                    font-size: 13px;
+                }
+
+                &-selection {
+                    &-placeholder {
+                        display: -webkit-box;
+                        display: -ms-flexbox;
+                        display: flex;
+                        -webkit-box-align: center;
+                        -ms-flex-align: center;
+                        align-items: center;
+                        // color: $white;
+                        // opacity: 0.3;
+                    }
+
+                    &-item {
+                        display: -webkit-box;
+                        display: -ms-flexbox;
+                        display: flex;
+                        -webkit-box-align: center;
+                        -ms-flex-align: center;
+                        align-items: center;
+                    }
+                }
+            }
+
+        }
+
+        .submit-btn {
+            &-cont {
+                padding: 0 16px;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-orient: vertical;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: column;
+                flex-direction: column;
+                -webkit-box-align: end;
+                -ms-flex-align: end;
+                align-items: flex-end;
+            }
+
+            margin-top: 0;
+
+            @include screen(375) {
+                width: 100%;
+            }
+        }
+    }
+}
