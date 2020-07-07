@@ -30,12 +30,119 @@
 
 
     &:hover,
-    &:active ,&:focus{
+    &:active,
+    &:focus {
         color: $white;
+
         &::after {
             height: 200%;
             z-index: -1;
         }
+
         background: $dark-blue !important
+    }
+}
+
+
+.input-unit {
+    position: relative;
+    margin-top: 32px;
+
+    input {
+        height: 100%
+    }
+
+
+    .form-error-text {
+        margin: 0 0 -18px;
+        position: absolute;
+        bottom: 0;
+        color: $red;
+        font-size: 12px;
+        margin-top: 6px;
+        -webkit-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+        -webkit-transform-origin: top;
+        transform-origin: top;
+
+        &.show {
+            -webkit-transform: scaleY(1);
+            transform: scaleY(1);
+        }
+
+        &.hide {
+            -webkit-transform: scaleY(0);
+            transform: scaleY(0)
+        }
+    }
+
+    .form-input {
+        -webkit-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+        -webkit-transform-origin: top;
+        transform-origin: top;
+        height: 48px;
+        margin-top: 8px;
+
+        &.show-error {
+            border-color: $red
+        }
+
+    }
+}
+
+
+.custom-select {
+    label {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+
+    .ant-select {
+        margin-top: 8px;
+        height: 48px;
+
+        &.show-error{
+            .ant-select-selector{
+                border-color: $red
+            }
+        }
+
+        &-selector {
+            -webkit-transition: 0.5 all ease-in-out;
+            transition: 0.5 all ease-in-out;
+            height: 48px !important;
+        }
+
+        &-selection {
+            &-search {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+
+                &-input {
+                    height: 38px !important;
+                    padding: 4px 11px !important;
+                }
+            }
+
+            &-placeholder {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-align: center;
+                    -ms-flex-align: center;
+                        align-items: center;
+            }
+
+        }
     }
 }

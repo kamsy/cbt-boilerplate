@@ -1,4 +1,4 @@
-import React, { Component, Suspense } from "react";
+import React, { Suspense, useEffect, useState, PureComponent } from "react";
 import { clear } from "./services/localStorageHelper";
 import "antd/dist/antd.css";
 import "./scss/global.scss";
@@ -8,10 +8,11 @@ import AuthLayout from "./components/AuthLayout";
 import { Loader } from "./components/Loader";
 import { message } from "antd";
 import {
-    BrowserRouter as Router,
     Switch,
     Route,
-    Redirect
+    Redirect,
+    useLocation,
+    useHistory
 } from "react-router-dom";
 import IdleTimer from "react-idle-timer";
 import Landing from "./pages/Landing";
@@ -37,65 +38,39 @@ export const fakeAuth = {
     }
 };
 
+const loggedIn = JSON.parse(localStorage.getItem("loggedIn"));
+
 // Private Router function
-const PrivateRoute = ({ component: Component, title, ...rest }) => (
-    <Route exact {...rest}>
-        {fakeAuth.isAuthenticated ? (
-            <ProtectedLayout title={title} fakeAuth={fakeAuth}>
-                <Component {...rest} />
-            </ProtectedLayout>
-        ) : (
-            <Redirect
-                to={{
-                    pathname: url
-                }}
-            />
-        )}
-    </Route>
-);
+const PrivateRoute = ({ component: Component, title, ...rest }) => {
+    return (
+        <Route exact {...rest}>
+            {fakeAuth.isAuthenticated ? (
+                <ProtectedLayout {...{ title, fakeAuth }}>
+                    <Component {...rest} />
+                </ProtectedLayout>
+            ) : (
+                <Redirect
+                    to={{
+                        pathname: `${url}login`
+                    }}
+                />
+            )}
+        </Route>
+    );
+};
 
-const AuthRoute = ({ component: Component, ...rest }) => (
-    <Route exact {...rest}>
-        <AuthLayout fakeAuth={fakeAuth}>
-            <Component />
-        </AuthLayout>
-    </Route>
-);
+const AuthRoute = ({ component: Component, ...rest }) => {
+    console.log("AuthRoute -> fakeAuth", fakeAuth);
+    return (
+        <Route exact {...rest}>
+            <AuthLayout {...{ fakeAuth }}>
+                <Component />
+            </AuthLayout>
+        </Route>
+    );
+};
 
-class App extends Component {
-    state = {
-        loaded: true
-    };
-
-    componentDidMount() {
-        window.addEventListener("offline", () =>
-            message.error("Lost internet connection!.😢")
-        );
-        window.addEventListener("online", () =>
-            message.success("Connection re-established!.👍🏻")
-        );
-    }
-
-    static getDerivedStateFromProps = (props, state) => {
-        const loggedIn = JSON.parse(localStorage.getItem("loggedIn"));
-
-        if (loggedIn) {
-            fakeAuth.authenticate();
-            return {
-                loaded: true
-            };
-        }
-        if (!loggedIn) {
-            fakeAuth.signout();
-            clear();
-            return {
-                loaded: true
-            };
-        }
-
-        return state;
-    };
-
+class IdleTimerComponent extends PureComponent {
     idleTimer = null;
     _onAction = e => {
         this.idleTimer.reset();
@@ -106,101 +81,125 @@ class App extends Component {
     };
 
     _onIdle = e => {
-        if (this.idleTimer.isIdle() && fakeAuth.isAuthenticated) {
-            fakeAuth.signout();
+        if (this.idleTimer.isIdle() && loggedIn) {
             clear();
         }
     };
 
     render() {
-        const { loaded } = this.state;
+        return (
+            <IdleTimer
+                ref={ref => (this.idleTimer = ref)}
+                onActive={this._onActive}
+                onIdle={this._onIdle}
+                onAction={this._onAction}
+                debounce={10}
+                timeout={1000 * 60 * 10}
+            />
+        );
+    }
+}
 
-        if (loaded) {
-            return (
-                <Suspense fallback={<Loader loading />}>
-                    <IdleTimer
-                        ref={ref => (this.idleTimer = ref)}
-                        onActive={this._onActive}
-                        onIdle={this._onIdle}
-                        onAction={this._onAction}
-                        debounce={10}
-                        timeout={1000 * 60 * 10}
-                    />
-                    <Router>
-                        <AnimatePresence>
-                            <Switch>
-                                <Route exact path="/">
-                                    <Landing />
-                                </Route>
-                                <Route
-                                    // if it falls on the localhost:3000/admin or www.smartfuel.netlify.com/admin
-                                    exact
-                                    path={url}
-                                    render={props =>
-                                        fakeAuth.isAuthenticated ? (
-                                            <Redirect
-                                                push
-                                                to={{
-                                                    pathname:
-                                                        props.location.hash !==
-                                                        ""
-                                                            ? `${url}${props.location.hash}`
-                                                            : `${url}dashboard`,
-                                                    state: {
-                                                        from: props.location
-                                                    }
-                                                }}
-                                            />
-                                        ) : (
-                                            <Redirect
-                                                to={{
-                                                    pathname: `${url}login`,
-                                                    state: {
-                                                        from: props.location
-                                                    }
-                                                }}
-                                            />
-                                        )
-                                    }
-                                />
-                                <AuthRoute
-                                    path={`${url}login`}
-                                    component={Login}
-                                />
-                                <AuthRoute
-                                    path={`${url}forgot-password`}
-                                    component={ForgotPassword}
-                                />
-                                <AuthRoute
-                                    path={`${url}register`}
-                                    component={Register}
-                                />
-                                <PrivateRoute
-                                    path={`${url}dashboard`}
-                                    component={Dashboard}
-                                    title="Dashboard"
-                                />
-                                <PrivateRoute
-                                    path={`${url}create-loan`}
-                                    component={CreateLoan}
-                                    title="Request Loan"
-                                />
-                                <PrivateRoute
-                                    path={`${url}loans`}
-                                    component={Loans}
-                                    title="Loan History"
-                                />
-                                <PrivateRoute
-                                    path={`${url}wallet`}
-                                    component={Wallet}
-                                    title="Wallet Info"
-                                />
-                                <PrivateRoute
-                                    path={`${url}profile`}
-                                    component={Profile}
-                                    title="Account"
-                                />
-                                {/* <Route
+const App = () => {
+    const [loaded, set_loaded] = useState(false);
+
+    useEffect(() => {
+        window.addEventListener("offline", () =>
+            message.error("Lost internet connection!.😢")
+        );
+        window.addEventListener("online", () =>
+            message.success("Connection re-established!.👍🏻")
+        );
+    }, []);
+
+    useEffect(() => {
+        if (loggedIn) {
+            fakeAuth.authenticate();
+            return set_loaded(true);
+        }
+        if (!loggedIn) {
+            fakeAuth.signout();
+            clear();
+            return set_loaded(true);
+        }
+    }, []);
+
+    let location = useLocation();
+
+    if (loaded) {
+        return (
+            <Suspense fallback={<Loader loading />}>
+                {/* <IdleTimerComponent /> */}
+                <AnimatePresence exitBeforeEnter>
+                    <Switch>
+                        <Route exact path="/">
+                            <Landing {...{ fakeAuth }} />
+                        </Route>
+                        <Route
+                            // if it falls on the localhost:3000/admin or www.smartfuel.netlify.com/admin
+                            exact
+                            path={url}
+                            render={props =>
+                                fakeAuth.isAuthenticated ? (
+                                    <Redirect
+                                        push
+                                        to={{
+                                            pathname:
+                                                props.location.hash !== ""
+                                                    ? `${url}${props.location.hash}`
+                                                    : `${url}dashboard`,
+                                            state: {
+                                                from: props.location
+                                            }
+                                        }}
+                                    />
+                                ) : (
+                                    <Redirect
+                                        to={{
+                                            pathname: `${url}login`,
+                                            state: {
+                                                from: props.location
+                                            }
+                                        }}
+                                    />
+                                )
+                            }
+                        />
+                        <AuthRoute path={`${url}login`} component={Login} />
+                        <AuthRoute
+                            path={`${url}forgot-password`}
+                            component={ForgotPassword}
+                        />
+                        <AuthRoute
+                            path={`${url}register`}
+                            component={Register}
+                        />
+                        <PrivateRoute
+                            path={`${url}dashboard`}
+                            component={Dashboard}
+                            title="Dashboard"
+                        />
+                        <PrivateRoute
+                            path={`${url}create-loan`}
+                            component={CreateLoan}
+                            title="Request Loan"
+                        />
+                        <PrivateRoute
+                            path={`${url}loans`}
+                            component={Loans}
+                            title="Loan History"
+                        />
+                        <PrivateRoute
+                            path={`${url}wallet`}
+                            component={Wallet}
+                            title="Wallet Info"
+                        />
+                        <PrivateRoute
+                            path={`${url}profile`}
+                            component={Profile}
+                            title="Account"
+                        />
+                        {/* <Route
                                 eaxct
                                 path={`${url}#/500`}
                                 component={Page_500}
@@ -215,8 +214,8 @@ class App extends Component {
                                 path={`${url}#/404`}
                                 component={Page_404}
                             /> */}
-                                <Route path="*"></Route>
-                                {/* render={props => (
+                        <Route path="*"></Route>
+                        {/* render={props => (
                                     <Redirect
                                         to={{
                                             pathname: `${url}#/404`
@@ -225,14 +224,12 @@ class App extends Component {
                                     />
                                 )}
                             /> */}
-                            </Switch>
-                        </AnimatePresence>
-                    </Router>
-                </Suspense>
-            );
-        }
-        return <Loader loading />;
+                    </Switch>
+                </AnimatePresence>
+            </Suspense>
+        );
     }
-}
+    return <Loader loading />;
+};
 
 export default App;

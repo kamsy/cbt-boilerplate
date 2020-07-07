@@ -7,13 +7,7 @@ export default () => (
         viewBox="0 0 80 80"
         fill="none"
         xmlns="http://www.w3.org/2000/svg">
-        <rect
-            width="80"
-            height="80"
-            rx="40"
-            fill="#00A051"
-            fill-opacity="0.1"
-        />
+        <rect width="80" height="80" rx="40" fill="#00A051" fillOpacity="0.1" />
         <path
             d="M46.6597 45.7838L40.0059 40.7236L33.4847 45.7803C32.9401 46.1991 32.6215 46.8475 32.6228 47.5343V50.3279H47.5408V47.5506C47.5367 46.8568 47.2114 46.2042 46.6597 45.7838Z"
             fill="#00A051"

@@ -7,7 +7,11 @@ import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
-
+import { motion } from "framer";
+import {
+    pageVariants,
+    pageTransitions
+} from "../../components/ProtectedLayout";
 const schema = yup.object().shape({
     email: yup
         .string()
@@ -34,7 +38,13 @@ export default () => {
     if (redirectToReferrer)
         return <Redirect to={{ pathname: `${url}login` }} />;
     return (
-        <div className="forgot">
+        <motion.div
+            className="forgot"
+            initial="initial"
+            animate="in"
+            exit="out"
+            transition={pageTransitions}
+            variants={pageVariants}>
             <form
                 className="form-forgot form"
                 name="forgot-password-form"
@@ -64,6 +74,6 @@ export default () => {
                     Log in
                 </Link>
             </div>
-        </div>
+        </motion.div>
     );
 };

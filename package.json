@@ -22,6 +22,7 @@
     "react-hook-form": "^6.0.1",
     "react-idle-timer": "^4.2.12",
     "react-number-format": "^4.4.1",
+    "react-paystack": "^3.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "yup": "^0.29.1"

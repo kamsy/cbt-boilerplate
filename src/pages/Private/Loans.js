@@ -1,6 +1,9 @@
 import React from "react";
 import { motion } from "framer";
-import { pageVariants } from "../../components/ProtectedLayout";
+import {
+    pageVariants,
+    pageTransitions
+} from "../../components/ProtectedLayout";
 import { _formatMoney } from "../../services/utils";
 import { EllipsisOutlined } from "@ant-design/icons";
 import { Dropdown, Menu } from "antd";
@@ -27,6 +30,7 @@ const Loans = () => {
             initial="initial"
             animate="in"
             exit="out"
+            transition={pageTransitions}
             variants={pageVariants}>
             <div className="link-container">
                 <Link to={`${url}create-loan`}>Request Loan</Link>
@@ -43,7 +47,7 @@ const Loans = () => {
                             <th>action</th>
                         </tr>
                     </thead>
-                    <tbody className="table-body">
+                    <tbody className="tableBody">
                         <tr>
                             <td>{_formatMoney(35000)}</td>
                             <td>3 days</td>

@@ -1,12 +1,17 @@
-import React, { useState } from "react";
-import { Link, Redirect } from "react-router-dom";
+import React from "react";
+import { Link, useHistory } from "react-router-dom";
 import { url, fakeAuth } from "../../App";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 import CustomInput from "../../components/CustomInput";
+import { motion } from "framer";
 import AuthServices from "../../services/authServices";
 import CustomButton from "../../components/CustomButton";
+import {
+    pageVariants,
+    pageTransitions
+} from "../../components/ProtectedLayout";
 
 const schema = yup.object().shape({
     username: yup.string().required("Enter your username!"),
@@ -17,22 +22,25 @@ const schema = yup.object().shape({
 });
 
 export default () => {
-    const [redirectToReferrer, set_redirectToReferrer] = useState(false);
+    const history = useHistory();
     const methods = useForm({
         resolver: yupResolver(schema)
     });
     const { handleSubmit, control, errors, register } = methods;
 
     const onSubmit = data => {
-        console.log("data", data);
         fakeAuth.authenticate();
-        set_redirectToReferrer(true);
         localStorage.setItem("loggedIn", JSON.stringify(true));
+        return history.push(`${url}dashboard`);
     };
-    if (redirectToReferrer)
-        return <Redirect to={{ pathname: `${url}dashboard` }} />;
     return (
-        <div className="login">
+        <motion.div
+            className="login"
+            initial="initial"
+            animate="in"
+            exit="out"
+            transition={pageTransitions}
+            variants={pageVariants}>
             <form
                 className="form-login form"
                 name="login-form"
@@ -73,6 +81,6 @@ export default () => {
                     Register
                 </Link>
             </div>
-        </div>
+        </motion.div>
     );
 };

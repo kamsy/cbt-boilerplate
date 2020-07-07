@@ -1,22 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../scss/authlayout.scss";
+import { useHistory } from "react-router-dom";
+import { url } from "../App";
 
-export default ({ children }) => {
-    // useEffect(() => {
-    //     const submit_btns = document.querySelectorAll(".submit-btn");
-    //     console.log("submit_btns", submit_btns);
-    //     submit_btns.forEach(btn => {
-    //         btn.addEventListener("mouseover", () => {
-    //             btn.classList.add("mouse-over");
-    //         });
-    //         btn.addEventListener("click", () => {
-    //             btn.classList.add("mouse-click");
-    //         });
-    //         btn.addEventListener("mouseout", () => {
-    //             btn.classList.remove("mouse-over");
-    //             btn.classList.remove("mouse-click");
-    //         });
-    //     });
-    // }, []);
+export default ({ children, fakeAuth }) => {
+    const history = useHistory();
+    useEffect(() => {
+        if (fakeAuth.isAuthenticated) return history.push(`${url}dashboard`);
+    }, [history, fakeAuth]);
     return <div className="auth-layout">{children}</div>;
 };

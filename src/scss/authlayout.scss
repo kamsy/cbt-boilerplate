@@ -110,50 +110,5 @@
         }
     }
 
-    .input-unit {
-        position: relative;
-        margin-top: 32px;
 
-        input {
-            height: 100%
-        }
-
-
-        .form-error-text {
-            margin: 0 0 -18px;
-            position: absolute;
-            bottom: 0;
-            color: $red;
-            font-size: 12px;
-            margin-top: 6px;
-            -webkit-transition: all 0.5s ease-in-out;
-            transition: all 0.5s ease-in-out;
-            -webkit-transform-origin: top;
-            transform-origin: top;
-
-            &.show {
-                -webkit-transform: scaleY(1);
-                transform: scaleY(1);
-            }
-
-            &.hide {
-                -webkit-transform: scaleY(0);
-                transform: scaleY(0)
-            }
-        }
-
-        .form-input {
-            -webkit-transition: all 0.5s ease-in-out;
-            transition: all 0.5s ease-in-out;
-            -webkit-transform-origin: top;
-            transform-origin: top;
-            height: 48px;
-            margin-top: 8px;
-
-            &.show-error {
-                border-color: $red
-            }
-
-        }
-    }
 }

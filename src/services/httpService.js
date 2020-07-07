@@ -1,5 +1,5 @@
 import { decryptAndRead } from "./localStorageHelper";
-import CustomHistory from "./CustomHistory";
+import { useHistory } from "react-router-dom";
 
 import axios from "axios";
 import { url } from "../App";
@@ -11,13 +11,14 @@ axios.interceptors.response.use(
         return response;
     },
     error => {
+        const history = useHistory();
         console.log("error", error);
         if (error.response) {
             const { status, data } = error.response;
             if (status >= 500) {
                 if (!window.location.pathname.includes("dashboard")) {
                     setTimeout(() => {
-                        CustomHistory.push({ pathname: `${url}#/500` });
+                        history.push({ pathname: `${url}#/500` });
                     }, 1500);
                 }
             } else if (status === 401 && data === "") {

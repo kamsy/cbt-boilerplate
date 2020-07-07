@@ -5,19 +5,22 @@ import Header from "./Header";
 
 export const pageVariants = {
     initial: {
-        // transformOrigin: "bottom",
-        // transform: "scaleY(0)",
-        // transition: "0.5s all",
+        y: "+100vh",
         opacity: 0
     },
     in: {
+        y: 0,
         opacity: 1
-        // transform: "scaleY(1)"
     },
     out: {
-        opacity: 0
-        // transform: "scaleY(0)"
+        opacity: 0,
+        y: "+100vh"
     }
+};
+
+export const pageTransitions = {
+    ease: "linear",
+    duration: 0.2
 };
 export default ({ children, title }) => {
     return (

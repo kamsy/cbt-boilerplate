@@ -20,6 +20,10 @@
         @include shadowMixin;
         padding: 16px;
 
+        @include screen(375) {
+            padding: 16px 0
+        }
+
         form {
             width: 100%;
             display: -webkit-box;

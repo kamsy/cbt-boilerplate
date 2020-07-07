@@ -3,7 +3,7 @@ import React from "react";
 export default () => (
     <svg
         id="Capa_1"
-        enable-background="new 0 0 512.001 512.001"
+        enableBackground="new 0 0 512.001 512.001"
         height="512"
         viewBox="0 0 512.001 512.001"
         width="512"

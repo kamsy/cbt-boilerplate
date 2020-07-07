@@ -3,8 +3,7 @@ import "../scss/landing.scss";
 import LandingHeader from "../components/LandingHeader";
 import { Link } from "react-router-dom";
 import { Button, Collapse } from "antd";
-import { fakeAuth, url } from "../App";
-import CustomHistory from "../services/CustomHistory";
+import { url } from "../App";
 import IphoneX from "../assets/images/iphone-x.png";
 import Illustration1 from "../assets/images/Illustration1.png";
 import Illustration2 from "../assets/images/Illustration2.png";
@@ -16,11 +15,12 @@ import PaintBrush from "../assets/svgs/PaintBrush";
 import SandClock from "../assets/svgs/SandClock";
 import Dial from "../assets/svgs/Dial";
 import TracedPathSvg from "../assets/svgs/TracedPathSvg";
-import { PlusOutlined, MinusOutlined } from "@ant-design/icons";
+import { motion } from "framer";
+import { pageTransitions } from "../components/ProtectedLayout";
 
 const { Panel } = Collapse;
 
-export default () => {
+export default ({}) => {
     useEffect(() => {
         const header = document.querySelector(".landing-page-header");
         window.addEventListener("scroll", () => {
@@ -31,13 +31,27 @@ export default () => {
                 header.classList.remove("show-bg");
             }
         });
-        if (fakeAuth.isAuthenticated) {
-            CustomHistory.push({ pathname: url });
-        }
     }, []);
 
     return (
-        <div className="landing-page">
+        <motion.div
+            className="landing-page"
+            initial="initial"
+            animate="in"
+            exit="out"
+            transition={pageTransitions}
+            variants={{
+                initial: {
+                    opacity: 0
+                },
+                in: {
+                    y: 0,
+                    opacity: 1
+                },
+                out: {
+                    opacity: 0
+                }
+            }}>
             <LandingHeader />
             <div className="section-1">
                 <div className="section-1-sub">
@@ -141,7 +155,7 @@ export default () => {
                                 <p>We're committed to you</p>
                                 <span>
                                     Easy navigation and user experience. Access
-                                    to QuickCredit services with ease
+                                    to QuickCredit services with ease.
                                 </span>
                             </div>
                         </div>
@@ -160,7 +174,7 @@ export default () => {
                                 <p>We're here to help</p>
                                 <span>
                                     Get extensive details of requested loan
-                                    facility real-time .
+                                    facility real-time.
                                 </span>
                             </div>
                         </div>
@@ -203,6 +217,6 @@ export default () => {
             </div>
             <div className="section-7"></div>
             <div className="section-8"></div>
-        </div>
+        </motion.div>
     );
 };

@@ -1,38 +1,14 @@
 import React, { useEffect } from "react";
 import { fakeAuth, url } from "../App";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Menu, Dropdown } from "antd";
 import Avatar from "../assets/images/person.png";
 import PowerOffSvg from "../assets/svgs/PowerOffSvg";
 import { clear } from "../services/localStorageHelper";
-import CustomHistory from "../services/CustomHistory.js";
 import ProfileUser from "../assets/svgs/ProfileUser";
 
-const menu = (
-    <Menu>
-        <Menu.Item key="0">
-            <Link to="/app/profile">
-                <ProfileUser />
-                Account
-            </Link>
-        </Menu.Item>
-
-        <Menu.Divider />
-        <Menu.Item
-            className="logout-btn"
-            key="3"
-            onClick={() => {
-                fakeAuth.signout();
-                clear();
-                CustomHistory.push({ pathname: url });
-                return window.location.reload();
-            }}>
-            <PowerOffSvg />
-            Logout
-        </Menu.Item>
-    </Menu>
-);
 const Header = ({ title }) => {
+    const history = useHistory();
     useEffect(() => {
         const hamburger_cont = document.querySelector(".hamburger-container");
         const hamburger1 = document.querySelector(".hamburger");
@@ -44,6 +20,29 @@ const Header = ({ title }) => {
             sidebar.classList.toggle("show");
         });
     }, []);
+    const menu = (
+        <Menu>
+            <Menu.Item key="0">
+                <Link to="/app/profile">
+                    <ProfileUser />
+                    Account
+                </Link>
+            </Menu.Item>
+
+            <Menu.Divider />
+            <Menu.Item
+                className="logout-btn"
+                key="1"
+                onClick={() => {
+                    clear();
+                    fakeAuth.signout();
+                    return history.push({ pathname: `${url}login` });
+                }}>
+                <PowerOffSvg />
+                Logout
+            </Menu.Item>
+        </Menu>
+    );
     return (
         <div className="header">
             <ul className="header-list">

@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { motion } from "framer";
-import { pageVariants } from "../../components/ProtectedLayout";
+import {
+    pageVariants,
+    pageTransitions
+} from "../../components/ProtectedLayout";
 import { Tabs } from "antd";
 import "../../scss/profile.scss";
 import UserProfileInfo from "../../components/UserProfileInfo";
@@ -17,6 +20,7 @@ const Profile = () => {
             initial="initial"
             animate="in"
             exit="out"
+            transition={pageTransitions}
             variants={pageVariants}>
             <Tabs defaultActiveKey="1" onChange={key => set_tab_key(key)}>
                 <TabPane tab="Profile" key="1">

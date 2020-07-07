@@ -10156,6 +10156,11 @@ react-number-format@^4.4.1:
   dependencies:
     prop-types "^15.7.2"
 
+react-paystack@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/react-paystack/-/react-paystack-3.0.1.tgz#520d3011a3f73923fa01e40733f35aac9cb9a2cc"
+  integrity sha512-b9Cnw/oNTWSunlCFjSMCz4RYV1/yzQgt4PZ5u+nQyu/+2F9cIFFoxJVnmk96awc0cyfYr33rdjaaK1t2dYiW7g==
+
 react-router-dom@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-5.2.0.tgz#9e65a4d0c45e13289e66c7b17c7e175d0ea15662"

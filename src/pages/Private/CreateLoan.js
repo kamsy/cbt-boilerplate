@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { motion } from "framer";
-import { pageVariants } from "../../components/ProtectedLayout";
+import {
+    pageVariants,
+    pageTransitions
+} from "../../components/ProtectedLayout";
 import { _formatMoney } from "../../services/utils";
 import "../../scss/create-loan.scss";
 import { Input, Select, Upload, message } from "antd";
@@ -56,6 +59,7 @@ const CreateLoan = () => {
             initial="initial"
             animate="in"
             exit="out"
+            transition={pageTransitions}
             variants={pageVariants}>
             <div className="">
                 <p>

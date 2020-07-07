@@ -9,7 +9,7 @@ const _listGen = (path, label) => {
         </li>
     );
 };
-export default () => {
+export default ({}) => {
     return (
         <div className="landing-page-header">
             <div className="landing-page-header-sub">
