@@ -467,12 +467,18 @@ html {
                     width: 359px;
 
                     @include screen(375) {
-                        width: 300px;
+                        width: 278px;
+                        min-width: 278px;
                     }
 
                     // height: 494px;
                     background: $white;
                     padding: 48px;
+
+                    @include screen(375) {
+                        padding: 34px;
+                    }
+
                     margin: 58px 10.5px 0;
                     border: 1px solid $grey;
                     border-radius: 10px;

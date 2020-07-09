@@ -1,12 +1,11 @@
 import { EXPIRY } from "../variables";
 const CryptoJS = require("crypto-js");
-const { localStorage } = window;
 window.__DEV__ = process.env.NODE_ENV === "development";
+window.__TEST__ = process.env.NODE_ENV === "test";
+const { localStorage, __DEV__, __TEST__ } = window;
 
 const secret =
-    process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test"
-        ? process.env.HASH_SECRET
-        : process.env.HASH_SECRET;
+    __DEV__ || __TEST__ ? process.env.HASH_SECRET : process.env.HASH_SECRET;
 
 const storer = (key, value) => {
     const ciphertext = CryptoJS.AES.encrypt(JSON.stringify(value), secret);
