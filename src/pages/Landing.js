@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "../scss/landing.scss";
 import LandingHeader from "../components/LandingHeader";
 import { Link } from "react-router-dom";
@@ -25,19 +25,7 @@ import LinkedInSvg from "../assets/svgs/LinkedInSvg";
 
 const { Panel } = Collapse;
 
-export default ({}) => {
-    useEffect(() => {
-        const header = document.querySelector(".landing-page-header");
-        window.addEventListener("scroll", () => {
-            const scroll_pos = window.pageYOffset;
-            if (scroll_pos > 50) {
-                header.classList.add("show-bg");
-            } else {
-                header.classList.remove("show-bg");
-            }
-        });
-    }, []);
-
+export default () => {
     return (
         <motion.div
             className="landing-page"
@@ -74,7 +62,7 @@ export default ({}) => {
                     />
                 </div>
             </div>
-            <div className="section-2">
+            <div className="section-2" id="process">
                 <div className="section-2-sub">
                     <span className="bubble" />
                     <span className="small-text">how it works</span>
@@ -136,7 +124,7 @@ export default ({}) => {
                     <Calculator />
                 </div>
             </div>
-            <div className="section-4">
+            <div className="section-4" id="why-us">
                 <div className="floating-text">
                     <span>Quick Credit</span>
                 </div>
@@ -192,7 +180,7 @@ export default ({}) => {
                 </div>
                 <div className="links-to-stores"></div>
             </div>
-            <div className="section-6">
+            <div className="section-6" id="faqs">
                 <span className="small-text">FAQ</span>
                 <span className="big-text">Frequently Asked Questions</span>
                 <span className="bubble" />
@@ -220,7 +208,7 @@ export default ({}) => {
                     How can I access the Quick Credit loan?
                 </Link>
             </div>
-            <div className="section-7">
+            <div className="section-7" id="about">
                 <div className="illustration-container">
                     <img src={AboutUsIllustration} alt="" />
                 </div>
