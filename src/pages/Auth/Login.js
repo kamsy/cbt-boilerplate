@@ -29,9 +29,12 @@ export default () => {
     const { handleSubmit, control, errors, register } = methods;
 
     const onSubmit = data => {
-        fakeAuth.authenticate();
-        localStorage.setItem("loggedIn", JSON.stringify(true));
-        return history.push(`${url}dashboard`);
+        console.log("data", data);
+        if (window.__DEV__) {
+            fakeAuth.authenticate();
+            localStorage.setItem("loggedIn", JSON.stringify(true));
+            return history.push(`${url}dashboard`);
+        }
     };
     return (
         <motion.div
@@ -52,7 +55,9 @@ export default () => {
                         name: "username",
                         ref: register,
                         placeholder: "Username",
-                        defaultValue: "olekakamsy@gmail.com",
+                        defaultValue: window.__DEV__
+                            ? "olekakamsy@gmail.com"
+                            : "",
                         errors,
                         control
                     }}
@@ -63,7 +68,7 @@ export default () => {
                         name: "password",
                         ref: register,
                         placeholder: "Password",
-                        defaultValue: "12345678",
+                        defaultValue: window.__DEV__ ? "12345678" : "",
                         type: "password",
                         errors,
                         control

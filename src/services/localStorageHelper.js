@@ -1,6 +1,7 @@
 import { EXPIRY } from "../variables";
 const CryptoJS = require("crypto-js");
 const { localStorage } = window;
+window.__DEV__ = process.env.NODE_ENV === "development";
 
 const secret =
     process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test"

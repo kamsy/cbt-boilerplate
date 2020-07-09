@@ -5,6 +5,8 @@ import App from "./App";
 import { BrowserRouter as Router } from "react-router-dom";
 import * as serviceWorker from "./serviceWorker";
 
+window.__DEV__ = process.env.NODE_ENV === "development";
+
 ReactDOM.render(
     <Router>
         <App />
