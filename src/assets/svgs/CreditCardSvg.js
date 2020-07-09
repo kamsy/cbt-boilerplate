@@ -1,6 +1,6 @@
 import React from "react";
 
-export default () => (
+const CreditCard = () => (
     <svg
         width="14"
         height="10"
@@ -17,3 +17,4 @@ export default () => (
         />
     </svg>
 );
+export default CreditCard;

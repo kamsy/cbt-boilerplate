@@ -1,6 +1,6 @@
 import React from "react";
 
-export default () => (
+const Envelope = () => (
     <svg
         id="Capa_1"
         enableBackground="new 0 0 512.001 512.001"
@@ -14,3 +14,5 @@ export default () => (
         </g>
     </svg>
 );
+
+export default Envelope;

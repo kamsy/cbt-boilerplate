@@ -1,6 +1,6 @@
 import React from "react";
 
-export default () => (
+const PowerButton = () => (
     <svg
         width="17"
         height="18"
@@ -17,3 +17,5 @@ export default () => (
         />
     </svg>
 );
+
+export default PowerButton;

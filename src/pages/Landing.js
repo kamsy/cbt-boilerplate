@@ -8,6 +8,7 @@ import IphoneX from "../assets/images/iphone-x.png";
 import Illustration1 from "../assets/images/Illustration1.png";
 import Illustration2 from "../assets/images/Illustration2.png";
 import Illustration3 from "../assets/images/Illustration3.png";
+import AboutUsIllustration from "../assets/images/About-Us-Illustration.png";
 import EllipsesSvg from "../assets/svgs/EllipsesSvg";
 import Calculator from "../components/Calculator";
 import Puzzle from "../assets/svgs/Puzzle";
@@ -17,6 +18,10 @@ import Dial from "../assets/svgs/Dial";
 import TracedPathSvg from "../assets/svgs/TracedPathSvg";
 import { motion } from "framer";
 import { pageTransitions } from "../components/ProtectedLayout";
+import FacebookSvg from "../assets/svgs/FacebookSvg";
+import TwitterSvg from "../assets/svgs/TwitterSvg";
+import InstagramSvg from "../assets/svgs/InstagramSvg";
+import LinkedInSvg from "../assets/svgs/LinkedInSvg";
 
 const { Panel } = Collapse;
 
@@ -215,8 +220,71 @@ export default ({}) => {
                     How can I access the Quick Credit loan?
                 </Link>
             </div>
-            <div className="section-7"></div>
-            <div className="section-8"></div>
+            <div className="section-7">
+                <div className="illustration-container">
+                    <img src={AboutUsIllustration} alt="" />
+                </div>
+                <div className="right-col">
+                    <span className="small-text">Quick Credit</span>
+                    <span className="big-text">About Us</span>
+                    <p>
+                        Quick credit is a simple, technologically deployed
+                        lending platform that provide micro loans for short-
+                        terms duration to help meet and cover unexpected
+                        emergency expenses and urgent cash needs.
+                    </p>
+                </div>
+            </div>
+            <div className="section-8">
+                <div className="section-8 footer">
+                    <div className="footer-item">
+                        <span>enquiries@ quickcredit.com.ng</span>
+                    </div>
+                    <div className="footer-item">
+                        <h4>Company</h4>
+                        <ul>
+                            <li>Home</li>
+                            <li>FAQ</li>
+                        </ul>
+                    </div>
+                    <div className="footer-item">
+                        <h4>Contact</h4>
+                        <ul>
+                            <li>Landline : +234(0) 806 226 6697</li>
+                            <li>Mobile : +234(0) 701 769 0819</li>
+                            <li>
+                                Office Address : 43, Churchgate Street, (Nurses
+                                House) Victoria Island, Lagos Nigeria
+                            </li>
+                        </ul>
+                    </div>
+                    <div className="footer-item t-n-c">
+                        <h4>Legal</h4>
+                        <ul>
+                            <li>Terms and Conditions</li>
+                            <li>Privacy Policy</li>
+                        </ul>
+                    </div>
+                    <div className="footer-item">
+                        <h4>Connect</h4>
+                        <ul>
+                            <li>
+                                <FacebookSvg />
+                                Facebook
+                            </li>
+                            <li>
+                                <TwitterSvg /> Twitter
+                            </li>
+                            <li>
+                                <InstagramSvg /> Instagram
+                            </li>
+                            <li>
+                                <LinkedInSvg /> LinkedIn
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </motion.div>
     );
 };

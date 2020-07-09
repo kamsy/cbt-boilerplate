@@ -3,7 +3,7 @@ import "../scss/protectedlayout.scss";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 
-export const pageVariants = {
+const pageVariants = {
     initial: {
         y: "+100vh",
         opacity: 0
@@ -18,10 +18,35 @@ export const pageVariants = {
     }
 };
 
-export const pageTransitions = {
-    ease: "linear",
-    duration: 0.2
+const auth_pageVariants = {
+    initial: {
+        opacity: 0
+    },
+    in: {
+        opacity: 1
+    },
+    out: {
+        opacity: 0
+    }
 };
+
+const pageTransitions = {
+    ease: "linear",
+    duration: 0.4
+};
+
+const auth_pageTransitions = {
+    ease: "linear",
+    duration: 1
+};
+
+export {
+    pageVariants,
+    auth_pageVariants,
+    pageTransitions,
+    auth_pageTransitions
+};
+
 export default ({ children, title }) => {
     return (
         <div className="protected-layout">

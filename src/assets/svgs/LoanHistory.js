@@ -1,6 +1,6 @@
 import React from "react";
 
-export default () => (
+const LoanHistory = () => (
     <svg
         id="Capa_1"
         enableBackground="new 0 0 512 512"
@@ -26,3 +26,5 @@ export default () => (
         </g>
     </svg>
 );
+
+export default LoanHistory;

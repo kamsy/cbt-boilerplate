@@ -1,6 +1,6 @@
 import React from "react";
 
-export default () => (
+const Dial = () => (
     <svg
         width="80"
         height="80"
@@ -26,3 +26,4 @@ export default () => (
         </defs>
     </svg>
 );
+export default Dial;

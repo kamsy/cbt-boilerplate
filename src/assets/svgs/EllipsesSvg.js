@@ -1,6 +1,6 @@
 import React from "react";
 
-export default () => (
+const Ellipses = () => (
     <svg
         width="820"
         height="803"
@@ -79,3 +79,5 @@ export default () => (
         />
     </svg>
 );
+
+export default Ellipses;

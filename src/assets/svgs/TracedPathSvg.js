@@ -1,6 +1,6 @@
 import React from "react";
 
-export default () => (
+const TracedPathSvg = () => (
     <svg
         width="1440"
         height="409"
@@ -30,3 +30,5 @@ export default () => (
         <circle cx="-9.49254" cy="67.5072" r="27.2909" fill="#8ED16F" />
     </svg>
 );
+
+export default TracedPathSvg;

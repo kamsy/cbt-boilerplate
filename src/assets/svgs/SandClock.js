@@ -1,6 +1,6 @@
 import React from "react";
 
-export default () => (
+const SandClock = () => (
     <svg
         width="80"
         height="80"
@@ -26,3 +26,4 @@ export default () => (
         />
     </svg>
 );
+export default SandClock;

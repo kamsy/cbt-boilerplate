@@ -9,8 +9,8 @@ import CustomButton from "../../components/CustomButton";
 
 import { motion } from "framer";
 import {
-    pageVariants,
-    pageTransitions
+    auth_pageVariants,
+    auth_pageTransitions
 } from "../../components/ProtectedLayout";
 const schema = yup.object().shape({
     username: yup.string().required("Enter your username!"),
@@ -40,8 +40,8 @@ export default () => {
             initial="initial"
             animate="in"
             exit="out"
-            transition={pageTransitions}
-            variants={pageVariants}>
+            transition={auth_pageTransitions}
+            variants={auth_pageVariants}>
             <form
                 className="form-register form"
                 name="register-form"

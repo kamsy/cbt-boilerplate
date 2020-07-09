@@ -9,8 +9,8 @@ import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 import { motion } from "framer";
 import {
-    pageVariants,
-    pageTransitions
+    auth_pageVariants,
+    auth_pageTransitions
 } from "../../components/ProtectedLayout";
 const schema = yup.object().shape({
     email: yup
@@ -43,8 +43,8 @@ export default () => {
             initial="initial"
             animate="in"
             exit="out"
-            transition={pageTransitions}
-            variants={pageVariants}>
+            transition={auth_pageTransitions}
+            variants={auth_pageVariants}>
             <form
                 className="form-forgot form"
                 name="forgot-password-form"
