@@ -24,6 +24,7 @@ html {
 .landing-page {
     font-family: 'Open Sans', sans-serif;
 
+
     .small-text {
         font-style: normal;
         font-weight: bold;
@@ -246,17 +247,15 @@ html {
                     background: $blue;
                     -webkit-transform: scaleY(0);
                     transform: scaleY(0);
-                    -webkit-transition: all 1s ease-in-out;
-                    transition: all 1s ease-in-out;
+                    -webkit-transition: all 1.2s ease-in-out;
+                    transition: all 1.2s ease-in-out;
                     -webkit-transform-origin: top;
                     transform-origin: top;
-                    border-bottom-right-radius: 75%;
-                    border-bottom-left-radius: 50%;
                 }
 
                 .bg-2 {
-                    -webkit-transition: all 1.2s ease-in-out;
-                    transition: all 1.2s ease-in-out;
+                    -webkit-transition: all 2s ease-in-out;
+                    transition: all 2s ease-in-out;
                 }
 
                 .nav {
@@ -379,7 +378,7 @@ html {
                 color: #4A4A4A;
 
                 @include screen(425) {
-                    font-size: 18px
+                    font-size: 16px
                 }
             }
 
@@ -466,6 +465,11 @@ html {
                 &-card {
                     @include hoverMixin;
                     width: 359px;
+
+                    @include screen(375) {
+                        width: 300px;
+                    }
+
                     // height: 494px;
                     background: $white;
                     padding: 48px;
@@ -491,6 +495,11 @@ html {
                         line-height: 120%;
                         text-align: center;
                         color: #333333;
+
+                        @include screen(375) {
+                            font-size: 18px;
+                        }
+
                     }
 
                     span {
@@ -498,6 +507,11 @@ html {
                         font-style: normal;
                         font-weight: normal;
                         font-size: 16px;
+
+                        @include screen(375) {
+                            font-size: 13px;
+                        }
+
                         line-height: 22px;
                         text-align: center;
                         color: #4A4A4A;
@@ -610,15 +624,29 @@ html {
                     width: 100%
                 }
 
+                @include screen(425) {
+                    padding: 48px 24px;
+                }
+
                 &-sub {
                     width: 490px;
-                    margin: 0 auto
+                    margin: 0 auto;
+
+                    @include screen(650) {
+                        width: 100%;
+                        margin: 0;
+                    }
                 }
 
                 label {
                     font-style: normal;
                     font-weight: bold;
                     font-size: 13px;
+
+                    @include screen(425) {
+                        font-size: 11px
+                    }
+
                     line-height: 137.5%;
                     /* or 18px */
 
@@ -651,6 +679,11 @@ html {
                         font-size: 22px;
                         padding-left: 24px;
 
+                        @include screen(425) {
+                            font-size: 16px
+                        }
+
+
                         &::-webkit-input-placeholder {
                             opacity: 0.3
                         }
@@ -677,6 +710,11 @@ html {
                         color: $red;
                         font-weight: bold;
                         font-size: 12px;
+
+                        @include screen(425) {
+                            font-size: 10px
+                        }
+
                         margin-top: 6px;
                         -webkit-transition: all 0.5s ease-in-out;
                         transition: all 0.5s ease-in-out;
@@ -712,6 +750,10 @@ html {
                             font-weight: bold;
                             font-size: 22px;
                             padding-left: 24px;
+
+                            @include screen(425) {
+                                font-size: 16px
+                            }
                         }
 
                         &-selection {
@@ -753,11 +795,19 @@ html {
                     .right {
                         width: 50%;
 
+                        @include screen(350) {
+                            width: 100%;
+                        }
+
                         p {
                             font-size: 16px;
                             font-weight: bold;
                             text-transform: uppercase;
-                            line-height: 25px
+                            line-height: 25px;
+
+                            @include screen(425) {
+                                font-size: 13px
+                            }
                         }
                     }
                 }
@@ -773,12 +823,17 @@ html {
                         -ms-flex-pack: justify;
                         justify-content: space-between;
 
+
                         p {
                             display: inline-block;
                             max-width: 50%;
                             font-size: 16px;
                             font-weight: normal;
                             position: relative;
+
+                            @include screen(425) {
+                                font-size: 13px
+                            }
 
                             &::after {
                                 content: '';
@@ -793,6 +848,21 @@ html {
                                 transform: rotate(135deg);
                                 right: -28px;
                                 top: 4px;
+                            }
+                        }
+
+                        @include screen(600) {
+                            -webkit-box-orient: vertical;
+                            -webkit-box-direction: normal;
+                            -ms-flex-direction: column;
+                            flex-direction: column;
+
+                            p {
+                                max-width: 100%;
+
+                                &::after {
+                                    right: -12px !important
+                                }
                             }
                         }
                     }
@@ -865,6 +935,10 @@ html {
             padding: 200px 123px;
             position: relative;
 
+            @include screen(767) {
+                padding: 70px 0;
+            }
+
             .reason-container {
 
                 .top,
@@ -893,6 +967,14 @@ html {
                     -ms-flex-align: center;
                     align-items: center;
 
+                    @include screen(767) {
+                        margin-bottom: 24px;
+
+                        &:last-of-type {
+                            margin-bottom: 0;
+                        }
+                    }
+
                     p {
                         font-style: normal;
                         font-weight: bold;
@@ -908,6 +990,10 @@ html {
 
                         color: #333333;
 
+                        @include screen(767) {
+                            font-size: 18px;
+                        }
+
                     }
 
                     span {
@@ -918,6 +1004,10 @@ html {
                         text-align: center;
 
                         color: #4A4A4A;
+
+                        @include screen(767) {
+                            font-size: 12px;
+                        }
                     }
                 }
             }
@@ -931,11 +1021,19 @@ html {
         z-index: 1;
         overflow-x: hidden;
 
+        @include screen(767) {
+            padding: 50px 0;
+        }
+
         .traced-path-cont {
             top: 200px;
             left: 0;
             position: absolute;
             z-index: -1;
+
+            @include screen(767) {
+                display: none
+            }
         }
 
         .links-to-stores {
@@ -1082,8 +1180,9 @@ html {
             max-width: 569.04px;
 
             @include screen(425) {
-                max-width: unset;
-                width: 80%
+                img {
+                    width: 80%
+                }
             }
         }
 
