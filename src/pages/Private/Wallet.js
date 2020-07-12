@@ -93,7 +93,7 @@ const Wallet = () => {
                         {...{
                             label: "Account Name",
                             name: "account_name",
-                            ref: register,
+                            register,
                             placeholder: "Enter account name",
                             errors,
                             control
@@ -103,7 +103,7 @@ const Wallet = () => {
                         {...{
                             label: "Bank Name",
                             name: "bank_name",
-                            ref: register,
+                            register,
                             placeholder: "Select a Bank",
                             errors,
                             control

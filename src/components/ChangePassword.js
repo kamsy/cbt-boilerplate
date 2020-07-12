@@ -37,7 +37,7 @@ export default ({ tab_key }) => {
                     {...{
                         label: "Old Password",
                         name: "old_password",
-                        ref: register,
+                        register,
                         placeholder: "Enter old password",
                         type: "password",
                         errors,
@@ -48,7 +48,7 @@ export default ({ tab_key }) => {
                     {...{
                         label: "New Password",
                         name: "password",
-                        ref: register,
+                        register,
                         placeholder: "Enter new password",
                         type: "password",
                         errors,

@@ -55,7 +55,7 @@ export default () => {
                     {...{
                         label: "Email",
                         name: "email",
-                        ref: register,
+                        register,
                         placeholder: "Email address",
                         // defaultValue: "olekakamsy@gmail.com",
                         errors,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { url, fakeAuth } from "../../App";
 import { useForm } from "react-hook-form";
@@ -13,19 +13,17 @@ import {
     auth_pageVariants,
     auth_pageTransitions
 } from "../../components/ProtectedLayout";
-import { NotifyError } from "../../components/Notification";
 import { encryptAndStore } from "../../services/localStorageHelper";
 import { ENCRYPT_USER } from "../../variables";
 
-const schema = yup.object().shape({
-    username: yup.string().required("Enter your username!"),
-    password: yup
-        .string()
-        .required("Enter your password!")
-        .min(8)
-});
-
 const Login = () => {
+    const schema = yup.object().shape({
+        username: yup.string().required("Enter your username!"),
+        password: yup
+            .string()
+            .required("Enter your password!")
+            .min(8)
+    });
     const [loading, set_loading] = useState(false);
     const history = useHistory();
     const methods = useForm({
@@ -75,21 +73,21 @@ const Login = () => {
                     {...{
                         label: "Username",
                         name: "username",
-                        ref: register,
                         placeholder: "Username",
                         errors,
-                        control
+                        control,
+                        register
                     }}
                 />
                 <CustomInput
                     {...{
                         label: "Password",
                         name: "password",
-                        ref: register,
                         placeholder: "Password",
                         type: "password",
                         errors,
-                        control
+                        control,
+                        register
                     }}
                 />
 

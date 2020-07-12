@@ -85,6 +85,9 @@
         &.show-error {
             border-color: $red
         }
+        &.ant-input-disabled{
+            border: none;
+        }
 
     }
 }

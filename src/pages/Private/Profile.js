@@ -16,7 +16,6 @@ const { TabPane } = Tabs;
 const Profile = () => {
     const [tab_key, set_tab_key] = useState(1);
     const { user_info } = decryptAndRead(ENCRYPT_USER);
-    console.log("Profile -> user_info", user_info);
 
     return (
         <motion.div

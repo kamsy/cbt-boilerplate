@@ -28,23 +28,20 @@ const schema = yup.object().shape({
         .min(8)
 });
 
-export default () => {
+const Register = () => {
     const [loading, set_loading] = useState(false);
     const history = useHistory();
     const methods = useForm({
         resolver: yupResolver(schema)
     });
     const { handleSubmit, control, errors, register, setError } = methods;
-    console.log("errors", errors);
 
     const onSubmit = async payload => {
         const { status, data } = await AuthServices.registerService(payload);
-        console.log("Login -> data", { status, data });
         if (status === 422) {
             const errKeys = Object.keys(data.errors);
             const valKeys = Object.values(data.errors);
             errKeys.forEach((err, i) => {
-                console.log("valKeys", valKeys, valKeys[i], valKeys[i][0]);
                 setError(err, { type: "manual", message: valKeys[i][0] });
             });
         } else {
@@ -69,7 +66,7 @@ export default () => {
                     {...{
                         label: "Username",
                         name: "username",
-                        ref: register,
+                        register,
                         placeholder: "Username",
                         errors,
                         control
@@ -79,7 +76,7 @@ export default () => {
                     {...{
                         label: "Name",
                         name: "name",
-                        ref: register,
+                        register,
                         placeholder: "Full name",
                         errors,
                         control
@@ -89,7 +86,7 @@ export default () => {
                     {...{
                         label: "Email",
                         name: "email",
-                        ref: register,
+                        register,
                         placeholder: "Email address",
                         errors,
                         control
@@ -100,7 +97,7 @@ export default () => {
                     {...{
                         label: "Phone",
                         name: "phone",
-                        ref: register,
+                        register,
                         placeholder: "Phone number",
                         errors,
                         control
@@ -110,7 +107,7 @@ export default () => {
                     {...{
                         label: "Password",
                         name: "password",
-                        ref: register,
+                        register,
                         placeholder: "Password",
                         errors,
                         control,
@@ -135,3 +132,5 @@ export default () => {
         </motion.div>
     );
 };
+
+export default Register;

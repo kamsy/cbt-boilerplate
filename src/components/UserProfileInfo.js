@@ -6,14 +6,19 @@ import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
-    first_name: yup
+    name: yup
         .string()
-        .required("Enter your first name!")
+        .required("Enter your name!")
         .min(8),
-    last_name: yup.string().required("Enter your last name!")
+    username: yup.string().required("Enter your username!"),
+    email: yup
+        .string()
+        .email()
+        .required("Enter your email!"),
+    phone: yup.string().required("Enter your phone number!")
 });
 
-export default ({ tab_key, user_info }) => {
+const UserProfileInfo = ({ tab_key, user_info }) => {
     const methods = useForm({
         resolver: yupResolver(schema)
     });
@@ -24,6 +29,7 @@ export default ({ tab_key, user_info }) => {
     useEffect(() => {
         reset();
     }, [tab_key, reset]);
+
     return (
         <form
             className="form-user-info form"
@@ -33,29 +39,60 @@ export default ({ tab_key, user_info }) => {
             <div className="form-inputs-container">
                 <CustomInput
                     {...{
-                        label: "First Name",
-                        name: "first_name",
-                        ref: register,
-                        placeholder: "Enter your first name",
+                        label: "Username",
+                        name: "username",
+                        register,
+                        placeholder: "Username",
+                        defaultValue: user_info.username,
                         errors,
-                        control
+                        control,
+                        disabled: true
                     }}
                 />
                 <CustomInput
                     {...{
-                        label: "Last Name",
-                        name: "last_name",
-                        ref: register,
-                        placeholder: "Enter your last name",
+                        label: "Full Name",
+                        name: "name",
+                        register,
+                        placeholder: "Enter your full name",
+                        defaultValue: user_info.name,
                         errors,
-                        control
+                        control,
+                        disabled: true
+                    }}
+                />
+                <CustomInput
+                    {...{
+                        label: "Email",
+                        name: "email",
+                        register,
+                        placeholder: "Email address",
+                        defaultValue: user_info.email,
+                        errors,
+                        control,
+                        disabled: true
+                    }}
+                />
+
+                <CustomInput
+                    {...{
+                        label: "Phone",
+                        name: "phone",
+                        register,
+                        placeholder: "Phone number",
+                        defaultValue: user_info.phone,
+                        errors,
+                        control,
+                        disabled: true
                     }}
                 />
             </div>
 
-            <Button className="custom-btn" onClick={handleSubmit(onSubmit)}>
+            {/* <Button className="custom-btn" onClick={handleSubmit(onSubmit)}>
                 Update
-            </Button>
+            </Button> */}
         </form>
     );
 };
+
+export default UserProfileInfo;
