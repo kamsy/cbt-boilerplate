@@ -29,7 +29,7 @@
     }
 
 
-    &:hover{
+    &:hover {
         color: $white;
         background: $dark-blue !important;
 
@@ -85,7 +85,8 @@
         &.show-error {
             border-color: $red
         }
-        &.ant-input-disabled{
+
+        &.ant-input-disabled {
             border: none;
         }
 
@@ -108,8 +109,8 @@
         margin-top: 8px;
         height: 48px;
 
-        &.show-error{
-            .ant-select-selector{
+        &.show-error {
+            .ant-select-selector {
                 border-color: $red
             }
         }
@@ -140,8 +141,8 @@
                 display: -ms-flexbox;
                 display: flex;
                 -webkit-box-align: center;
-                    -ms-flex-align: center;
-                        align-items: center;
+                -ms-flex-align: center;
+                align-items: center;
             }
 
         }
@@ -149,20 +150,47 @@
 }
 
 
-.layout{
+.layout {
 
-    .ant-notification{
-    &-notice{
-        color: $white;
-            &.error{
+    .ant-notification {
+        &-notice {
+            color: $white;
+
+            &.error {
                 background: $red !important;
             }
-            &-icon-error,&-message,&-close,&-icon-success{
+
+            &-icon-error,
+            &-message,
+            &-close,
+            &-icon-success {
                 color: $white
             }
-            &.success{
+
+            &.success {
                 background: $green
             }
         }
     }
+
+    .ant-select-selection-item {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center
+    }
+
+    .bank-logo {
+        margin-right: 24px;
+        width: 40px;
+        height: 40px;
+
+        img {
+            width: 40px;
+            height: 40px;
+        }
+    }
+
 }

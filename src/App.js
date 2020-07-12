@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useState, PureComponent } from "react";
-import { clear } from "./services/localStorageHelper";
+import { clear, decryptAndRead } from "./services/localStorageHelper";
 import "antd/dist/antd.css";
 import "./scss/global.scss";
 // layouts
@@ -24,6 +24,7 @@ import ForgotPassword from "./pages/Auth/ForgotPassword";
 import { AnimatePresence } from "framer";
 import Profile from "./pages/Private/Profile";
 import CreateLoan from "./pages/Private/CreateLoan";
+import { ENCRYPT_USER } from "./variables";
 const { localStorage } = window;
 export const url = "/app/";
 // variable to hold auth status and also functions to convert it
@@ -112,19 +113,26 @@ const App = () => {
     }, []);
 
     useEffect(() => {
-        if (loggedIn) {
-            fakeAuth.authenticate();
-            return set_loaded(true);
-        }
-        if (!loggedIn) {
+        const fromStorage = decryptAndRead(ENCRYPT_USER);
+        console.log("App -> fromStorage", fromStorage);
+        if (fromStorage) {
+            if (loggedIn && !fromStorage.expired) {
+                fakeAuth.authenticate();
+                return set_loaded(true);
+            }
+            if (!loggedIn || fromStorage.expired) {
+                clear();
+                fakeAuth.signout();
+                return set_loaded(true);
+            }
+        } else {
             fakeAuth.signout();
             clear();
             return set_loaded(true);
         }
     }, []);
 
-    let location = useLocation();
-
+    console.log("App -> loaded", loaded);
     if (loaded) {
         return (
             <Suspense fallback={<Loader loading />}>

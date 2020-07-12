@@ -19,11 +19,16 @@ import CustomButton from "../../components/CustomButton";
 import CustomSelect from "../../components/CustomSelect";
 import { decryptAndRead } from "../../services/localStorageHelper";
 import { ENCRYPT_USER } from "../../variables";
+import BankServices from "../../services/bankServices";
 
 const { TabPane } = Tabs;
 
 const schema = yup.object().shape({
-    account_name: yup.string().required("Enter your account name!"),
+    account_number: yup
+        .string()
+        .required("Enter your account number!")
+        .min(10),
+
     bank_name: yup.string().required("Please select a bank!")
 });
 
@@ -51,6 +56,8 @@ const Loans = () => {
     const initializePayment = usePaystackPayment(config);
 
     const [open_modal, set_open_modal] = useState(false);
+    console.log("Loans -> open_modal", open_modal);
+    const [banks, set_banks] = useState([]);
 
     const _renderEmptyState = tab => (
         <div className="empty-state">
@@ -63,7 +70,31 @@ const Loans = () => {
                 onClick={() =>
                     tab === "card"
                         ? initializePayment()
-                        : set_open_modal(!open_modal)
+                        : (() => {
+                              fetch("https://nigerianbanks.xyz", {
+                                  headers: {
+                                      "Access-Control-Allow-Origin": "*",
+                                      "Content-Type": "application/json"
+                                  }
+                              }).then(res => {
+                                  console.log("Loans -> res", res);
+                              });
+                              //   BankServices.getBanksWithLogosPaystackService().then(
+                              //       res => {
+                              //           console.log("Loans -> res", res);
+                              //       }
+                              //   );
+                              //   BankServices.getBanksFromPaystackService().then(
+                              //       ({ status, data: { data } }) => {
+                              //           console.log("Loans -> status", status);
+                              //           console.log("Loans -> data", data);
+                              //           if (status === 200) {
+                              //               set_banks(data);
+                              //           }
+                              //       }
+                              //   );
+                              return set_open_modal(true);
+                          })()
                 }>
                 Add {tab}
             </Button>
@@ -81,6 +112,7 @@ const Loans = () => {
     return (
         <motion.div
             className="main loans"
+            id="loans-history"
             initial="initial"
             animate="in"
             exit="out"
@@ -89,7 +121,10 @@ const Loans = () => {
             <div className="top-section">
                 <div className="wallet-info-container">
                     <h3>wallet info</h3>
-                    <div className="wallet-info"></div>
+                    <div className="wallet-info">
+                        <span>Quick Credit Wallet</span>
+                        <p>{_formatMoney(user_info.wallet.amount)}</p>
+                    </div>
                 </div>
                 <Tabs defaultActiveKey="1">
                     <TabPane tab="Bank" key="1">
@@ -101,7 +136,7 @@ const Loans = () => {
                 </Tabs>
             </div>
             <Modal
-                getContainer={() => document.getElementById("wallet-page")}
+                getContainer={() => document.getElementById("loans-history")}
                 title="Add Bank"
                 visible={open_modal}
                 footer={null}
@@ -115,10 +150,10 @@ const Loans = () => {
                     onSubmit={handleSubmit(onSubmit)}>
                     <CustomInput
                         {...{
-                            label: "Account Name",
-                            name: "account_name",
+                            label: "Account Number",
+                            name: "account_number",
                             register,
-                            placeholder: "Enter account name",
+                            placeholder: "Enter account number",
                             errors,
                             control
                         }}
@@ -130,7 +165,8 @@ const Loans = () => {
                             register,
                             placeholder: "Select a Bank",
                             errors,
-                            control
+                            control,
+                            options: banks
                         }}
                     />
 
