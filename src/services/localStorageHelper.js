@@ -2,7 +2,9 @@ import { EXPIRY } from "../variables";
 var CryptoJS = require("crypto-js");
 window.__DEV__ = process.env.NODE_ENV === "development";
 
-const { localStorage } = window;
+const { localStorage, __DEV__ } = window;
+
+export { __DEV__ };
 
 const secret = process.env.REACT_APP_HASH_SECRET;
 

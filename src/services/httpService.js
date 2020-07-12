@@ -62,9 +62,7 @@ axios.interceptors.request.use(config => {
     //     }
     // }
     config.headers["Accept"] = "application/json";
-    config.headers["Access-Control-Allow-Origin"] = "*";
-
-    config.headers["Content-Type"] = "application/json";
+    // config.headers["Content-Type"] = "application/json";
     return config;
 });
 

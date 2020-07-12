@@ -1,6 +1,9 @@
 import { postFunc } from "./httpService";
+import { __DEV__ } from "./localStorageHelper";
 
-const base_url = "http://134.209.31.250/api/";
+export const base_url = __DEV__
+    ? "http://134.209.31.250/api/"
+    : "https://134.209.31.250/api/";
 
 const AuthServices = {
     loginService: payload => postFunc(`${base_url}login`, payload),
