@@ -18,7 +18,7 @@ const CustomInput = forwardRef(
                             <InputComponent
                                 {...{ placeholder, ref }}
                                 className={`form-input ${
-                                    errors[name]?.message
+                                    errors[name]?.message !== undefined
                                         ? "show-error"
                                         : "hide-error"
                                 }`}
@@ -29,7 +29,7 @@ const CustomInput = forwardRef(
                 />
                 <p
                     className={`form-error-text ${
-                        errors[name]?.message ? "show" : "hide"
+                        errors[name]?.message !== undefined ? "show" : "hide"
                     }`}>
                     {errors[name]?.message}
                 </p>

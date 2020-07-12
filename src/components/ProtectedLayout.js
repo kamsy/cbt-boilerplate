@@ -49,7 +49,7 @@ export {
 
 export default ({ children, title }) => {
     return (
-        <div className="protected-layout">
+        <div className="protected-layout layout">
             <Header {...{ title }} />
             <Sidebar />
             <main className="children-container">{children}</main>

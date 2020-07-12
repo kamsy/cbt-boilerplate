@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { url, fakeAuth } from "../../App";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 import CustomInput from "../../components/CustomInput";
+
 import { motion } from "framer";
 import AuthServices from "../../services/authServices";
 import CustomButton from "../../components/CustomButton";
@@ -12,6 +13,9 @@ import {
     auth_pageVariants,
     auth_pageTransitions
 } from "../../components/ProtectedLayout";
+import { NotifyError } from "../../components/Notification";
+import { encryptAndStore } from "../../services/localStorageHelper";
+import { ENCRYPT_USER } from "../../variables";
 
 const schema = yup.object().shape({
     username: yup.string().required("Enter your username!"),
@@ -21,21 +25,39 @@ const schema = yup.object().shape({
         .min(8)
 });
 
-export default () => {
+const Login = () => {
+    const [loading, set_loading] = useState(false);
     const history = useHistory();
     const methods = useForm({
         resolver: yupResolver(schema)
     });
-    const { handleSubmit, control, errors, register } = methods;
+    const { handleSubmit, control, errors, register, setError } = methods;
 
-    const onSubmit = data => {
-        console.log("data", data);
-        if (window.__DEV__) {
+    const onSubmit = async payload => {
+        set_loading(true);
+        payload.username = payload.username.toLowerCase();
+        const res = await AuthServices.loginService(payload);
+        const { status, data } = res;
+        set_loading(false);
+        if (status === 401) {
+            setError("username", { type: "manual", message: data.message });
+            setError("password", { type: "manual", message: "" });
+        } else if (status === 200) {
             fakeAuth.authenticate();
             localStorage.setItem("loggedIn", JSON.stringify(true));
+            encryptAndStore(
+                ENCRYPT_USER,
+                {
+                    token: data.data.token,
+                    expires_in: 3600,
+                    user_info: data.data.user
+                },
+                true
+            );
             return history.push(`${url}dashboard`);
         }
     };
+
     return (
         <motion.div
             className="login"
@@ -55,9 +77,6 @@ export default () => {
                         name: "username",
                         ref: register,
                         placeholder: "Username",
-                        defaultValue: window.__DEV__
-                            ? "olekakamsy@gmail.com"
-                            : "",
                         errors,
                         control
                     }}
@@ -68,7 +87,6 @@ export default () => {
                         name: "password",
                         ref: register,
                         placeholder: "Password",
-                        defaultValue: window.__DEV__ ? "12345678" : "",
                         type: "password",
                         errors,
                         control
@@ -78,7 +96,13 @@ export default () => {
                 <Link to={`${url}forgot-password`} className="forgot-pw-link">
                     Forgot password?
                 </Link>
-                <CustomButton text="Log in" onClick={handleSubmit(onSubmit)} />
+                <CustomButton
+                    {...{
+                        loading,
+                        text: "Log in",
+                        onClick: handleSubmit(onSubmit)
+                    }}
+                />
             </form>
             <div className="new-user-container">
                 <p>Don't have an account?</p>
@@ -89,3 +113,5 @@ export default () => {
         </motion.div>
     );
 };
+
+export default Login;

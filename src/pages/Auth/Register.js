@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
 import { url } from "../../App";
 import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
@@ -12,7 +12,10 @@ import {
     auth_pageVariants,
     auth_pageTransitions
 } from "../../components/ProtectedLayout";
+import AuthServices from "../../services/authServices";
+import { NotifyError, NotifySuccess } from "../../components/Notification";
 const schema = yup.object().shape({
+    name: yup.string().required("Enter your full name!"),
     username: yup.string().required("Enter your username!"),
     email: yup
         .string()
@@ -26,13 +29,27 @@ const schema = yup.object().shape({
 });
 
 export default () => {
+    const [loading, set_loading] = useState(false);
+    const history = useHistory();
     const methods = useForm({
         resolver: yupResolver(schema)
     });
-    const { handleSubmit, control, errors, register } = methods;
+    const { handleSubmit, control, errors, register, setError } = methods;
+    console.log("errors", errors);
 
-    const onSubmit = data => {
-        console.log("data", data);
+    const onSubmit = async payload => {
+        const { status, data } = await AuthServices.registerService(payload);
+        console.log("Login -> data", { status, data });
+        if (status === 422) {
+            const errKeys = Object.keys(data.errors);
+            const valKeys = Object.values(data.errors);
+            errKeys.forEach((err, i) => {
+                console.log("valKeys", valKeys, valKeys[i], valKeys[i][0]);
+                setError(err, { type: "manual", message: valKeys[i][0] });
+            });
+        } else {
+            // NotifySuccess;
+        }
     };
     return (
         <motion.div
@@ -54,6 +71,16 @@ export default () => {
                         name: "username",
                         ref: register,
                         placeholder: "Username",
+                        errors,
+                        control
+                    }}
+                />
+                <CustomInput
+                    {...{
+                        label: "Name",
+                        name: "name",
+                        ref: register,
+                        placeholder: "Full name",
                         errors,
                         control
                     }}
@@ -86,13 +113,17 @@ export default () => {
                         ref: register,
                         placeholder: "Password",
                         errors,
-                        control
+                        control,
+                        type: "password"
                     }}
                 />
 
                 <CustomButton
-                    text="Register"
-                    onClick={handleSubmit(onSubmit)}
+                    {...{
+                        loading,
+                        text: "Register",
+                        onClick: handleSubmit(onSubmit)
+                    }}
                 />
             </form>
             <div className="old-user-container">

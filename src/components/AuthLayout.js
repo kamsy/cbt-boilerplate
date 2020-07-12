@@ -8,5 +8,5 @@ export default ({ children, fakeAuth }) => {
     useEffect(() => {
         if (fakeAuth.isAuthenticated) return history.push(`${url}dashboard`);
     }, [history, fakeAuth]);
-    return <div className="auth-layout">{children}</div>;
+    return <div className="auth-layout layout">{children}</div>;
 };

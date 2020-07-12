@@ -13,7 +13,7 @@ const schema = yup.object().shape({
     last_name: yup.string().required("Enter your last name!")
 });
 
-export default ({ tab_key }) => {
+export default ({ tab_key, user_info }) => {
     const methods = useForm({
         resolver: yupResolver(schema)
     });

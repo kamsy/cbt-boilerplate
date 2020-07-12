@@ -3,22 +3,24 @@ import { useHistory } from "react-router-dom";
 
 import axios from "axios";
 import { url } from "../App";
+import { ENCRYPT_USER } from "../variables";
 // import { NotifyClose, NotifyError } from "../../reuse/Notify";
 
 axios.interceptors.response.use(
     response => {
         // Do something with response data
+        console.log("response", response);
         return response;
     },
     error => {
-        const history = useHistory();
+        // const history = useHistory();
         console.log("error", error);
         if (error.response) {
             const { status, data } = error.response;
             if (status >= 500) {
                 if (!window.location.pathname.includes("dashboard")) {
                     setTimeout(() => {
-                        history.push({ pathname: `${url}#/500` });
+                        // history.push({ pathname: `${url}#/500` });
                     }, 1500);
                 }
             } else if (status === 401 && data === "") {
@@ -47,18 +49,19 @@ axios.interceptors.response.use(
                 // }
             }
         }
-        return Promise.reject({ error });
+        return error;
     }
 );
 
 axios.interceptors.request.use(config => {
-    // const decryptedToken = decryptAndRead(ENCRYPT_USER);
-    // if (decryptedToken) {
-    //     const { token, expired } = decryptedToken;
-    //     if (!expired) {
-    //         config.headers["Authorization"] = `Bearer ${token}`;
-    //     }
-    // }
+    const decryptedToken = decryptAndRead(ENCRYPT_USER);
+    if (decryptedToken) {
+        const { token, expired } = decryptedToken;
+        if (!expired) {
+            config.headers["Authorization"] = `Bearer ${token}`;
+        }
+    }
+    config.headers["Accept"] = "application/json";
     return config;
 });
 
@@ -66,13 +69,13 @@ const getFunc = (path, payload) => {
     return new Promise((resolve, reject) => {
         axios
             .get(path, payload)
-            .then(res => {
-                console.log("getFunc -> res", res);
-                return resolve({ res });
+            .then(response => {
+                console.log("postFunc -> res", response);
+                return resolve(response);
             })
-            .catch(error => {
-                console.log("getFunc -> error", error);
-                return reject({ error });
+            .catch(({ response }) => {
+                console.log("postFunc -> response", response);
+                return reject(response);
             });
     });
 };
@@ -81,11 +84,13 @@ const delFunc = path => {
     return new Promise((resolve, reject) => {
         axios
             .delete(path)
-            .then(res => {
-                return resolve({ res });
+            .then(response => {
+                console.log("postFunc -> res", response);
+                return resolve(response);
             })
-            .catch(error => {
-                return reject({ error });
+            .catch(({ response }) => {
+                console.log("postFunc -> response", response);
+                return reject(response);
             });
     });
 };
@@ -94,13 +99,13 @@ const postFunc = (path, payload) => {
     return new Promise((resolve, reject) => {
         axios
             .post(path, payload)
-            .then(res => {
-                console.log("postFunc -> res", res);
-                return resolve({ res });
+            .then(response => {
+                console.log("postFunc -> res", response);
+                return resolve(response);
             })
-            .catch(error => {
-                console.log("postFunc -> error", error);
-                return reject({ error });
+            .catch(({ response }) => {
+                console.log("postFunc -> response", response);
+                return reject(response);
             });
     });
 };

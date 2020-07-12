@@ -1,3 +1,4 @@
 const EXPIRY = "EXPIRY";
+const ENCRYPT_USER = "ENCRYPT_USER";
 
-export { EXPIRY };
+export { EXPIRY, ENCRYPT_USER };

@@ -1,8 +1,12 @@
 import React from "react";
 import { Button } from "antd";
-
-export default ({ onClick, text }) => (
+import { Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
+const antIcon = (
+    <LoadingOutlined style={{ fontSize: 20, color: "#fff" }} spin />
+);
+export default ({ onClick, text, loading }) => (
     <Button className="submit-btn" {...{ onClick }}>
-        {text}
+        {!loading ? text : <Spin indicator={antIcon} />}
     </Button>
 );

@@ -1,11 +1,10 @@
 import { EXPIRY } from "../variables";
-const CryptoJS = require("crypto-js");
+var CryptoJS = require("crypto-js");
 window.__DEV__ = process.env.NODE_ENV === "development";
-window.__TEST__ = process.env.NODE_ENV === "test";
-const { localStorage, __DEV__, __TEST__ } = window;
 
-const secret =
-    __DEV__ || __TEST__ ? process.env.HASH_SECRET : process.env.HASH_SECRET;
+const { localStorage } = window;
+
+const secret = process.env.REACT_APP_HASH_SECRET;
 
 const storer = (key, value) => {
     const ciphertext = CryptoJS.AES.encrypt(JSON.stringify(value), secret);
@@ -35,8 +34,8 @@ export const decryptAndRead = key => {
         new Date().getTime() > expiry
     ) {
         const bytes = CryptoJS.AES.decrypt(fromStorage.toString(), secret);
-        const response = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-        return { ...response, expired: true };
+        const response = bytes.toString(CryptoJS.enc.Utf8);
+        return { ...JSON.parse(response), expired: true };
     } else if (
         fromStorage !== null &&
         fromStorage !== undefined &&
@@ -44,8 +43,8 @@ export const decryptAndRead = key => {
         new Date().getTime() < expiry
     ) {
         const bytes = CryptoJS.AES.decrypt(fromStorage.toString(), secret);
-        const response = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-        return { ...response, expired: false };
+        const response = bytes.toString(CryptoJS.enc.Utf8);
+        return { ...JSON.parse(response), expired: false };
     } else {
         return null;
     }
