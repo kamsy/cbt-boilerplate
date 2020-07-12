@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { url } from "../App";
 import { NavLink } from "react-router-dom";
-import { DashboardOutlined, WalletOutlined } from "@ant-design/icons";
+import { DashboardOutlined } from "@ant-design/icons";
 import Envelope from "../assets/svgs/Envelope";
 import LoanHistory from "../assets/svgs/LoanHistory";
 
@@ -36,8 +36,6 @@ const Sidebar = () => {
                     className="sidebar-link">
                     {path === "dashboard" ? (
                         <DashboardOutlined />
-                    ) : path === "wallet" ? (
-                        <WalletOutlined />
                     ) : path === "create-loan" ? (
                         <Envelope />
                     ) : (
@@ -57,7 +55,6 @@ const Sidebar = () => {
                 {_listGen("dashboard", "Dashboard")}
                 {_listGen("create-loan", "Request Loan")}
                 {_listGen("loans", "Loan History")}
-                {_listGen("wallet", "Wallet")}
             </ul>
         </div>
     );
