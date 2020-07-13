@@ -9,7 +9,7 @@ import { EllipsisOutlined } from "@ant-design/icons";
 import { Dropdown, Menu, Tabs, Button, Popconfirm } from "antd";
 import { Link } from "react-router-dom";
 import "../../scss/loans.scss";
-import { usePaystackPayment, PaystackConsumer } from "react-paystack";
+import { PaystackConsumer } from "react-paystack";
 import { url } from "../../App";
 import { decryptAndRead } from "../../services/localStorageHelper";
 import { ENCRYPT_USER } from "../../variables";
@@ -17,6 +17,8 @@ import BankServices from "../../services/bankServices";
 import AddBankModal from "../../components/Modals/AddBankModal";
 import { NotifySuccess } from "../../components/Notification";
 import UserServices from "../../services/userServices";
+import LoanServices from "../../services/loanServices";
+import format from "date-fns/format";
 
 const { TabPane } = Tabs;
 
@@ -26,16 +28,17 @@ const Loans = () => {
         <Menu onClick={() => {}}>
             <Menu.Item key="1">View</Menu.Item>
             <Menu.Item key="2" className="green">
-                Accept
+                Pay Full
             </Menu.Item>
-            <Menu.Item key="3" className="red">
-                Reject
+            <Menu.Item key="3" className="orange">
+                Pay Part
             </Menu.Item>
         </Menu>
     );
 
     const [open_modal, set_open_modal] = useState(false);
     const [banks, set_banks] = useState([]);
+    const [loans, set_loans] = useState({});
     const [bank, set_bank] = useState({});
     const [wallet, set_wallet] = useState({});
 
@@ -68,21 +71,9 @@ const Loans = () => {
                 <Button
                     className="custom-btn"
                     onClick={() => {
-                        //   banks.length === 0 &&
-                        //       BankServices.getBanksWithLogosPaystackService().then(
-                        //           res => {
-                        //                 console.log(
-                        //                     "Loans -> status",
-                        //                     status
-                        //                 );
-                        //                 if (status === 200) {
-                        //                     set_banks(data);
-                        //                 }
-                        //           }
-                        //       );
                         banks.length === 0 &&
-                            BankServices.getBanksFromPaystackService().then(
-                                ({ status, data: { data } }) => {
+                            BankServices.getBanksWithLogosPaystackService().then(
+                                ({ status, data }) => {
                                     if (status === 200) {
                                         set_banks(data);
                                     }
@@ -98,9 +89,18 @@ const Loans = () => {
     );
 
     const getBank = () => {
-        BankServices.getBankService().then(({ status, data: { bank } }) => {
+        BankServices.getBankService().then(({ status, data }) => {
             if (status === 200) {
-                set_bank(bank || {});
+                set_bank(data.bank || {});
+            }
+        });
+    };
+
+    const getLoans = () => {
+        LoanServices.getLoansService().then(({ status, data }) => {
+            console.log("getLoans -> data", data);
+            if (status === 200) {
+                set_loans(data.loans || {});
             }
         });
     };
@@ -127,6 +127,7 @@ const Loans = () => {
     };
 
     useEffect(() => {
+        getLoans();
         getBank();
         getWallet();
     }, []);
@@ -196,90 +197,57 @@ const Loans = () => {
                             <th>amount</th>
                             <th>duration</th>
                             <th>repayment amount</th>
-                            <th>date</th>
+                            <th>amount repaid</th>
+                            <th>due date</th>
                             <th>status</th>
                             <th>action</th>
                         </tr>
                     </thead>
                     <tbody className="tableBody">
-                        <tr>
-                            <td>{_formatMoney(35000)}</td>
-                            <td>3 days</td>
-                            <td>{_formatMoney(40000)}</td>
-                            <td>3/07/2020</td>
-                            <td>
-                                <span className="approve-card">approved</span>
-                            </td>
-                            <td id="table-dropdown" className="table-dropdown">
-                                <Dropdown
-                                    getPopupContainer={() =>
-                                        document.getElementById(
-                                            "table-dropdown"
-                                        )
-                                    }
-                                    overlay={menu}>
-                                    <EllipsisOutlined
-                                        className="ellipsis"
-                                        rotate={90}
-                                        style={{
-                                            fontSize: "24px"
-                                        }}
-                                    />
-                                </Dropdown>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>{_formatMoney(35000)}</td>
-                            <td>3 days</td>
-                            <td>{_formatMoney(40000)}</td>
-                            <td>3/07/2020</td>
-                            <td>
-                                <span className="reject-card">rejected</span>
-                            </td>
-                            <td id="table-dropdown" className="table-dropdown">
-                                <Dropdown
-                                    getPopupContainer={() =>
-                                        document.getElementById(
-                                            "table-dropdown"
-                                        )
-                                    }
-                                    overlay={menu}>
-                                    <EllipsisOutlined
-                                        className="ellipsis"
-                                        rotate={90}
-                                        style={{
-                                            fontSize: "24px"
-                                        }}
-                                    />
-                                </Dropdown>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>{_formatMoney(35000)}</td>
-                            <td>3 days</td>
-                            <td>{_formatMoney(40000)}</td>
-                            <td>3/07/2020</td>
-                            <td>
-                                <span className="pending-card">pending</span>
-                            </td>
-                            <td id="table-dropdown" className="table-dropdown">
-                                <Dropdown
-                                    getPopupContainer={() =>
-                                        document.getElementById(
-                                            "table-dropdown"
-                                        )
-                                    }
-                                    overlay={menu}>
-                                    <EllipsisOutlined
-                                        className="ellipsis"
-                                        rotate={90}
-                                        style={{
-                                            fontSize: "24px"
-                                        }}
-                                    />
-                                </Dropdown>
-                            </td>
-                        </tr>
+                        {loans.data?.map(
+                            ({
+                                duration,
+                                amount,
+                                repay_amount,
+                                due,
+                                paid,
+                                id
+                            }) => (
+                                <tr key={id}>
+                                    <td>{_formatMoney(amount / 100)}</td>
+                                    <td>{duration} days</td>
+                                    <td>{_formatMoney(repay_amount / 100)}</td>
+                                    <td>{_formatMoney(paid / 100)}</td>
+                                    <td>
+                                        {format(new Date(due), "dd/MMM/yyyy")}
+                                    </td>
+                                    <td>
+                                        <span className="approve-card">
+                                            approved
+                                        </span>
+                                    </td>
+                                    <td
+                                        id="table-dropdown"
+                                        className="table-dropdown">
+                                        <Dropdown
+                                            getPopupContainer={() =>
+                                                document.getElementById(
+                                                    "table-dropdown"
+                                                )
+                                            }
+                                            overlay={menu}>
+                                            <EllipsisOutlined
+                                                className="ellipsis"
+                                                rotate={90}
+                                                style={{
+                                                    fontSize: "24px"
+                                                }}
+                                            />
+                                        </Dropdown>
+                                    </td>
+                                </tr>
+                            )
+                        )}
                     </tbody>
                 </table>
             </div>

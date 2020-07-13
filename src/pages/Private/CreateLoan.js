@@ -11,6 +11,9 @@ import NumberFormat from "react-number-format";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import CustomButton from "../../components/CustomButton";
 import LoanServices from "../../services/loanServices";
+import { NotifySuccess } from "../../components/Notification";
+import { useHistory } from "react-router-dom";
+import { url } from "../../App";
 
 const { Option } = Select;
 
@@ -28,13 +31,13 @@ function beforeUpload(file) {
 }
 
 const CreateLoan = () => {
+    const history = useHistory();
     const [errors, set_errors] = useState({
         amount: false,
         duration: false,
         bank_statement: false,
         identification_document: false
     });
-    console.log("CreateLoan -> errors", errors);
     const [loading, set_loading] = useState(false);
     const [amount, set_amount] = useState("");
     const [repay_amount, set_repay_amount] = useState("");
@@ -58,17 +61,22 @@ const CreateLoan = () => {
         ) {
             window._toggleLoader();
             var formData = new FormData();
-            formData.append("amount", amount);
+            formData.append("amount", amount * 100);
             formData.append("duration", duration);
-            formData.append("repay_amount", repay_amount);
+            formData.append("repay_amount", repay_amount * 100);
             formData.append("bank_statement", bank_statement);
             formData.append("identification_document", identification_document);
             const res = await LoanServices.applyForLoanService(formData);
-            console.log("onSubmit -> res", { res });
             setTimeout(() => {
                 window._toggleLoader();
             }, 500);
-            const { status, data } = res;
+            const { status } = res;
+            if (status === 201) {
+                NotifySuccess("Loan requested successful");
+                setTimeout(() => {
+                    history.push(`${url}loans`);
+                }, 700);
+            }
         } else {
             set_errors({
                 ...errors,

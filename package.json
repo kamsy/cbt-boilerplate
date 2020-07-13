@@ -11,6 +11,7 @@
     "antd": "^4.4.0",
     "axios": "^0.19.2",
     "crypto-js": "^4.0.0",
+    "date-fns": "^2.14.0",
     "framer": "^1.2.5",
     "framer-motion": "^1.11.1",
     "history": "^5.0.0",

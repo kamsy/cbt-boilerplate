@@ -102,14 +102,14 @@ const AddBankModal = ({ set_open_modal, open_modal, banks, getBank }) => {
                                         );
                                         set_paystack_bank_code(val);
                                     }}>
-                                    {banks?.map(({ code, name, slug }) => {
+                                    {banks?.map(({ code, name, logo }) => {
                                         return (
                                             <Option key={code} value={code}>
                                                 <span className="bank-logo">
-                                                    {/* <img
-                                                alt={`${name}'s logo`}
-                                                src={`https://nigerianbanks.xyz/logo/${slug}.png`}
-                                            /> */}
+                                                    <img
+                                                        alt={`${name}'s logo`}
+                                                        src={logo}
+                                                    />
                                                 </span>
                                                 {name}
                                             </Option>
