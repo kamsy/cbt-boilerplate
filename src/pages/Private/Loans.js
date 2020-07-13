@@ -6,10 +6,10 @@ import {
 } from "../../components/ProtectedLayout";
 import { _formatMoney } from "../../services/utils";
 import { EllipsisOutlined } from "@ant-design/icons";
-import { Dropdown, Menu, Tabs, Button, message } from "antd";
+import { Dropdown, Menu, Tabs, Button, Popconfirm } from "antd";
 import { Link } from "react-router-dom";
 import "../../scss/loans.scss";
-import { usePaystackPayment } from "react-paystack";
+import { usePaystackPayment, PaystackConsumer } from "react-paystack";
 import { url } from "../../App";
 import { decryptAndRead } from "../../services/localStorageHelper";
 import { ENCRYPT_USER } from "../../variables";
@@ -34,18 +34,19 @@ const Loans = () => {
         </Menu>
     );
 
-    const config = {
-        reference: new Date().getTime(),
-        email: user_info.email,
-        amount: 5000,
-        publicKey: "pk_test_f6f2dc3bd34ccb1e1a6f8da42cf27061767c535c"
-    };
-    const initializePayment = usePaystackPayment(config);
-
     const [open_modal, set_open_modal] = useState(false);
     const [banks, set_banks] = useState([]);
     const [bank, set_bank] = useState({});
     const [wallet, set_wallet] = useState({});
+
+    const componentProps = {
+        reference: new Date().getTime(),
+        email: user_info.email,
+        amount: 5000,
+        publicKey: "pk_test_8e6b170f40a1b492ac4af583e874322285e04236",
+        onSuccess: e => console.log(e),
+        onClose: e => console.log(e)
+    };
 
     const _renderEmptyState = tab => (
         <div className="empty-state">
@@ -53,38 +54,46 @@ const Loans = () => {
                 You have not added a {tab},<br /> Click the button below to add
                 a {tab}.
             </span>
-            <Button
-                className="custom-btn"
-                onClick={() =>
-                    tab === "card"
-                        ? initializePayment()
-                        : (() => {
-                              //   banks.length === 0 &&
-                              //       BankServices.getBanksWithLogosPaystackService().then(
-                              //           res => {
-                              //                 console.log(
-                              //                     "Loans -> status",
-                              //                     status
-                              //                 );
-                              //                 if (status === 200) {
-                              //                     set_banks(data);
-                              //                 }
-                              //           }
-                              //       );
-                              banks.length === 0 &&
-                                  BankServices.getBanksFromPaystackService().then(
-                                      ({ status, data: { data } }) => {
-                                          if (status === 200) {
-                                              set_banks(data);
-                                          }
-                                      }
-                                  );
+            {tab === "card" ? (
+                <PaystackConsumer {...componentProps}>
+                    {({ initializePayment }) => (
+                        <Button
+                            className="custom-btn"
+                            onClick={() => initializePayment()}>
+                            Add Card
+                        </Button>
+                    )}
+                </PaystackConsumer>
+            ) : (
+                <Button
+                    className="custom-btn"
+                    onClick={() => {
+                        //   banks.length === 0 &&
+                        //       BankServices.getBanksWithLogosPaystackService().then(
+                        //           res => {
+                        //                 console.log(
+                        //                     "Loans -> status",
+                        //                     status
+                        //                 );
+                        //                 if (status === 200) {
+                        //                     set_banks(data);
+                        //                 }
+                        //           }
+                        //       );
+                        banks.length === 0 &&
+                            BankServices.getBanksFromPaystackService().then(
+                                ({ status, data: { data } }) => {
+                                    if (status === 200) {
+                                        set_banks(data);
+                                    }
+                                }
+                            );
 
-                              return set_open_modal(true);
-                          })()
-                }>
-                Add {tab}
-            </Button>
+                        return set_open_modal(true);
+                    }}>
+                    Add Bank
+                </Button>
+            )}
         </div>
     );
 
@@ -153,11 +162,21 @@ const Loans = () => {
                                     <span>Bank Name:</span>
                                     <span>{bank.bank_name}</span>
                                 </p>
-                                <Button
-                                    className="custom-btn"
-                                    onClick={deleteBank}>
-                                    Delete Bank
-                                </Button>
+                                <Popconfirm
+                                    title="Are you sure you want to delete this bank?"
+                                    getPopupContainer={() =>
+                                        document.querySelector(
+                                            ".bank-information"
+                                        )
+                                    }
+                                    onConfirm={deleteBank}
+                                    onCancel={() => {}}
+                                    okText="Yes"
+                                    cancelText="No">
+                                    <Button className="custom-btn">
+                                        Delete Bank
+                                    </Button>
+                                </Popconfirm>
                             </div>
                         )}
                     </TabPane>

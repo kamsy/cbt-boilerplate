@@ -113,6 +113,7 @@ const App = () => {
 
     useEffect(() => {
         const fromStorage = decryptAndRead(ENCRYPT_USER);
+        console.log("App -> fromStorage", fromStorage);
         if (fromStorage) {
             if (loggedIn && !fromStorage.expired) {
                 fakeAuth.authenticate();

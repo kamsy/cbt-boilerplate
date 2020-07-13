@@ -105,6 +105,13 @@
             .bank-information {
                 padding: 24px;
 
+                .ant-popover-buttons{
+                .ant-btn-primary{
+background: $blue;
+border: none
+                }
+                }
+
                 p {
                     span {
                         font-size: 18px;

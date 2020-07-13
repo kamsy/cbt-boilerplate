@@ -44,9 +44,11 @@
 
 .input-unit {
     position: relative;
-    &:first-of-type{
+
+    &:first-of-type {
         margin-top: 0;
     }
+
     margin-top: 32px;
 
     input {
@@ -55,12 +57,11 @@
 
 
     .form-error-text {
-        margin: 0 0 -18px;
         position: absolute;
         bottom: 0;
         color: $red;
         font-size: 12px;
-        margin-top: 6px;
+        margin: 6px 0 -18px;
         -webkit-transition: all 0.5s ease-in-out;
         transition: all 0.5s ease-in-out;
         -webkit-transform-origin: top;
@@ -93,6 +94,33 @@
             border: none;
         }
 
+    }
+}
+
+.ant-upload {
+    position: relative;
+
+    .form-error-text {
+        margin: 0 0 -21px -10px;
+        position: absolute;
+        bottom: 0;
+        color: $red;
+        font-weight: bold;
+        font-size: 12px;
+        -webkit-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+        -webkit-transform-origin: top;
+        transform-origin: top;
+
+        &.show {
+            -webkit-transform: scaleY(1);
+            transform: scaleY(1);
+        }
+
+        &.hide {
+            -webkit-transform: scaleY(0);
+            transform: scaleY(0)
+        }
     }
 }
 
@@ -181,8 +209,8 @@
         display: -ms-flexbox;
         display: flex;
         -webkit-box-align: center;
-            -ms-flex-align: center;
-                align-items: center
+        -ms-flex-align: center;
+        align-items: center
     }
 
     .bank-logo {

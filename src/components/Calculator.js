@@ -6,11 +6,39 @@ import { _formatMoney } from "../services/utils";
 const { Option } = Select;
 
 export default () => {
-    const [input_val, set_input_val] = useState("");
-    const _onChange = ({ value }) => set_input_val(value);
-    const _handleDuration = val => {
-        console.log(val);
+    const [amount, set_amount] = useState("");
+    const [repay_amount, set_repay_amount] = useState("");
+    const [duration, set_duration] = useState(0);
+    const _handleAmount = ({ value }) => {
+        const amt = Number(value);
+        set_amount(amt);
+        if (duration < 30) return;
+        calculateRepayment({ amt, time: duration });
     };
+
+    const calculateRepayment = ({ amt, time }) => {
+        const floor_percent = 0.05;
+        const after_floor_percent = 0.25;
+        const floor_charge_duration = 1;
+        const after_floor_charge_duration = 29;
+
+        const floor = amt * floor_percent;
+        const after_floor =
+            amt *
+            (((time - floor_charge_duration) * after_floor_percent) /
+                after_floor_charge_duration);
+
+        const total = amt + floor + after_floor;
+        set_repay_amount(total);
+    };
+
+    const _handleDuration = val => {
+        const time = Number(val);
+        set_duration(time);
+        if (amount < 1) return;
+        calculateRepayment({ amt: amount, time });
+    };
+
     return (
         <div className="calculator">
             <div className="calculator-sub">
@@ -19,18 +47,18 @@ export default () => {
                     <NumberFormat
                         customInput={Input}
                         isNumericString
-                        value={input_val}
+                        value={amount}
                         thousandSeparator
                         prefix="₦"
-                        onValueChange={_onChange}
+                        onValueChange={_handleAmount}
                         allowNegative={false}
                         placeholder="Enter Amount"
                     />
                     <p
                         className={`form-error-text ${
-                            Number(input_val) > 100000 ? "show" : "hide"
+                            Number(amount) > 100000 ? "show" : "hide"
                         }`}>
-                        {Number(input_val) > 100000 &&
+                        {Number(amount) > 100000 &&
                             "Maximum loan amount is ₦100,000"}
                     </p>
                 </label>
@@ -49,16 +77,7 @@ export default () => {
                     <div className="left">
                         <p>
                             you'll payback <br />
-                            {_formatMoney(
-                                Number(input_val) * 0.05 + Number(input_val) ||
-                                    0
-                            )}
-                        </p>
-                    </div>
-                    <div className="right">
-                        <p>
-                            quickcredit fee <br />
-                            5%
+                            {_formatMoney(repay_amount || 0)}
                         </p>
                     </div>
                 </div>

@@ -4,6 +4,7 @@
 .create-loan {
     p {
         font-size: 16px;
+        margin-bottom: 0;
 
         strong {
             font-size: 12px
@@ -40,6 +41,20 @@
 
             @include screen(929) {
                 width: 100%;
+            }
+
+            .repayment {
+                span {
+                    font-size: 12px;
+                    text-transform: uppercase;
+                    margin-bottom: 6px;
+                    display: block;
+
+                    &:last-of-type {
+                        font-size: 24px;
+                        font-weight: bold;
+                    }
+                }
             }
         }
 
@@ -228,8 +243,39 @@
 
             margin-top: 0;
 
-            @include screen(375) {
+            @include screen(500) {
                 width: 100%;
+            }
+        }
+
+        .ant-upload-list-picture-card-container {
+            height: 144px;
+            width: 100%;
+
+            .ant-upload-list-item {
+                width: 100%;
+                height: 100%;
+                padding: 24px 12px;
+            }
+        }
+
+        .hide-error {
+            -webkit-transition: 0.5s all ease-in-out;
+            transition: 0.5s all ease-in-out;
+
+           .ant-select-selector, .ant-upload {
+                -webkit-transition: 0.5s all ease-in-out;
+                transition: 0.5s all ease-in-out;
+            }
+        }
+
+        .show-error {
+            -webkit-transition: 0.5s all ease-in-out;
+            transition: 0.5s all ease-in-out;
+            border-color: $red;
+
+            .ant-select-selector, .ant-upload {
+                border-color: $red;
             }
         }
     }
