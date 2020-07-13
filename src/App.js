@@ -108,7 +108,6 @@ const App = () => {
 
     useEffect(() => {
         const fromStorage = decryptAndRead(ENCRYPT_USER);
-        console.log("App -> fromStorage", fromStorage);
         if (fromStorage) {
             if (loggedIn && !fromStorage.expired) {
                 fakeAuth.authenticate();
@@ -184,15 +183,16 @@ const App = () => {
                             component={CreateLoan}
                             title="Request Loan"
                         />
-                        <PrivateRoute
-                            path={`${url}loans`}
-                            component={Loans}
-                            title="Loan History"
-                        />
+
                         <PrivateRoute
                             path={`${url}loans/:id`}
                             component={Loan}
                             title="Loan"
+                        />
+                        <PrivateRoute
+                            path={`${url}loans`}
+                            component={Loans}
+                            title="Loan History"
                         />
 
                         <PrivateRoute

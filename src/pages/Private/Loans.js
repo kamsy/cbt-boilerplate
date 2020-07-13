@@ -7,7 +7,7 @@ import {
 import { _formatMoney, _limitText } from "../../services/utils";
 import { EllipsisOutlined } from "@ant-design/icons";
 import { Dropdown, Menu, Tabs, Button, Popconfirm } from "antd";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, Redirect } from "react-router-dom";
 import "../../scss/loans.scss";
 import { PaystackConsumer } from "react-paystack";
 import { url } from "../../App";
@@ -31,8 +31,14 @@ const Loans = () => {
     const { user_info } = decryptAndRead(ENCRYPT_USER);
     const menu = id => (
         <Menu>
-            <Menu.Item key="1">
-                <Link to={`${url}loans/${id}`}>View</Link>
+            <Menu.Item
+                key="1"
+                onClick={() => {
+                    console.log(id);
+                    history.push(`${url}loans/${id}`);
+                    // return <Redirect to={`${url}loan`} />;
+                }}>
+                View
             </Menu.Item>
             <Menu.Item key="2" className="green">
                 Pay Full
