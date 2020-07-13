@@ -54,15 +54,14 @@ axios.interceptors.response.use(
 );
 
 axios.interceptors.request.use(config => {
-    // const decryptedToken = decryptAndRead(ENCRYPT_USER);
-    // if (decryptedToken) {
-    //     const { token, expired } = decryptedToken;
-    //     if (!expired) {
-    //         config.headers["Authorization"] = `Bearer ${token}`;
-    //     }
-    // }
+    const decryptedToken = decryptAndRead(ENCRYPT_USER);
+    if (decryptedToken) {
+        const { token, expired } = decryptedToken;
+        if (!expired) {
+            config.headers["Authorization"] = `Bearer ${token}`;
+        }
+    }
     config.headers["Accept"] = "application/json";
-    // config.headers["Content-Type"] = "application/json";
     return config;
 });
 

@@ -4,7 +4,7 @@ import { base_url } from "./authServices";
 const UserServices = {
     getUserService: () => getFunc(`${base_url}user`),
     updateUserService: () => postFunc(`${base_url}user`),
-    getWalletService: () => getFunc(`${base_url}wallet`),
+    getWalletService: () => getFunc(`${base_url}user/wallet`),
     addKinService: payload => postFunc(`${base_url}user/kin`, payload),
     getKinService: () => getFunc(`${base_url}user/kin`),
     addEmploymentService: payload =>

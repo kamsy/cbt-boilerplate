@@ -3,97 +3,141 @@
 
 .loans {
 
-    .top-section{
+    .top-section {
         padding-bottom: 2rem;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    .wallet-info {
-        background: $white;
-        height: 300px;
-        border-radius: 4px;
-        @include shadowMixin;
-        padding: 24px;
-        span{
-            font-size: 14px;
-            color: $blue
-        }
-        p{
-            font-size: 30px;
-        }
-        &-container{
-            margin: 0 36px 24px 0;
-            width: 400px;
-            h3{
-                text-transform: capitalize;
-                font-size: 16px;
-                margin: 13px 0 24px
-            }
-        }
-    }
-
-    .ant-tabs {
-        width: calc(100% - 400px - 36px);
-        &-nav {
-            &::before {
-                border-color: $grey;
-                opacity: 0.5
-            }
-        }
-
-        &-tab-btn {
-            color: $grey !important;
-            -webkit-transition: 0.5s all ease-in-out;
-            transition: 0.5s all ease-in-out;
-            font-weight: 500
-        }
-
-        &-tab-active {
-            .ant-tabs-tab-btn {
-                color: $blue !important
-            }
-        }
-
-        &-ink-bar {
-            background: $blue !important
-        }
-    }
-
-    .ant-tabs-content-holder {
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-        background: $white;
-        height: 400px;
-        @include shadowMixin;
 
-        .empty-state {
+        .wallet-info {
+            background: $white;
+            height: 238px;
+            border-radius: 4px;
+            @include shadowMixin;
+            padding:52px 24px;
+
+            span {
+                font-size: 14px;
+                color: $blue
+            }
+
+            p {
+                font-size: 30px;
+            }
+
+            &-container {
+                margin: 0 36px 24px 0;
+                width: 400px;
+
+                h3 {
+                    text-transform: capitalize;
+                    font-size: 16px;
+                    margin: 13px 0 24px
+                }
+            }
+        }
+
+        .ant-tabs {
+            width: calc(100% - 400px - 36px);
+            height: 300px;
+
+            &-nav {
+                &::before {
+                    border-color: $grey;
+                    opacity: 0.5
+                }
+            }
+
+            &-tab-btn {
+                color: $grey !important;
+                -webkit-transition: 0.5s all ease-in-out;
+                transition: 0.5s all ease-in-out;
+                font-weight: 500
+            }
+
+            &-tab-active {
+                .ant-tabs-tab-btn {
+                    color: $blue !important
+                }
+            }
+
+            &-ink-bar {
+                background: $blue !important
+            }
+        }
+
+        .ant-tabs-content-holder {
             display: -webkit-box;
             display: -ms-flexbox;
             display: flex;
-            -webkit-box-orient: vertical;
-            -webkit-box-direction: normal;
-            -ms-flex-direction: column;
-            flex-direction: column;
             -webkit-box-align: center;
             -ms-flex-align: center;
             align-items: center;
-            -webkit-box-pack: center;
-            -ms-flex-pack: center;
-            justify-content: center;
+            background: $white;
+            height: 400px;
+            @include shadowMixin;
 
-            span {
-                text-align: center
+            .empty-state {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-orient: vertical;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: column;
+                flex-direction: column;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                justify-content: center;
+
+                span {
+                    text-align: center
+                }
+
+                .custom-btn {
+                    margin-top: 40px;
+                    width: 200px;
+                }
             }
 
-            .custom-btn {
-                margin-top: 40px;
-                width: 200px;
+            .bank-information {
+                padding: 24px;
+
+                p {
+                    span {
+                        font-size: 18px;
+
+                        &:first-of-type {
+                            font-weight: bold;
+                            width: 160px;
+                            display: inline-block
+                        }
+                    }
+                }
+
+                .custom-btn {
+                    background: rgba($red, 0.3);
+                    margin-top: 20px;
+                    color: $red !important;
+
+                    &::after {
+                        background: $red !important;
+                        color: $white !important;
+                    }
+
+
+                    &:hover {
+                        background: $red !important;
+                        color: $white !important;
+
+                    }
+                }
             }
         }
+
+
     }
 
     .form {
@@ -104,7 +148,6 @@
         .submit-btn {
             width: 100%;
         }
-    }
     }
 
     .link-container {
@@ -125,10 +168,10 @@
             position: relative;
             background: $blue;
             overflow: hidden;
-            border: noe;
+            border: none;
             border-radius: 4px;
             z-index: 0;
-            padding: 6px 12px;
+            padding: 9px 24px;
 
             &::after {
                 content: '';

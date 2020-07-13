@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer";
 import {
     pageVariants,
@@ -6,35 +6,22 @@ import {
 } from "../../components/ProtectedLayout";
 import { _formatMoney } from "../../services/utils";
 import { EllipsisOutlined } from "@ant-design/icons";
-import { Dropdown, Menu, Tabs, Button, Modal } from "antd";
+import { Dropdown, Menu, Tabs, Button, message } from "antd";
 import { Link } from "react-router-dom";
 import "../../scss/loans.scss";
 import { usePaystackPayment } from "react-paystack";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers";
-import * as yup from "yup";
 import { url } from "../../App";
-import CustomInput from "../../components/CustomInput";
-import CustomButton from "../../components/CustomButton";
-import CustomSelect from "../../components/CustomSelect";
 import { decryptAndRead } from "../../services/localStorageHelper";
 import { ENCRYPT_USER } from "../../variables";
 import BankServices from "../../services/bankServices";
+import AddBankModal from "../../components/Modals/AddBankModal";
+import { NotifySuccess } from "../../components/Notification";
+import UserServices from "../../services/userServices";
 
 const { TabPane } = Tabs;
 
-const schema = yup.object().shape({
-    account_number: yup
-        .string()
-        .required("Enter your account number!")
-        .min(10),
-
-    bank_name: yup.string().required("Please select a bank!")
-});
-
 const Loans = () => {
     const { user_info } = decryptAndRead(ENCRYPT_USER);
-    console.log("Wal -> user_info", user_info);
     const menu = (
         <Menu onClick={() => {}}>
             <Menu.Item key="1">View</Menu.Item>
@@ -49,15 +36,16 @@ const Loans = () => {
 
     const config = {
         reference: new Date().getTime(),
-        email: "user@example.com",
-        amount: 20000,
+        email: user_info.email,
+        amount: 5000,
         publicKey: "pk_test_f6f2dc3bd34ccb1e1a6f8da42cf27061767c535c"
     };
     const initializePayment = usePaystackPayment(config);
 
     const [open_modal, set_open_modal] = useState(false);
-    console.log("Loans -> open_modal", open_modal);
     const [banks, set_banks] = useState([]);
+    const [bank, set_bank] = useState({});
+    const [wallet, set_wallet] = useState({});
 
     const _renderEmptyState = tab => (
         <div className="empty-state">
@@ -71,28 +59,27 @@ const Loans = () => {
                     tab === "card"
                         ? initializePayment()
                         : (() => {
-                              fetch("https://nigerianbanks.xyz", {
-                                  headers: {
-                                      "Access-Control-Allow-Origin": "*",
-                                      "Content-Type": "application/json"
-                                  }
-                              }).then(res => {
-                                  console.log("Loans -> res", res);
-                              });
-                              //   BankServices.getBanksWithLogosPaystackService().then(
-                              //       res => {
-                              //           console.log("Loans -> res", res);
-                              //       }
-                              //   );
-                              //   BankServices.getBanksFromPaystackService().then(
-                              //       ({ status, data: { data } }) => {
-                              //           console.log("Loans -> status", status);
-                              //           console.log("Loans -> data", data);
-                              //           if (status === 200) {
-                              //               set_banks(data);
+                              //   banks.length === 0 &&
+                              //       BankServices.getBanksWithLogosPaystackService().then(
+                              //           res => {
+                              //                 console.log(
+                              //                     "Loans -> status",
+                              //                     status
+                              //                 );
+                              //                 if (status === 200) {
+                              //                     set_banks(data);
+                              //                 }
                               //           }
-                              //       }
-                              //   );
+                              //       );
+                              banks.length === 0 &&
+                                  BankServices.getBanksFromPaystackService().then(
+                                      ({ status, data: { data } }) => {
+                                          if (status === 200) {
+                                              set_banks(data);
+                                          }
+                                      }
+                                  );
+
                               return set_open_modal(true);
                           })()
                 }>
@@ -100,15 +87,40 @@ const Loans = () => {
             </Button>
         </div>
     );
-    const methods = useForm({
-        resolver: yupResolver(schema)
-    });
-    const { handleSubmit, control, errors, register, reset } = methods;
 
-    const onSubmit = data => {
-        console.log("_addPane -> data", data);
+    const getBank = () => {
+        BankServices.getBankService().then(({ status, data: { bank } }) => {
+            if (status === 200) {
+                set_bank(bank || {});
+            }
+        });
     };
 
+    const getWallet = () => {
+        UserServices.getWalletService().then(({ status, data: { wallet } }) => {
+            if (status === 200) {
+                set_wallet(wallet || {});
+            }
+        });
+    };
+
+    const deleteBank = async () => {
+        window._toggleLoader();
+        const res = await BankServices.deleteBankService();
+        setTimeout(() => {
+            window._toggleLoader();
+        }, 500);
+        const { status, data } = res;
+        if (status === 200) {
+            NotifySuccess(data.message);
+            set_bank({});
+        }
+    };
+
+    useEffect(() => {
+        getBank();
+        getWallet();
+    }, []);
     return (
         <motion.div
             className="main loans"
@@ -118,64 +130,42 @@ const Loans = () => {
             exit="out"
             transition={pageTransitions}
             variants={pageVariants}>
+            <AddBankModal {...{ open_modal, set_open_modal, banks, getBank }} />
             <div className="top-section">
                 <div className="wallet-info-container">
                     <h3>wallet info</h3>
                     <div className="wallet-info">
                         <span>Quick Credit Wallet</span>
-                        <p>{_formatMoney(user_info.wallet.amount)}</p>
+                        <p>{_formatMoney(wallet.amount)}</p>
                     </div>
                 </div>
                 <Tabs defaultActiveKey="1">
                     <TabPane tab="Bank" key="1">
-                        {_renderEmptyState("bank")}
+                        {!bank.id ? (
+                            _renderEmptyState("bank")
+                        ) : (
+                            <div className="bank-information">
+                                <p>
+                                    <span>Account Number:</span>
+                                    <span>{bank.account_number}</span>
+                                </p>
+                                <p>
+                                    <span>Bank Name:</span>
+                                    <span>{bank.bank_name}</span>
+                                </p>
+                                <Button
+                                    className="custom-btn"
+                                    onClick={deleteBank}>
+                                    Delete Bank
+                                </Button>
+                            </div>
+                        )}
                     </TabPane>
                     <TabPane tab="Card" key="2">
                         {_renderEmptyState("card")}
                     </TabPane>
                 </Tabs>
             </div>
-            <Modal
-                getContainer={() => document.getElementById("loans-history")}
-                title="Add Bank"
-                visible={open_modal}
-                footer={null}
-                onCancel={() => {
-                    reset();
-                    set_open_modal(false);
-                }}>
-                <form
-                    className="form-add-bank form"
-                    name="add-bank-form"
-                    onSubmit={handleSubmit(onSubmit)}>
-                    <CustomInput
-                        {...{
-                            label: "Account Number",
-                            name: "account_number",
-                            register,
-                            placeholder: "Enter account number",
-                            errors,
-                            control
-                        }}
-                    />
-                    <CustomSelect
-                        {...{
-                            label: "Bank Name",
-                            name: "bank_name",
-                            register,
-                            placeholder: "Select a Bank",
-                            errors,
-                            control,
-                            options: banks
-                        }}
-                    />
-
-                    <CustomButton
-                        text="Add Bank"
-                        onClick={handleSubmit(onSubmit)}
-                    />
-                </form>
-            </Modal>
 
             <div className="link-container">
                 <Link to={`${url}create-loan`}>Request Loan</Link>

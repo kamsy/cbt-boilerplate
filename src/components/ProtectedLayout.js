@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../scss/protectedlayout.scss";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
+import { Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
+const antIcon = (
+    <LoadingOutlined style={{ fontSize: 20, color: "#fff" }} spin />
+);
 
 const pageVariants = {
     initial: {
@@ -48,8 +53,13 @@ export {
 };
 
 export default ({ children, title }) => {
+    useEffect(() => {
+        window._toggleLoader = () =>
+            document.querySelector(".window-loader").classList.toggle("show");
+    }, []);
     return (
         <div className="protected-layout layout">
+            <Spin indicator={antIcon} className="window-loader" />
             <Header {...{ title }} />
             <Sidebar />
             <main className="children-container">{children}</main>

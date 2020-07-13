@@ -74,6 +74,7 @@ const Login = () => {
                         label: "Username",
                         name: "username",
                         placeholder: "Username",
+                        defaultValue: "ezemmuo",
                         errors,
                         control,
                         register
@@ -84,6 +85,7 @@ const Login = () => {
                         label: "Password",
                         name: "password",
                         placeholder: "Password",
+                        defaultValue: "12345678",
                         type: "password",
                         errors,
                         control,

@@ -60,7 +60,6 @@ const PrivateRoute = ({ component: Component, title, ...rest }) => {
 };
 
 const AuthRoute = ({ component: Component, ...rest }) => {
-    console.log("AuthRoute -> fakeAuth", fakeAuth);
     return (
         <Route exact {...rest}>
             <AuthLayout {...{ fakeAuth }}>
@@ -114,7 +113,6 @@ const App = () => {
 
     useEffect(() => {
         const fromStorage = decryptAndRead(ENCRYPT_USER);
-        console.log("App -> fromStorage", fromStorage);
         if (fromStorage) {
             if (loggedIn && !fromStorage.expired) {
                 fakeAuth.authenticate();
@@ -132,7 +130,6 @@ const App = () => {
         }
     }, []);
 
-    console.log("App -> loaded", loaded);
     if (loaded) {
         return (
             <Suspense fallback={<Loader loading />}>

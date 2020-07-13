@@ -1,6 +1,6 @@
 import React from "react";
-import { Button } from "antd";
-import { Spin } from "antd";
+import { Button, Spin } from "antd";
+
 import { LoadingOutlined } from "@ant-design/icons";
 const antIcon = (
     <LoadingOutlined style={{ fontSize: 20, color: "#fff" }} spin />
