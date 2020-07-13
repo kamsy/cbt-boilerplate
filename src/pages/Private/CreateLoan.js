@@ -55,6 +55,7 @@ const CreateLoan = () => {
     const onSubmit = async () => {
         if (
             amount > 0 &&
+            amount <= 100000 &&
             duration >= 30 &&
             bank_statement &&
             identification_document

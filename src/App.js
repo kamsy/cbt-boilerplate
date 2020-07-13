@@ -7,19 +7,14 @@ import ProtectedLayout from "./components/ProtectedLayout";
 import AuthLayout from "./components/AuthLayout";
 import { Loader } from "./components/Loader";
 import { message } from "antd";
-import {
-    Switch,
-    Route,
-    Redirect,
-    useLocation,
-    useHistory
-} from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import IdleTimer from "react-idle-timer";
 import Landing from "./pages/Landing";
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import Dashboard from "./pages/Private/Dashboard";
 import Loans from "./pages/Private/Loans";
+import Loan from "./pages/Private/Loan";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import { AnimatePresence } from "framer";
 import Profile from "./pages/Private/Profile";
@@ -193,6 +188,11 @@ const App = () => {
                             path={`${url}loans`}
                             component={Loans}
                             title="Loan History"
+                        />
+                        <PrivateRoute
+                            path={`${url}loans/:id`}
+                            component={Loan}
+                            title="Loan"
                         />
 
                         <PrivateRoute

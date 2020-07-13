@@ -7,7 +7,7 @@ import {
 import { _formatMoney, _limitText } from "../../services/utils";
 import { EllipsisOutlined } from "@ant-design/icons";
 import { Dropdown, Menu, Tabs, Button, Popconfirm } from "antd";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../../scss/loans.scss";
 import { PaystackConsumer } from "react-paystack";
 import { url } from "../../App";
@@ -27,20 +27,17 @@ import MicroChip from "../../assets/svgs/MicroChip";
 const { TabPane } = Tabs;
 
 const Loans = () => {
-    const history = useHistory();
     const { user_info } = decryptAndRead(ENCRYPT_USER);
-    const menu = id => (
-        <Menu>
-            <Menu.Item key="1">
-                <Link to={`${url}loans/${id}`}>View</Link>
+    const menu = (
+        <Menu onClick={() => {}}>
+            <Menu.Item key="1">View</Menu.Item>
+            <Menu.Item key="3" className="red">
+                Cancel Loan
             </Menu.Item>
             <Menu.Item key="2" className="green">
                 Pay Full
             </Menu.Item>
             <Menu.Item key="3">Pay Part</Menu.Item>
-            <Menu.Item key="4" className="red">
-                Cancel Loan
-            </Menu.Item>
         </Menu>
     );
 
@@ -188,113 +185,6 @@ const Loans = () => {
             exit="out"
             transition={pageTransitions}
             variants={pageVariants}>
-            <AddBankModal {...{ open_modal, set_open_modal, banks, getBank }} />
-            <div className="top-section">
-                <div className="wallet-info-container">
-                    <h3>wallet info</h3>
-                    <div className="wallet-info">
-                        <span>Quick Credit Wallet</span>
-                        <p>{_formatMoney(wallet.amount)}</p>
-                    </div>
-                </div>
-                <Tabs defaultActiveKey="1">
-                    <TabPane tab="Bank" key="1">
-                        {!bank.id ? (
-                            _renderEmptyState("bank")
-                        ) : (
-                            <div className="bank-information">
-                                <div className="card">
-                                    <span className="bank-name">
-                                        {bank.bank_name}
-                                    </span>
-
-                                    <span className="account-num">
-                                        {bank.account_number}
-                                    </span>
-                                </div>
-                                <Popconfirm
-                                    title="Are you sure you want to delete this bank?"
-                                    getPopupContainer={() =>
-                                        document.querySelector(
-                                            ".bank-information"
-                                        )
-                                    }
-                                    onConfirm={deleteBank}
-                                    onCancel={() => {}}
-                                    okText="Yes"
-                                    cancelText="No">
-                                    <Button className="custom-btn">
-                                        Delete Bank
-                                    </Button>
-                                </Popconfirm>
-                            </div>
-                        )}
-                    </TabPane>
-                    <TabPane tab="Card" key="2">
-                        {!card.id ? (
-                            _renderEmptyState("card")
-                        ) : (
-                            <div className="card-information">
-                                <div className="left-col">
-                                    <div className="card">
-                                        <span className="chip">
-                                            <MicroChip />
-                                        </span>
-                                        <span className="last-four">
-                                            **** **** **** {card.last_four}
-                                        </span>
-                                        <span className="brand-logo">
-                                            {card.brand === "visa" ? (
-                                                <VisaCard />
-                                            ) : (
-                                                <MasterCard />
-                                            )}
-                                        </span>
-                                        <p>{_limitText(card.user.name, 25)}</p>
-                                    </div>
-                                    <Popconfirm
-                                        title="Are you sure you want to delete this card?"
-                                        getPopupContainer={() =>
-                                            document.querySelector(
-                                                ".card-information"
-                                            )
-                                        }
-                                        onConfirm={deleteCard}
-                                        onCancel={() => {}}
-                                        okText="Yes"
-                                        cancelText="No">
-                                        <Button className="custom-btn">
-                                            Delete Card
-                                        </Button>
-                                    </Popconfirm>
-                                </div>
-                                <div className="right-col">
-                                    <p>
-                                        <span>Bank:</span>
-                                        <span>{card.bank}</span>
-                                    </p>
-                                    <p>
-                                        <span>expiry:</span>
-                                        <span>
-                                            {card.month}/{card.year}
-                                        </span>
-                                    </p>
-                                    <p>
-                                        <span>Added:</span>
-                                        <span>
-                                            {format(
-                                                new Date(card.created_at),
-                                                "MMM dd, yyyy"
-                                            )}
-                                        </span>
-                                    </p>
-                                </div>
-                            </div>
-                        )}
-                    </TabPane>
-                </Tabs>
-            </div>
-
             <div className="link-container">
                 <Link to={`${url}create-loan`}>Request Loan</Link>
             </div>
@@ -356,7 +246,7 @@ const Loans = () => {
                                                     "table-dropdown"
                                                 )
                                             }
-                                            overlay={menu(id)}>
+                                            overlay={menu}>
                                             <EllipsisOutlined
                                                 className="ellipsis"
                                                 rotate={90}

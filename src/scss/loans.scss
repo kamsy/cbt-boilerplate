@@ -11,10 +11,10 @@
 
         .wallet-info {
             background: $white;
-            height: 238px;
+            height: 338px;
             border-radius: 4px;
             @include shadowMixin;
-            padding:52px 24px;
+            padding: 52px 24px;
 
             span {
                 font-size: 14px;
@@ -39,7 +39,7 @@
 
         .ant-tabs {
             width: calc(100% - 400px - 36px);
-            height: 300px;
+            height: 400px;
 
             &-nav {
                 &::before {
@@ -74,7 +74,7 @@
             -ms-flex-align: center;
             align-items: center;
             background: $white;
-            height: 400px;
+            height: 500px;
             @include shadowMixin;
 
             .empty-state {
@@ -102,27 +102,187 @@
                 }
             }
 
+            .ant-popover-buttons {
+                .ant-btn-primary {
+                    background: $blue;
+                    border: none
+                }
+            }
+
             .bank-information {
                 padding: 24px;
 
-                .ant-popover-buttons{
-                .ant-btn-primary{
-background: $blue;
-border: none
-                }
+                .card {
+                    padding: 12px 24px;
+                    height: 190px;
+                    width: 50%;
+                    background: $blue;
+                    border-radius: 10px;
+                    position: relative;
+
+                    &::after,
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        width: 100%;
+                        background: rgba($white, 0.05);
+                        left: 0;
+                        height: 50px;
+                        -webkit-transform: rotate(45deg);
+                                transform: rotate(45deg)
+                    }
+
+                    &::after {
+                        left: -150px;
+                        bottom: 90px
+                    }
+
+                    &::before {
+                        height: 80px;
+                        top:0;
+                        left: 100px
+                    }
                 }
 
-                p {
-                    span {
-                        font-size: 18px;
+                .bank-name,
+                .account-num {
+                    font-size: 18px;
+                    font-weight: bold;
+                    color: $white;
+                    position: absolute;
+                    bottom: 12px;
+                    left: 12px
+                }
 
-                        &:first-of-type {
-                            font-weight: bold;
-                            width: 160px;
-                            display: inline-block
+
+                .account-num {
+                    left: unset;
+                    right: 12px
+                }
+
+
+
+                .custom-btn {
+                    background: rgba($red, 0.3);
+                    margin-top: 20px;
+                    color: $red !important;
+
+                    &::after {
+                        background: $red !important;
+                        color: $white !important;
+                    }
+
+
+                    &:hover {
+                        background: $red !important;
+                        color: $white !important;
+
+                    }
+                }
+            }
+
+            .card-information {
+                padding: 24px;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+
+                .left-col,
+                .right-col {
+                    width: 45%
+                }
+
+                .left-col {
+                    margin-right: 10%
+                }
+
+                .right-col {
+                    padding-top: 36px;
+
+                    p {
+                        span {
+                            font-size: 16px;
+
+                            &:first-of-type {
+                                text-transform: uppercase;
+                                font-weight: bold;
+                                display: inline-block;
+                                width: 100px;
+                            }
                         }
                     }
                 }
+
+                .card {
+                    padding: 12px 24px;
+                    height: 190px;
+                    width: 100%;
+                    background: $blue;
+                    border-radius: 10px;
+                    position: relative;
+
+                    &::after,
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        width: 100%;
+                        left: 0;
+                        bottom: 0;
+                        border-top-left-radius: 75%;
+                    }
+
+                    &::after {
+                        height: 100px;
+                        border-top-right-radius: 60%;
+                        background: rgba($white, 0.1);
+                        z-index: 2
+                    }
+
+                    &::before {
+                        height: 140px;
+                        border-top-right-radius: 5%;
+                        background: rgba($white, 0.05);
+                    }
+
+                    .last-four {
+                        position: absolute;
+                        left: 24px;
+                        top: 50%;
+                        -webkit-transform: translate(0, -50%);
+                        transform: translate(0, -50%);
+                        font-size: 20px;
+                        font-weight: bold;
+                        color: $white
+                    }
+
+                    .chip {
+                        position: absolute;
+                        left: 24px;
+                        top: 12px
+                    }
+
+                    .brand-logo {
+                        position: absolute;
+                        right: 24px;
+                        bottom: 12px
+                    }
+
+                    p {
+                        text-transform: uppercase;
+                        margin: 0;
+                        position: absolute;
+                        left: 24px;
+                        bottom: 12px;
+                        font-size: 16px;
+                        font-weight: bold;
+                        color: $white
+                    }
+
+
+                }
+
+
+
 
                 .custom-btn {
                     background: rgba($red, 0.3);
