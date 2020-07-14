@@ -4,19 +4,11 @@ import {
     pageVariants,
     pageTransitions
 } from "../../components/ProtectedLayout";
-import { _formatMoney, _limitText } from "../../services/utils";
+import { _formatMoney } from "../../services/utils";
 import { EllipsisOutlined } from "@ant-design/icons";
 import { Dropdown, Menu, Tabs, Button, Popconfirm } from "antd";
 import { Link, useParams } from "react-router-dom";
 import "../../scss/loan.scss";
-import { PaystackConsumer } from "react-paystack";
-import { url } from "../../App";
-import { decryptAndRead } from "../../services/localStorageHelper";
-import { ENCRYPT_USER } from "../../variables";
-import BankServices from "../../services/bankServices";
-import AddBankModal from "../../components/Modals/AddBankModal";
-import { NotifySuccess } from "../../components/Notification";
-import UserServices from "../../services/userServices";
 import LoanServices from "../../services/loanServices";
 import format from "date-fns/format";
 import CardServices from "../../services/cardServices";
@@ -24,12 +16,9 @@ import VisaCard from "../../assets/svgs/VisaCard";
 import MasterCard from "../../assets/svgs/MasterCard";
 import MicroChip from "../../assets/svgs/MicroChip";
 
-const { TabPane } = Tabs;
-
 const Loans = () => {
     const { id } = useParams();
 
-    const [open_modal, set_open_modal] = useState(false);
     const [loan, set_loan] = useState({});
 
     const getLoan = () => {
@@ -59,7 +48,90 @@ const Loans = () => {
             animate="in"
             exit="out"
             transition={pageTransitions}
-            variants={pageVariants}></motion.div>
+            variants={pageVariants}>
+            <h1>
+                Loan Information{" "}
+                <span
+                    className={
+                        loan.approved
+                            ? "approve-card"
+                            : loan.rejected
+                            ? "reject-card"
+                            : "pending-card"
+                    }>
+                    {loan.approved
+                        ? "approved"
+                        : loan.rejected
+                        ? "rejected"
+                        : "pending"}
+                </span>
+            </h1>
+            <div className="loan-info">
+                <div className="col">
+                    <p>
+                        <span>Loan Amount:</span>
+                        <span>{_formatMoney(loan.amount / 100)}</span>
+                    </p>
+                    <p>
+                        <span>Repayment Amount:</span>
+                        <span>{_formatMoney(loan.repay_amount / 100)}</span>
+                    </p>
+                    <p>
+                        <span>Amount Paid:</span>
+                        <span>{_formatMoney(loan.paid / 100)}</span>
+                    </p>
+                </div>
+                <div className="col">
+                    <p>
+                        <span>Duration :</span>
+                        <span>{loan.duration} days</span>
+                    </p>
+                    <p>
+                        <span>Request Date:</span>
+                        <span>
+                            {format(
+                                new Date(loan.created_at || new Date()),
+                                "MMM dd, yyyy"
+                            )}
+                        </span>
+                    </p>
+                    <p>
+                        <span>Due Date:</span>
+                        <span>
+                            {format(
+                                new Date(loan.due || new Date()),
+                                "MMM dd, yyyy"
+                            )}
+                        </span>
+                    </p>
+                </div>
+                <div className="col">
+                    <p>
+                        <span>Status:</span>
+                        <span
+                            className={
+                                loan.approved
+                                    ? "green"
+                                    : loan.rejected
+                                    ? "red"
+                                    : "orange"
+                            }>
+                            {loan.approved
+                                ? "approved"
+                                : loan.rejected
+                                ? "rejected"
+                                : "pending"}
+                        </span>
+                    </p>
+                    {loan.rejection_reason && (
+                        <p>
+                            <span>Rejection Reason:</span>
+                            <span>{loan.rejection_reason}</span>
+                        </p>
+                    )}
+                </div>
+            </div>
+        </motion.div>
     );
 };
 

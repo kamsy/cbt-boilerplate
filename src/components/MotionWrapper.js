@@ -3,7 +3,6 @@ import { motion } from "framer";
 import { pageVariants } from "./ProtectedLayout";
 
 const Dashboard = ({ children }) => {
-    console.log("Dashboard -> children", children);
     return (
         <motion.div
             className="main"

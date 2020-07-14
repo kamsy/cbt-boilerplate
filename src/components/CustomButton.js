@@ -5,8 +5,10 @@ import { LoadingOutlined } from "@ant-design/icons";
 const antIcon = (
     <LoadingOutlined style={{ fontSize: 20, color: "#fff" }} spin />
 );
-export default ({ onClick, text, loading }) => (
+const CustomButton = ({ onClick, text, loading }) => (
     <Button className="submit-btn" {...{ onClick }}>
         {!loading ? text : <Spin indicator={antIcon} />}
     </Button>
 );
+
+export default CustomButton;

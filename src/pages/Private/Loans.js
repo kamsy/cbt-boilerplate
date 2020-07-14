@@ -53,8 +53,10 @@ const Loans = () => {
     const [open_modal, set_open_modal] = useState(false);
     const [banks, set_banks] = useState([]);
     const [loans, set_loans] = useState({});
+    console.log("Loans -> loans", loans);
     const [bank, set_bank] = useState({});
     const [card, set_card] = useState({});
+    console.log("Loans -> card", card);
     const [wallet, set_wallet] = useState({});
 
     const componentProps = {
@@ -118,7 +120,7 @@ const Loans = () => {
     const getBank = () => {
         BankServices.getBankService().then(({ status, data }) => {
             if (status === 200) {
-                set_bank(data.bank || {});
+                set_bank(data?.bank || {});
             }
         });
     };
@@ -126,7 +128,7 @@ const Loans = () => {
     const getCard = () => {
         CardServices.getCardService().then(({ status, data }) => {
             if (status === 200) {
-                set_card(data.card || {});
+                set_card(data?.card || {});
             }
         });
     };
@@ -146,9 +148,9 @@ const Loans = () => {
     };
 
     const getWallet = () => {
-        UserServices.getWalletService().then(({ status, data: { wallet } }) => {
+        UserServices.getWalletService().then(({ status, data }) => {
             if (status === 200) {
-                set_wallet(wallet || {});
+                set_wallet(data?.wallet || {});
             }
         });
     };

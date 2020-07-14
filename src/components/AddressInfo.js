@@ -13,7 +13,7 @@ const schema = yup.object().shape({
     last_name: yup.string().required("Enter your kin's last name!")
 });
 
-const KinInfo = ({ tab_key, kin }) => {
+const AddressInfo = ({ tab_key, kin }) => {
     const methods = useForm({
         resolver: yupResolver(schema)
     });
@@ -38,8 +38,7 @@ const KinInfo = ({ tab_key, kin }) => {
                         register,
                         placeholder: "Enter your kin's first name",
                         errors,
-                        control,
-                        disabled: true
+                        control
                     }}
                 />
                 <CustomInput
@@ -49,17 +48,16 @@ const KinInfo = ({ tab_key, kin }) => {
                         register,
                         placeholder: "Enter your kin's last name",
                         errors,
-                        control,
-                        disabled: true
+                        control
                     }}
                 />
             </div>
 
             <Button className="custom-btn" onClick={handleSubmit(onSubmit)}>
-                Add Kin
+                Submit
             </Button>
         </form>
     );
 };
 
-export default KinInfo;
+export default AddressInfo;

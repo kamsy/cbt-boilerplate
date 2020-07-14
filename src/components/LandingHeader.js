@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-export default () => {
+const LandingHeader = () => {
     useEffect(() => {
         const hamburger_cont = document.querySelector(".hamburger-container");
         const hamburger = document.querySelector(".hamburger");
@@ -83,3 +83,5 @@ export default () => {
         </div>
     );
 };
+
+export default LandingHeader;

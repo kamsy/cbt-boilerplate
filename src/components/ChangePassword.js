@@ -13,7 +13,7 @@ const schema = yup.object().shape({
     old_password: yup.string().required("Enter your old password!")
 });
 
-export default ({ tab_key }) => {
+const ChangePassword = ({ tab_key }) => {
     const methods = useForm({
         resolver: yupResolver(schema)
     });
@@ -63,3 +63,5 @@ export default ({ tab_key }) => {
         </form>
     );
 };
+
+export default ChangePassword;

@@ -5,7 +5,7 @@ import NumberFormat from "react-number-format";
 import { _formatMoney } from "../services/utils";
 const { Option } = Select;
 
-export default () => {
+const Calculator () => {
     const [amount, set_amount] = useState("");
     const [repay_amount, set_repay_amount] = useState("");
     const [duration, set_duration] = useState(0);
@@ -95,3 +95,7 @@ export default () => {
         </div>
     );
 };
+
+
+
+export default Calculator

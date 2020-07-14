@@ -52,7 +52,7 @@ export {
     auth_pageTransitions
 };
 
-export default ({ children, title }) => {
+const ProtectedLayout = ({ children, title }) => {
     useEffect(() => {
         window._toggleLoader = () =>
             document.querySelector(".window-loader").classList.toggle("show");
@@ -66,3 +66,5 @@ export default ({ children, title }) => {
         </div>
     );
 };
+
+export default ProtectedLayout;
