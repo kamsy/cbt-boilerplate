@@ -13,8 +13,7 @@ const schema = yup.object().shape({
     account_number: yup
         .string()
         .required("Enter your account number!")
-        .min(10),
-
+        .length(10),
     bank_name: yup.string().required("Please select a bank!")
 });
 

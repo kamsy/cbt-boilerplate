@@ -23,7 +23,8 @@ const AddressInfo = ({ tab_key }) => {
         errors,
         register,
         reset,
-        setValue
+        setValue,
+        getValues
     } = methods;
 
     const onSubmit = async payload => {
@@ -58,7 +59,15 @@ const AddressInfo = ({ tab_key }) => {
     };
 
     useEffect(() => {
-        tab_key === 3 && getAddress();
+        const { duration, address, type } = getValues();
+        if (address) {
+            setTimeout(() => {
+                setValue("duration", duration);
+                setValue("address", address);
+                setValue("type", type);
+            }, 10);
+        }
+        tab_key === 3 && !address && getAddress();
     }, [tab_key]);
 
     useEffect(() => {

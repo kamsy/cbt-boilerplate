@@ -36,7 +36,7 @@ const CustomInput = ({
                                 disabled,
                                 type
                             }}
-                            className={`form-input ${
+                            className={`form-input ant-input ${
                                 errors[name]?.message !== undefined
                                     ? "show-error"
                                     : "hide-error"

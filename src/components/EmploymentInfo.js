@@ -6,10 +6,7 @@ import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
-    monthly_income: yup
-        .string()
-        .required("Enter your monthly!")
-        .min(8),
+    monthly_income: yup.string().required("Enter your monthly income!"),
     annual_income: yup.string().required("Enter your annual income!"),
     sector: yup.string().required("Enter your sector!"),
     position: yup.string().required("Enter your position!"),
@@ -19,7 +16,7 @@ const schema = yup.object().shape({
     start_date: yup.string().required("Select date your resumed at company!")
 });
 
-const EmploymentInfo = ({ tab_key, kin }) => {
+const EmploymentInfo = ({ tab_key }) => {
     const methods = useForm({
         resolver: yupResolver(schema)
     });

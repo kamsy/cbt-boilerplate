@@ -35,7 +35,7 @@ const Profile = () => {
                     <UserProfileInfo {...{ tab_key, user_info }} />
                 </TabPane>
                 <TabPane tab="Next of Kin" key="2">
-                    <KinInfo {...{ tab_key, kin: user_info.kin }} />
+                    <KinInfo {...{ tab_key }} />
                 </TabPane>
                 <TabPane tab="Address" key="3">
                     <AddressInfo {...{ tab_key }} />
