@@ -4,7 +4,7 @@
 .profile {
     .ant-tabs {
         &-tab-btn {
-            color: rgba(#000,0.3) !important;
+            color: rgba(#000, 0.3) !important;
             -webkit-transition: 0.5s all ease-in-out;
             transition: 0.5s all ease-in-out;
             font-weight: 500
@@ -21,7 +21,9 @@
         }
     }
 
-    .ant-tabs-content-holder {
+    .ant-picker-input{height:100%}
+
+     .ant-tabs-content-holder {
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
@@ -43,16 +45,16 @@
     }
 
     .form {
-        &-inputs-container{
+        &-inputs-container {
             display: -webkit-box;
             display: -ms-flexbox;
             display: flex;
             -webkit-box-pack: start;
-                -ms-flex-pack: start;
-                    justify-content: flex-start;
+            -ms-flex-pack: start;
+            justify-content: flex-start;
             -webkit-columns: 2;
             -ms-flex-wrap: wrap;
-                flex-wrap: wrap;
+            flex-wrap: wrap;
             // columns: 2;
         }
 

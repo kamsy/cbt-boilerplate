@@ -3,7 +3,6 @@ import { Button } from "antd";
 import CustomInput from "./CustomInput";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
-import CustomSelect from "./CustomSelect";
 import UserServices from "../services/userServices";
 import * as yup from "yup";
 

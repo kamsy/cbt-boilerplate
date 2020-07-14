@@ -10,13 +10,16 @@ import { Dropdown, Menu, Tabs, Button, Popconfirm } from "antd";
 import { Link, useParams } from "react-router-dom";
 import "../../scss/loan.scss";
 import LoanServices from "../../services/loanServices";
-import format from "date-fns/format";
+
 import CardServices from "../../services/cardServices";
 import VisaCard from "../../assets/svgs/VisaCard";
 import MasterCard from "../../assets/svgs/MasterCard";
 import MicroChip from "../../assets/svgs/MicroChip";
+import MomentAdapter from "@date-io/moment";
 
-const Loans = () => {
+const moment = new MomentAdapter();
+
+const Loan = () => {
     const { id } = useParams();
 
     const [loan, set_loan] = useState({});
@@ -89,19 +92,17 @@ const Loans = () => {
                     <p>
                         <span>Request Date:</span>
                         <span>
-                            {format(
-                                new Date(loan.created_at || new Date()),
-                                "MMM dd, yyyy"
-                            )}
+                            {moment
+                                .moment(new Date(loan.created_at))
+                                .format("MMM DD, yyyy")}
                         </span>
                     </p>
                     <p>
                         <span>Due Date:</span>
                         <span>
-                            {format(
-                                new Date(loan.due || new Date()),
-                                "MMM dd, yyyy"
-                            )}
+                            {moment
+                                .moment(new Date(loan.due))
+                                .format("MMM DD, yyyy")}
                         </span>
                     </p>
                 </div>
@@ -135,4 +136,4 @@ const Loans = () => {
     );
 };
 
-export default Loans;
+export default Loan;

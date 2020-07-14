@@ -7,7 +7,7 @@ import {
 import { _formatMoney, _limitText } from "../../services/utils";
 import { EllipsisOutlined } from "@ant-design/icons";
 import { Dropdown, Menu, Tabs, Button, Popconfirm } from "antd";
-import { Link, useHistory, Redirect } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import "../../scss/loans.scss";
 import { PaystackConsumer } from "react-paystack";
 import { url } from "../../App";
@@ -18,11 +18,13 @@ import AddBankModal from "../../components/Modals/AddBankModal";
 import { NotifySuccess } from "../../components/Notification";
 import UserServices from "../../services/userServices";
 import LoanServices from "../../services/loanServices";
-import format from "date-fns/format";
 import CardServices from "../../services/cardServices";
 import VisaCard from "../../assets/svgs/VisaCard";
 import MasterCard from "../../assets/svgs/MasterCard";
 import MicroChip from "../../assets/svgs/MicroChip";
+import MomentAdapter from "@date-io/moment";
+
+const moment = new MomentAdapter();
 
 const { TabPane } = Tabs;
 
@@ -33,11 +35,7 @@ const Loans = () => {
         <Menu>
             <Menu.Item
                 key="1"
-                onClick={() => {
-                    console.log(id);
-                    history.push(`${url}loans/${id}`);
-                    // return <Redirect to={`${url}loan`} />;
-                }}>
+                onClick={() => history.push(`${url}loans/${id}`)}>
                 View
             </Menu.Item>
             <Menu.Item key="2" className="green">
@@ -290,10 +288,11 @@ const Loans = () => {
                                     <p>
                                         <span>Added:</span>
                                         <span>
-                                            {format(
-                                                new Date(card.created_at),
-                                                "MMM dd, yyyy"
-                                            )}
+                                            {moment
+                                                .moment(
+                                                    new Date(card.created_at)
+                                                )
+                                                .format("MMM DD, yyyy")}
                                         </span>
                                     </p>
                                 </div>
@@ -337,7 +336,9 @@ const Loans = () => {
                                     <td>{_formatMoney(repay_amount / 100)}</td>
                                     <td>{_formatMoney(paid / 100)}</td>
                                     <td>
-                                        {format(new Date(due), "MMM dd, yyyy")}
+                                        {moment
+                                            .moment(new Date(due))
+                                            .format("MMM DD, yyyy")}
                                     </td>
                                     <td>
                                         <span

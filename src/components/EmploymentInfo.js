@@ -4,6 +4,10 @@ import CustomInput from "./CustomInput";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
+import UserServices from "../services/userServices";
+import MomentAdapter from "@date-io/moment";
+
+const moment = new MomentAdapter();
 
 const schema = yup.object().shape({
     monthly_income: yup.string().required("Enter your monthly income!"),
@@ -20,9 +24,91 @@ const EmploymentInfo = ({ tab_key }) => {
     const methods = useForm({
         resolver: yupResolver(schema)
     });
-    const { handleSubmit, control, errors, register, reset } = methods;
+    const {
+        handleSubmit,
+        control,
+        errors,
+        register,
+        reset,
+        getValues,
+        setValue
+    } = methods;
 
-    const onSubmit = data => {};
+    const _callValueSetter = data => {
+        if (!data) return;
+        const {
+            monthly_income,
+            annual_income,
+            sector,
+            position,
+            duration,
+            company_name,
+            address,
+            start_date
+        } = data;
+        setValue("monthly_income", monthly_income / 100);
+        setValue("annual_income", annual_income / 100);
+        setValue("sector", sector);
+        setValue("position", position);
+        setValue("duration", duration);
+        setValue("company_name", company_name);
+        setValue("address", address);
+        setValue("start_date", moment.moment(start_date));
+    };
+
+    const onSubmit = async payload => {
+        window._toggleLoader();
+        const start_date = moment
+            .moment(new Date(payload.start_date))
+            .format("YYYY-MM-DD");
+        const monthly_income =
+            payload.monthly_income
+                .split(",")
+                .join("")
+                .split("₦")
+                .join("") * 100;
+        const annual_income =
+            payload.annual_income
+                .split(",")
+                .join("")
+                .split("₦")
+                .join("") * 100;
+        const res = await UserServices.addEmploymentService({
+            ...payload,
+            start_date,
+            monthly_income,
+            annual_income
+        });
+        setTimeout(() => {
+            window._toggleLoader();
+        }, 500);
+        const { status, data } = res;
+        if (status === 201) {
+            _callValueSetter(data.employment);
+        }
+    };
+
+    const getEmployment = async () => {
+        window._toggleLoader();
+        const res = await UserServices.getEmploymentService();
+        setTimeout(() => {
+            window._toggleLoader();
+        }, 500);
+        const { status, data } = res;
+        if (status === 200 && data.employment) {
+            _callValueSetter(data.employment);
+        }
+    };
+
+    useEffect(() => {
+        const { monthly_income } = getValues();
+        if (monthly_income) {
+            setTimeout(() => {
+                _callValueSetter(getValues());
+            }, 10);
+        }
+        tab_key === 4 && !monthly_income && getEmployment();
+    }, [tab_key]);
 
     useEffect(() => {
         reset();
@@ -36,6 +122,67 @@ const EmploymentInfo = ({ tab_key }) => {
             <div className="form-inputs-container">
                 <CustomInput
                     {...{
+                        label: "Company Name",
+                        name: "company_name",
+                        register,
+                        placeholder: "Enter your company",
+                        errors,
+                        control
+                    }}
+                />
+                <CustomInput
+                    {...{
+                        label: "Company Address",
+                        name: "address",
+                        register,
+                        placeholder: "Enter your company's address",
+                        errors,
+                        control
+                    }}
+                />
+                <CustomInput
+                    {...{
+                        label: "Role at Company",
+                        name: "position",
+                        register,
+                        placeholder: "Enter your role at your company",
+                        errors,
+                        control
+                    }}
+                />
+                <CustomInput
+                    {...{
+                        label: "Sector",
+                        name: "sector",
+                        register,
+                        placeholder: "Enter sector",
+                        errors,
+                        control
+                    }}
+                />
+                <CustomInput
+                    {...{
+                        label: "Start Date",
+                        name: "start_date",
+                        register,
+                        placeholder: "Select resumption date at company",
+                        errors,
+                        control,
+                        type: "date"
+                    }}
+                />
+                <CustomInput
+                    {...{
+                        label: "Duration at Company (months)",
+                        name: "duration",
+                        register,
+                        placeholder: "Enter time at company",
+                        errors,
+                        control
+                    }}
+                />
+                <CustomInput
+                    {...{
                         label: "Monthly Income",
                         name: "monthly_income",
                         register,
@@ -47,12 +194,13 @@ const EmploymentInfo = ({ tab_key }) => {
                 />
                 <CustomInput
                     {...{
-                        label: "Last Name",
-                        name: "last_name",
+                        label: "Annual Income",
+                        name: "annual_income",
                         register,
-                        placeholder: "Enter your kin's last name",
+                        placeholder: "Enter your annual income",
                         errors,
-                        control
+                        control,
+                        type: "money"
                     }}
                 />
             </div>

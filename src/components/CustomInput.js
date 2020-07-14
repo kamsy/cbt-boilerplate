@@ -1,6 +1,6 @@
 import React from "react";
 import { Controller } from "react-hook-form";
-import { Input } from "antd";
+import { Input, DatePicker } from "antd";
 import PropTypes from "prop-types";
 import NumberFormat from "react-number-format";
 
@@ -20,6 +20,8 @@ const CustomInput = ({
             ? Input.Password
             : type === "money"
             ? NumberFormat
+            : type === "date"
+            ? DatePicker
             : Input;
 
     return (
@@ -36,7 +38,11 @@ const CustomInput = ({
                                 disabled,
                                 type
                             }}
-                            className={`form-input ant-input ${
+                            className={`form-input ${
+                                type === "date" || type === "money"
+                                    ? "ant-input"
+                                    : ""
+                            } ${
                                 errors[name]?.message !== undefined
                                     ? "show-error"
                                     : "hide-error"

@@ -1691,6 +1691,18 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-10.1.0.tgz#f0950bba18819512d42f7197e56c518aa491cf18"
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
+"@date-io/core@^2.7.0":
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/@date-io/core/-/core-2.7.0.tgz#81f9c76b0dfeffc5d2b24bcb9e5e852aafd344f1"
+  integrity sha512-ugxpm5nRpBRpF3Q0Jx8dkXb8iCMBxlMQEeYMIe0cGe6t/IFvHkh1AKzt/wyN9CNyYtUuNw3Suup2AbQvILCYmw==
+
+"@date-io/moment@^2.7.0":
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/@date-io/moment/-/moment-2.7.0.tgz#d5738e0394f05079e01026d7fad1bcc16ca4ef16"
+  integrity sha512-mt9sw9AlBDUEBsh5jd1PoB0GQd6Pcg38Qe1X5yOUBi6jXztc0e5RMF4uCky+r4Vlrbq+GKeyUMKZXeMv/uICyw==
+  dependencies:
+    "@date-io/core" "^2.7.0"
+
 "@emotion/is-prop-valid@^0.8.2":
   version "0.8.8"
   resolved "https://registry.yarnpkg.com/@emotion/is-prop-valid/-/is-prop-valid-0.8.8.tgz#db28b1c4368a259b60a97311d6a952d4fd01ac1a"
@@ -4325,11 +4337,6 @@ data-urls@^1.0.0, data-urls@^1.1.0:
     abab "^2.0.0"
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
-
-date-fns@^2.14.0:
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.14.0.tgz#359a87a265bb34ef2e38f93ecf63ac453f9bc7ba"
-  integrity sha512-1zD+68jhFgDIM0rF05rcwYO8cExdNqxjq4xP1QKM60Q45mnO6zaMWB4tOzrIr4M4GSLntsKeE4c9Bdl2jhL/yw==
 
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0, debug@^2.6.9:
   version "2.6.9"
@@ -7921,7 +7928,7 @@ mkdirp@^0.5.1, mkdirp@^0.5.3, mkdirp@~0.5.1:
   dependencies:
     minimist "^1.2.5"
 
-moment@^2.24.0, moment@^2.25.3:
+moment@^2.24.0, moment@^2.25.3, moment@^2.27.0:
   version "2.27.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.27.0.tgz#8bff4e3e26a236220dfe3e36de756b6ebaa0105d"
   integrity sha512-al0MUK7cpIcglMv3YF13qSgdAIqxHTO7brRtaz3DlSULbqfazqkc5kEjNrLDOM7fsjshoFIihnU8snrP7zUvhQ==
