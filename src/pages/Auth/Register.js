@@ -22,7 +22,13 @@ const schema = yup.object().shape({
         .string()
         .email()
         .required("Enter your email!"),
-    phone: yup.string().required("Enter your phone number!"),
+    phone: yup
+        .string()
+        .required("Enter your phone number!")
+        .matches(
+            /^([0]?\d([7](?=0)|[8](?=0|1)|[9](?=0))\d{9}(?!\d))$/,
+            "Alaye focus!... na 9ja number be this?😐"
+        ),
     password: yup
         .string()
         .required("Enter your password!")

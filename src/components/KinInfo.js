@@ -20,7 +20,7 @@ const schema = yup.object().shape({
         .required("Enter a valid phone number!")
         .matches(
             /^([0]?\d([7](?=0)|[8](?=0|1)|[9](?=0))\d{9}(?!\d))$/,
-            "Phone number must be 11 digits long"
+            "Alaye focus!... na 9ja number be this?😐"
         )
 });
 

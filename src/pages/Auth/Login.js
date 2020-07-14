@@ -13,7 +13,7 @@ import {
     auth_pageVariants,
     auth_pageTransitions
 } from "../../components/ProtectedLayout";
-import { encryptAndStore } from "../../services/localStorageHelper";
+import { encryptAndStore, __DEV__ } from "../../services/localStorageHelper";
 import { ENCRYPT_USER } from "../../variables";
 
 const Login = () => {
@@ -74,7 +74,7 @@ const Login = () => {
                         label: "Username",
                         name: "username",
                         placeholder: "Username",
-                        defaultValue: "ezemmuo",
+                        defaultValue: __DEV__ ? "ezemmuo" : "",
                         errors,
                         control,
                         register
@@ -85,7 +85,7 @@ const Login = () => {
                         label: "Password",
                         name: "password",
                         placeholder: "Password",
-                        defaultValue: "12345678",
+                        defaultValue: __DEV__ ? "12345678" : "",
                         type: "password",
                         errors,
                         control,
