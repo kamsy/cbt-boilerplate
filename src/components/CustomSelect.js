@@ -14,13 +14,12 @@ const CustomSelect = ({
     placeholder,
     defaultValue = ""
 }) => {
-    console.log("options", options);
     return (
         <div className="input-unit custom-select">
-            <Controller
-                as={
-                    <label>
-                        {label}
+            <label>
+                {label}
+                <Controller
+                    as={
                         <Select
                             getPopupContainer={() =>
                                 document.querySelector(".layout")
@@ -30,26 +29,17 @@ const CustomSelect = ({
                                 errors[name]?.message
                                     ? "show-error"
                                     : "hide-error"
-                            }`}
-                            onChange={val => console.log(val)}>
-                            {options?.map(({ code, name, slug }) => {
+                            }`}>
+                            {options?.map(({ name, value, key }) => {
                                 return (
-                                    <Option key={code} value={code}>
-                                        <span className="bank-logo">
-                                            {/* <img
-                                                alt={`${name}'s logo`}
-                                                src={`https://nigerianbanks.xyz/logo/${slug}.png`}
-                                            /> */}
-                                        </span>
-                                        {name}
-                                    </Option>
+                                    <Option {...{ key, value }}>{name}</Option>
                                 );
                             })}
                         </Select>
-                    </label>
-                }
-                {...{ name, control }}
-            />
+                    }
+                    {...{ name, control }}
+                />
+            </label>
             <p
                 className={`form-error-text ${
                     errors[name]?.message ? "show" : "hide"

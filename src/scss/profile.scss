@@ -4,7 +4,7 @@
 .profile {
     .ant-tabs {
         &-tab-btn {
-            color: $grey !important;
+            color: rgba(#000,0.3) !important;
             -webkit-transition: 0.5s all ease-in-out;
             transition: 0.5s all ease-in-out;
             font-weight: 500

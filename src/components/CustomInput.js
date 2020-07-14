@@ -2,6 +2,7 @@ import React from "react";
 import { Controller } from "react-hook-form";
 import { Input } from "antd";
 import PropTypes from "prop-types";
+import NumberFormat from "react-number-format";
 
 const CustomInput = ({
     control,
@@ -14,20 +15,26 @@ const CustomInput = ({
     type,
     disabled = false
 }) => {
-    const InputComponent = type === "password" ? Input.Password : Input;
+    const InputComponent =
+        type === "password"
+            ? Input.Password
+            : type === "money"
+            ? NumberFormat
+            : Input;
 
     return (
         <div className="input-unit">
-            <Controller
-                as={
-                    <label>
-                        {label}
+            <label>
+                {label}
+                <Controller
+                    as={
                         <InputComponent
                             {...{
                                 placeholder,
                                 ref: register,
                                 defaultValue,
-                                disabled
+                                disabled,
+                                type
                             }}
                             className={`form-input ${
                                 errors[name]?.message !== undefined
@@ -35,10 +42,19 @@ const CustomInput = ({
                                     : "hide-error"
                             }`}
                         />
-                    </label>
-                }
-                {...{ name, control }}
-            />
+                    }
+                    {...(type === "money"
+                        ? {
+                              prefix: "₦",
+                              thousandSeparator: true
+                          }
+                        : null)}
+                    {...{
+                        name,
+                        control
+                    }}
+                />
+            </label>
             <p
                 className={`form-error-text ${
                     errors[name]?.message !== undefined ? "show" : "hide"

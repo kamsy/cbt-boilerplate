@@ -6,11 +6,17 @@ import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
-    first_name: yup
+    monthly_income: yup
         .string()
-        .required("Enter your kin's first name!")
+        .required("Enter your monthly!")
         .min(8),
-    last_name: yup.string().required("Enter your kin's last name!")
+    annual_income: yup.string().required("Enter your annual income!"),
+    sector: yup.string().required("Enter your sector!"),
+    position: yup.string().required("Enter your position!"),
+    duration: yup.string().required("Enter duration you've worked at company!"),
+    company_name: yup.string().required("Enter your company name!"),
+    address: yup.string().required("Enter your company address!"),
+    start_date: yup.string().required("Select date your resumed at company!")
 });
 
 const EmploymentInfo = ({ tab_key, kin }) => {
@@ -33,12 +39,13 @@ const EmploymentInfo = ({ tab_key, kin }) => {
             <div className="form-inputs-container">
                 <CustomInput
                     {...{
-                        label: "First Name",
-                        name: "first_name",
+                        label: "Monthly Income",
+                        name: "monthly_income",
                         register,
-                        placeholder: "Enter your kin's first name",
+                        placeholder: "Enter your monthly income",
                         errors,
-                        control
+                        control,
+                        type: "money"
                     }}
                 />
                 <CustomInput
