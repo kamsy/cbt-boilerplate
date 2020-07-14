@@ -18,9 +18,9 @@ const LandingHeader = () => {
         });
         hamburger_cont.addEventListener("click", () => _toggleMenu());
         window.addEventListener("scroll", () => {
-            let last_known_scroll_position = 0;
+            // let last_known_scroll_position = 0;
             console.log("window", window, window.scrollY, window.pageYOffset);
-            last_known_scroll_position = window.scrollY;
+            // last_known_scroll_position = window.scrollY;
             const scroll_pos = window.pageYOffset;
             if (scroll_pos > 50) {
                 header.classList.add("show-bg");

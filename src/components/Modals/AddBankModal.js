@@ -6,7 +6,6 @@ import * as yup from "yup";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 import BankServices from "../../services/bankServices";
-import { NotifySuccess } from "../Notification";
 const { Option } = Select;
 
 const schema = yup.object().shape({

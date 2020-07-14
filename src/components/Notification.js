@@ -1,4 +1,3 @@
-import React from "react";
 import { notification } from "antd";
 import PropTypes from "prop-types";
 const key = "updatable";
@@ -10,7 +9,6 @@ const NotifySuccess = (description, duration = 5) =>
         duration,
         getContainer: () => document.querySelector(".layout"),
         className: "success"
-        // icon: <SuccessToastSvg />
     });
 
 NotifySuccess.propTypes = {
@@ -26,7 +24,6 @@ const NotifyError = (description, duration = 5) =>
         duration,
         getContainer: () => document.querySelector(".layout"),
         className: "error"
-        // icon: <ErrorToastSvg />
     });
 
 NotifyError.propTypes = {

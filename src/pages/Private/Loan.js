@@ -5,16 +5,9 @@ import {
     pageTransitions
 } from "../../components/ProtectedLayout";
 import { _formatMoney } from "../../services/utils";
-import { EllipsisOutlined } from "@ant-design/icons";
-import { Dropdown, Menu, Tabs, Button, Popconfirm } from "antd";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import "../../scss/loan.scss";
 import LoanServices from "../../services/loanServices";
-
-import CardServices from "../../services/cardServices";
-import VisaCard from "../../assets/svgs/VisaCard";
-import MasterCard from "../../assets/svgs/MasterCard";
-import MicroChip from "../../assets/svgs/MicroChip";
 import MomentAdapter from "@date-io/moment";
 
 const moment = new MomentAdapter();

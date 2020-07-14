@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { url } from "../../App";
+import { url, fakeAuth } from "../../App";
 import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -13,7 +13,8 @@ import {
     auth_pageTransitions
 } from "../../components/ProtectedLayout";
 import AuthServices from "../../services/authServices";
-import { NotifyError, NotifySuccess } from "../../components/Notification";
+import { encryptAndStore } from "../../services/localStorageHelper";
+import { ENCRYPT_USER } from "../../variables";
 const schema = yup.object().shape({
     name: yup.string().required("Enter your full name!"),
     username: yup.string().required("Enter your username!"),
@@ -37,15 +38,29 @@ const Register = () => {
     const { handleSubmit, control, errors, register, setError } = methods;
 
     const onSubmit = async payload => {
-        const { status, data } = await AuthServices.registerService(payload);
+        set_loading(true);
+        const res = await AuthServices.registerService(payload);
+        set_loading(false);
+        const { status, data } = res;
         if (status === 422) {
             const errKeys = Object.keys(data.errors);
             const valKeys = Object.values(data.errors);
             errKeys.forEach((err, i) => {
                 setError(err, { type: "manual", message: valKeys[i][0] });
             });
-        } else {
-            // NotifySuccess;
+        } else if (status === 201) {
+            fakeAuth.authenticate();
+            localStorage.setItem("loggedIn", JSON.stringify(true));
+            encryptAndStore(
+                ENCRYPT_USER,
+                {
+                    token: data.data.token,
+                    expires_in: 3600,
+                    user_info: data.data.user
+                },
+                true
+            );
+            return history.push(`${url}dashboard`);
         }
     };
     return (

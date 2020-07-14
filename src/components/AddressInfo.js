@@ -36,11 +36,16 @@ const AddressInfo = ({ tab_key }) => {
         setTimeout(() => {
             window._toggleLoader();
         }, 500);
-        const { status, data } = res;
+        const {
+            status,
+            data: {
+                address: { address, type, duration }
+            }
+        } = res;
         if (status === 201) {
-            setValue("address", data.address.address);
-            setValue("type", data.address.type);
-            setValue("duration", data.address.duration);
+            setValue("address", address);
+            setValue("type", type);
+            setValue("duration", duration);
         }
     };
 
@@ -50,11 +55,14 @@ const AddressInfo = ({ tab_key }) => {
         setTimeout(() => {
             window._toggleLoader();
         }, 500);
-        const { status, data } = res;
-        if (status === 200) {
-            setValue("address", data.address.address);
-            setValue("type", data.address.type);
-            setValue("duration", data.address.duration);
+        const {
+            status,
+            data: { address }
+        } = res;
+        if (status === 200 && address) {
+            setValue("address", address.address);
+            setValue("type", address.type);
+            setValue("duration", address.duration);
         }
     };
 

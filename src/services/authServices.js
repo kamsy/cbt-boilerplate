@@ -1,5 +1,4 @@
 import { postFunc } from "./httpService";
-import { __DEV__ } from "./localStorageHelper";
 
 export const base_url = "https://api.gbasgbos.xyz/api/";
 

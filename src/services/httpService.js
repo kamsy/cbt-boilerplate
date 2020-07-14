@@ -1,8 +1,5 @@
 import { decryptAndRead } from "./localStorageHelper";
-import { useHistory } from "react-router-dom";
-
 import axios from "axios";
-import { url } from "../App";
 import { ENCRYPT_USER } from "../variables";
 // import { NotifyClose, NotifyError } from "../../reuse/Notify";
 

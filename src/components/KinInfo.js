@@ -44,11 +44,16 @@ const KinInfo = ({ tab_key }) => {
         setTimeout(() => {
             window._toggleLoader();
         }, 500);
-        const { status, data } = res;
+        const {
+            status,
+            data: {
+                kin: { name, phone, url }
+            }
+        } = res;
         if (status === 201) {
-            setValue("name", data.kin.name);
-            setValue("phone", data.kin.phone);
-            setValue("url", data.kin.url);
+            setValue("name", name);
+            setValue("phone", phone);
+            setValue("url", url);
         }
     };
 
@@ -58,11 +63,14 @@ const KinInfo = ({ tab_key }) => {
         setTimeout(() => {
             window._toggleLoader();
         }, 500);
-        const { status, data } = res;
-        if (status === 200) {
-            setValue("name", data.kin?.name);
-            setValue("phone", data.kin?.phone);
-            setValue("url", data.kin.url);
+        const {
+            status,
+            data: { kin }
+        } = res;
+        if (status === 200 && kin) {
+            setValue("name", kin.name);
+            setValue("phone", kin.phone);
+            setValue("url", kin.url);
         }
     };
 
