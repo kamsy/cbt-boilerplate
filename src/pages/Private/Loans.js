@@ -6,7 +6,7 @@ import {
 } from "../../components/ProtectedLayout";
 import { _formatMoney } from "../../services/utils";
 import { EllipsisOutlined } from "@ant-design/icons";
-import { Dropdown, Menu, Input } from "antd";
+import { Dropdown, Menu, Input, Pagination } from "antd";
 import { Link } from "react-router-dom";
 import "../../scss/loans.scss";
 import { url } from "../../App";
@@ -93,7 +93,7 @@ const Loans = () => {
                 window._toggleLoader();
             }, 100);
             NotifySuccess(data.message);
-            getLoans();
+            getLoans({ page: 1 });
         }
     };
 
@@ -107,11 +107,11 @@ const Loans = () => {
         set_loan_info(payload);
     };
 
-    const getLoans = () => {
+    const getLoans = ({ page }) => {
         setTimeout(() => {
             window._toggleLoader();
         }, 100);
-        LoanServices.getLoansService().then(({ status, data }) => {
+        LoanServices.getLoansService({ page }).then(({ status, data }) => {
             setTimeout(() => {
                 window._toggleLoader();
             }, 500);
@@ -121,8 +121,10 @@ const Loans = () => {
         });
     };
 
+    const onPaginationChange = page => getLoans({ page });
+
     useEffect(() => {
-        getLoans();
+        getLoans({ page: 1 });
     }, []);
     return (
         <motion.div
@@ -264,6 +266,16 @@ const Loans = () => {
                         )}
                     </tbody>
                 </table>
+            </div>
+            <div className="pagination-container">
+                <Pagination
+                    total={loans.total}
+                    hideOnSinglePage
+                    {...{
+                        onChange: onPaginationChange,
+                        current: loans.current_page
+                    }}
+                />
             </div>
         </motion.div>
     );

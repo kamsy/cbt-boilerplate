@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-import { Modal, Select, message } from "antd";
-import { useForm, Controller } from "react-hook-form";
+import { Modal } from "antd";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 import CustomInput from "../CustomInput";
 import CustomButton from "../CustomButton";
-import BankServices from "../../services/bankServices";
 import { NotifySuccess } from "../Notification";
 import LoanServices from "../../services/loanServices";
 import { _formatMoney } from "../../services/utils";
-const { Option } = Select;
 
 const schema = yup.object().shape({
     amount: yup.string().required("Enter the amount you want to repay!")
@@ -60,7 +58,7 @@ const PartRepaymentModal = ({
         const { status, data } = res;
         if (status === 200) {
             NotifySuccess(data.message);
-            getLoans();
+            getLoans({ page: 1 });
             return closeModal();
         }
     };
@@ -83,7 +81,7 @@ const PartRepaymentModal = ({
                 className="form form-repay-loan"
                 name="repay-loan-form"
                 onSubmit={handleSubmit(onSubmit)}>
-                <span> Amount to pay:</span>
+                <span>Amount to pay:</span>
                 <p className="amount-owed">{_formatMoney(balance / 100)}</p>
 
                 <CustomInput
