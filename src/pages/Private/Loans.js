@@ -13,12 +13,20 @@ import { url } from "../../App";
 import LoanServices from "../../services/loanServices";
 import MomentAdapter from "@date-io/moment";
 import { NotifySuccess } from "../../components/Notification";
+import PartRepaymentModal from "../../components/Modals/PartRepaymentModal";
 const { Search } = Input;
 const moment = new MomentAdapter();
 
 const Loans = () => {
     const history = useHistory();
-    const menu = ({ id, approved, reviewed, repaid_loan }) => (
+    const menu = ({
+        id,
+        approved,
+        reviewed,
+        repaid_loan,
+        paid,
+        repay_amount
+    }) => (
         <Menu>
             <Menu.Item
                 key="1"
@@ -34,7 +42,11 @@ const Loans = () => {
                 </Menu.Item>
             )}
             {!repaid_loan && approved && reviewed && (
-                <Menu.Item key="3">Pay Part</Menu.Item>
+                <Menu.Item
+                    key="3"
+                    onClick={() => openInputModal({ id, paid, repay_amount })}>
+                    Pay Part
+                </Menu.Item>
             )}
             {!reviewed && (
                 <Menu.Item key="4" className="red">
@@ -46,6 +58,7 @@ const Loans = () => {
 
     const [loans, set_loans] = useState({});
     const [open_input_modal, set_open_input_modal] = useState(false);
+    const [loan_info, set_loan_info] = useState({});
 
     const payFullLoan = async id => {
         window._toggleLoader();
@@ -61,21 +74,10 @@ const Loans = () => {
         }
     };
 
-    const payPartLoan = async id => {
-        window._toggleLoader();
-        const res = await LoanServices.payPartLoanService({ id });
-        console.log("Loans -> res", res);
-        const { status, data } = res;
-        if (status === 200) {
-            setTimeout(() => {
-                window._toggleLoader();
-            }, 100);
-            NotifySuccess(data.message);
-            getLoans();
-        }
+    const openInputModal = payload => {
+        set_open_input_modal(true);
+        set_loan_info(payload);
     };
-
-    const openInputModal = () => set_open_input_modal(true);
 
     const getLoans = () => {
         setTimeout(() => {
@@ -103,6 +105,15 @@ const Loans = () => {
             exit="out"
             transition={pageTransitions}
             variants={pageVariants}>
+            <PartRepaymentModal
+                {...{
+                    loan_info,
+                    set_loan_info,
+                    set_open_input_modal,
+                    open_input_modal,
+                    getLoans
+                }}
+            />
             <div className="search-container">
                 <Search
                     placeholder="Search loans by username or fullname"
@@ -153,7 +164,9 @@ const Loans = () => {
                                     <td>
                                         <span
                                             className={
-                                                paid === repay_amount
+                                                paid === repay_amount ||
+                                                (paid > 0 &&
+                                                    paid < repay_amount)
                                                     ? "paid-card"
                                                     : approved
                                                     ? "approve-card"
@@ -163,6 +176,9 @@ const Loans = () => {
                                             }>
                                             {paid === repay_amount
                                                 ? "repaid"
+                                                : paid > 0 &&
+                                                  paid < repay_amount
+                                                ? "Repaying"
                                                 : approved
                                                 ? "approved"
                                                 : rejected
@@ -184,6 +200,8 @@ const Loans = () => {
                                                 approved,
                                                 rejected,
                                                 reviewed,
+                                                repay_amount,
+                                                paid,
                                                 repaid_loan:
                                                     paid === repay_amount
                                             })}>

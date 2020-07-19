@@ -1,18 +1,29 @@
 import React, { useState } from "react";
-import { Modal, Select } from "antd";
+import { Modal, Select, message } from "antd";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 import CustomInput from "../CustomInput";
 import CustomButton from "../CustomButton";
 import BankServices from "../../services/bankServices";
+import { NotifySuccess } from "../Notification";
+import LoanServices from "../../services/loanServices";
+import { _formatMoney } from "../../services/utils";
 const { Option } = Select;
 
 const schema = yup.object().shape({
     amount: yup.string().required("Enter the amount you want to repay!")
 });
 
-const PartRepaymentModal = ({ set_open_input_modal, open_input_modal }) => {
+const PartRepaymentModal = ({
+    set_open_input_modal,
+    open_input_modal,
+    getLoans,
+    set_loan_info,
+    loan_info
+}) => {
+    const { paid, id, repay_amount } = loan_info;
+    const balance = repay_amount - paid;
     const [loading, set_loading] = useState(false);
     const methods = useForm({
         resolver: yupResolver(schema)
@@ -23,40 +34,60 @@ const PartRepaymentModal = ({ set_open_input_modal, open_input_modal }) => {
         errors,
         register,
         reset,
-        setValue,
         setError
     } = methods;
 
     const onSubmit = async payload => {
-        set_loading(true);
-        const res = await BankServices.addBankService({
-            ...payload,
-            paystack_bank_code
-        });
-        setTimeout(() => {
-            set_loading(false);
-        }, 500);
-        if (res.status === 201) {
-            getBank();
-            return set_open_modal(false);
+        const amount =
+            payload.amount
+                .split(",")
+                .join("")
+                .split("₦")
+                .join("") * 100;
+
+        console.log("amount", { amount, balance });
+        if (amount > balance) {
+            return setError("amount", {
+                type: "manual",
+                message: "Amount is greater than what you owe"
+            });
         }
+        set_loading(true);
+
+        const res = await LoanServices.payPartLoanService({
+            id,
+            amount
+        });
+        console.log("Loans -> res", res);
+        const { status, data } = res;
+        if (status === 200) {
+            NotifySuccess(data.message);
+            getLoans();
+            return closeModal();
+        }
+    };
+
+    const closeModal = () => {
+        reset();
+        set_loan_info({});
+        return set_open_input_modal(false);
     };
 
     return (
         <Modal
             getContainer={() => document.getElementById("loans-history")}
             destroyOnClose
-            title="Add Bank"
-            visible={open_modal}
+            title="Repay Loan"
+            visible={open_input_modal}
             footer={null}
-            onCancel={() => {
-                reset();
-                set_open_modal(false);
-            }}>
+            onCancel={closeModal}>
             <form
-                className="form-add-bank form"
-                name="add-bank-form"
+                className="form form-repay-loan"
+                name="repay-loan-form"
                 onSubmit={handleSubmit(onSubmit)}>
+                <span> Amount to pay:</span>
+                <p className="amount-owed">{_formatMoney(balance / 100)}</p>
+
                 <CustomInput
                     {...{
                         label: "Amount to Repay",
@@ -64,7 +95,8 @@ const PartRepaymentModal = ({ set_open_input_modal, open_input_modal }) => {
                         register,
                         placeholder: "Enter amount",
                         errors,
-                        control
+                        control,
+                        type: "money"
                     }}
                 />
 

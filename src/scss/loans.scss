@@ -15,9 +15,7 @@
         -ms-flex-align: center;
         align-items: center;
 
-        .ant-input-group-wrapper
-
-        {
+        .ant-input-group-wrapper {
 
             width: calc(100% - 20% - 64px);
             margin-right: 64px;
@@ -211,6 +209,21 @@
                     border: none;
                 }
             }
+        }
+    }
+
+    .form-repay-loan {
+        span {
+
+            font-size: 14px;
+            line-height: 1.5715;
+            display: block
+        }
+
+        .amount-owed {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 24px
         }
     }
 }
