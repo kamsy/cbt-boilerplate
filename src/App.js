@@ -185,11 +185,11 @@ const App = () => {
                             title="Request Loan"
                         />
 
-                        <PrivateRoute
+                        {/* <PrivateRoute
                             path={`${url}loans/:id`}
                             component={Loan}
                             title="Loan"
-                        />
+                        /> */}
                         <PrivateRoute
                             path={`${url}loans`}
                             component={Loans}

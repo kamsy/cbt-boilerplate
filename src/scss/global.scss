@@ -13,6 +13,41 @@
     -webkit-transition: all 0.5s ease-in-out;
     transition: all 0.5s ease-in-out;
 
+    &.full-size {
+        width: 100%;
+    }
+
+    &.half-size {
+        width: calc((100% - 36px)/ 2);
+        margin: 12px 36px 12px 0;
+
+        &:last-of-type {
+            margin-right: 0
+        }
+    }
+
+    &.red-bg {
+        color: $red !important;
+        background: rgba($red, 0.3) !important;
+
+        &::after,
+        &:hover {
+            background: $red !important;
+            color: $white !important
+        }
+    }
+
+    &.invert-bg {
+        color: $blue !important;
+        background: rgba($blue, 0.3) !important;
+
+        &::after,
+        &:hover {
+            background: $blue !important;
+            color: $white !important
+        }
+    }
+
     &::after {
         content: '';
         position: absolute;
@@ -224,4 +259,10 @@
         }
     }
 
+}
+
+
+.ant-spin-dot,
+.ant-spin-text {
+    color: $blue !important
 }

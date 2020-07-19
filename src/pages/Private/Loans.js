@@ -7,30 +7,51 @@ import {
 import { _formatMoney } from "../../services/utils";
 import { EllipsisOutlined } from "@ant-design/icons";
 import { Dropdown, Menu, Input } from "antd";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../../scss/loans.scss";
 import { url } from "../../App";
 import LoanServices from "../../services/loanServices";
 import MomentAdapter from "@date-io/moment";
 import { NotifySuccess } from "../../components/Notification";
 import PartRepaymentModal from "../../components/Modals/PartRepaymentModal";
+import ViewLoanModal from "../../components/Modals/ViewLoanModal";
 const { Search } = Input;
 const moment = new MomentAdapter();
 
 const Loans = () => {
-    const history = useHistory();
     const menu = ({
         id,
         approved,
         reviewed,
         repaid_loan,
+        repay_amount,
         paid,
-        repay_amount
+        duration,
+        amount,
+        rejected,
+        due,
+        created_at,
+        rejection_reason
     }) => (
         <Menu>
             <Menu.Item
                 key="1"
-                onClick={() => history.push(`${url}loans/${id}`)}>
+                onClick={() =>
+                    openViewLoanModal({
+                        id,
+                        approved,
+                        reviewed,
+                        repaid_loan,
+                        repay_amount,
+                        paid,
+                        duration,
+                        amount,
+                        due,
+                        rejected,
+                        rejection_reason,
+                        created_at
+                    })
+                }>
                 View
             </Menu.Item>
             {!repaid_loan && approved && reviewed && (
@@ -58,12 +79,14 @@ const Loans = () => {
 
     const [loans, set_loans] = useState({});
     const [open_input_modal, set_open_input_modal] = useState(false);
+    const [open_loan_detail_modal, set_open_loan_detail_modal] = useState(
+        false
+    );
     const [loan_info, set_loan_info] = useState({});
 
     const payFullLoan = async id => {
         window._toggleLoader();
         const res = await LoanServices.payFullLoanService(id);
-        console.log("Loans -> res", res);
         const { status, data } = res;
         if (status === 200) {
             setTimeout(() => {
@@ -72,6 +95,11 @@ const Loans = () => {
             NotifySuccess(data.message);
             getLoans();
         }
+    };
+
+    const openViewLoanModal = payload => {
+        set_open_loan_detail_modal(true);
+        set_loan_info(payload);
     };
 
     const openInputModal = payload => {
@@ -114,6 +142,16 @@ const Loans = () => {
                     getLoans
                 }}
             />
+            <ViewLoanModal
+                {...{
+                    open_loan_detail_modal,
+                    set_open_loan_detail_modal,
+                    loan_info,
+                    set_loan_info,
+                    payFullLoan,
+                    openInputModal
+                }}
+            />
             <div className="search-container">
                 <Search
                     placeholder="Search loans by username or fullname"
@@ -149,7 +187,9 @@ const Loans = () => {
                                 id,
                                 approved,
                                 rejected,
-                                reviewed
+                                reviewed,
+                                rejection_reason,
+                                created_at
                             }) => (
                                 <tr key={id}>
                                     <td>{_formatMoney(amount / 100)}</td>
@@ -203,7 +243,12 @@ const Loans = () => {
                                                 repay_amount,
                                                 paid,
                                                 repaid_loan:
-                                                    paid === repay_amount
+                                                    paid === repay_amount,
+                                                duration,
+                                                amount,
+                                                due,
+                                                rejection_reason,
+                                                created_at
                                             })}>
                                             <EllipsisOutlined
                                                 className="ellipsis"

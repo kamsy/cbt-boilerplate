@@ -45,7 +45,6 @@ const PartRepaymentModal = ({
                 .split("₦")
                 .join("") * 100;
 
-        console.log("amount", { amount, balance });
         if (amount > balance) {
             return setError("amount", {
                 type: "manual",
@@ -58,7 +57,6 @@ const PartRepaymentModal = ({
             id,
             amount
         });
-        console.log("Loans -> res", res);
         const { status, data } = res;
         if (status === 200) {
             NotifySuccess(data.message);
