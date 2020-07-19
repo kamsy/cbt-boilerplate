@@ -55,6 +55,7 @@ const Sidebar = () => {
                 {_listGen("dashboard", "Dashboard")}
                 {_listGen("create-loan", "Request Loan")}
                 {_listGen("loans", "Loan History")}
+                {_listGen("wallet", "Wallet")}
             </ul>
         </div>
     );

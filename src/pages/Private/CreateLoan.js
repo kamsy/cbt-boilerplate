@@ -38,16 +38,11 @@ const CreateLoan = () => {
         bank_statement: false,
         identification_document: false
     });
-    const [loading, set_loading] = useState(false);
     const [amount, set_amount] = useState("");
     const [repay_amount, set_repay_amount] = useState("");
     const [duration, set_duration] = useState(0);
     const [bank_statement, set_bank_statement] = useState(null);
-    console.log(
-        "CreateLoan -> bank_statement",
-        bank_statement,
-        bank_statement && bank_statement[0]
-    );
+
     const [identification_document, set_identification_document] = useState(
         null
     );
@@ -60,6 +55,7 @@ const CreateLoan = () => {
             bank_statement &&
             identification_document
         ) {
+            console.log("onSubmit -> repay_amount", repay_amount);
             window._toggleLoader();
             var formData = new FormData();
             formData.append("amount", amount * 100);
@@ -109,7 +105,7 @@ const CreateLoan = () => {
                 after_floor_charge_duration);
 
         const total = amt + floor + after_floor;
-        set_repay_amount(total);
+        set_repay_amount(Math.floor(total));
     };
 
     const _handleDuration = val => {
@@ -122,7 +118,6 @@ const CreateLoan = () => {
 
     const uploadButton = (
         <div>
-            {loading ? <LoadingOutlined /> : <PlusOutlined />}
             <div className="ant-upload-text">
                 Click to upload <br /> or
                 <br /> Drag 'n' drop to upload

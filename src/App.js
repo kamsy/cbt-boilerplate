@@ -14,6 +14,7 @@ import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import Dashboard from "./pages/Private/Dashboard";
 import Loans from "./pages/Private/Loans";
+import Wallet from "./pages/Private/Wallet";
 import Loan from "./pages/Private/Loan";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import { AnimatePresence } from "framer";
@@ -199,6 +200,11 @@ const App = () => {
                             path={`${url}profile`}
                             component={Profile}
                             title="Account"
+                        />
+                        <PrivateRoute
+                            path={`${url}wallet`}
+                            component={Wallet}
+                            title="Wallet"
                         />
                         {/* <Route
                                 eaxct

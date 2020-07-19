@@ -9,9 +9,7 @@ import ProfileUser from "../assets/svgs/ProfileUser";
 
 const Header = ({ title }) => {
     const history = useHistory();
-    console.log("Header -> history", history);
     const params = useParams();
-    console.log("Header -> params", params);
     useEffect(() => {
         const hamburger_cont = document.querySelector(".hamburger-container");
         const hamburger1 = document.querySelector(".hamburger");
