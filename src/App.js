@@ -15,12 +15,13 @@ import Register from "./pages/Auth/Register";
 import Dashboard from "./pages/Private/Dashboard";
 import Loans from "./pages/Private/Loans";
 import Wallet from "./pages/Private/Wallet";
-import Loan from "./pages/Private/Loan";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import { AnimatePresence } from "framer";
 import Profile from "./pages/Private/Profile";
 import CreateLoan from "./pages/Private/CreateLoan";
 import { ENCRYPT_USER } from "./variables";
+import Page500 from "./pages/500";
+import Page404 from "./pages/404";
 const { localStorage } = window;
 export const url = "/app/";
 // variable to hold auth status and also functions to convert it
@@ -185,11 +186,6 @@ const App = () => {
                             title="Request Loan"
                         />
 
-                        {/* <PrivateRoute
-                            path={`${url}loans/:id`}
-                            component={Loan}
-                            title="Loan"
-                        /> */}
                         <PrivateRoute
                             path={`${url}loans`}
                             component={Loans}
@@ -206,22 +202,10 @@ const App = () => {
                             component={Wallet}
                             title="Wallet"
                         />
-                        {/* <Route
-                                eaxct
-                                path={`${url}#/500`}
-                                component={Page_500}
-                            />
-                            <Route
-                                exact
-                                path={`${url}#/403`}
-                                component={Page_403}
-                            />
-                            <Route
-                                exact
-                                path={`${url}#/404`}
-                                component={Page_404}
-                            /> */}
-                        <Route path="*"></Route>
+                        <Route eaxct path={`${url}#/500`} component={Page500} />
+
+                        <Route exact path={`${url}#/404`} component={Page404} />
+                        <Route path="*" component={Page404}></Route>
                         {/* render={props => (
                                     <Redirect
                                         to={{

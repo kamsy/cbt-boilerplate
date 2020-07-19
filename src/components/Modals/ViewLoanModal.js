@@ -3,7 +3,6 @@ import { Modal } from "antd";
 import CustomButton from "../CustomButton";
 import MomentAdapter from "@date-io/moment";
 import { _formatMoney } from "../../services/utils";
-import { Loader } from "../Loader";
 
 const moment = new MomentAdapter();
 const ViewLoanModal = ({
