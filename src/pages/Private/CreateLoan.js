@@ -6,16 +6,13 @@ import {
 } from "../../components/ProtectedLayout";
 import { _formatMoney } from "../../services/utils";
 import "../../scss/create-loan.scss";
-import { Input, Select, Upload, message } from "antd";
+import { Input, Upload, message } from "antd";
 import NumberFormat from "react-number-format";
-import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import CustomButton from "../../components/CustomButton";
 import LoanServices from "../../services/loanServices";
 import { NotifySuccess } from "../../components/Notification";
 import { useHistory } from "react-router-dom";
 import { url } from "../../App";
-
-const { Option } = Select;
 
 function beforeUpload(file) {
     const isPDF = file.type === "application/pdf";
@@ -26,7 +23,6 @@ function beforeUpload(file) {
     if (!isLt2M) {
         message.error("PDF must smaller than 2MB!");
     }
-    // return isPDF && isLt2M;
     return false;
 }
 
@@ -55,7 +51,6 @@ const CreateLoan = () => {
             bank_statement &&
             identification_document
         ) {
-            console.log("onSubmit -> repay_amount", repay_amount);
             window._toggleLoader();
             var formData = new FormData();
             formData.append("amount", amount * 100);
@@ -88,7 +83,7 @@ const CreateLoan = () => {
         const amt = Number(value);
         if (amt > 0) set_errors({ ...errors, amount: false });
         set_amount(amt);
-        if (duration < 30) return;
+        if (duration < 1) return;
         calculateRepayment({ amt, time: duration });
     };
 
@@ -98,18 +93,25 @@ const CreateLoan = () => {
         const floor_charge_duration = 1;
         const after_floor_charge_duration = 29;
 
-        const floor = amt * floor_percent;
+        const floor =
+            time <= 30
+                ? amt * floor_percent
+                : amt * floor_percent * Math.ceil(time / 30);
         const after_floor =
-            amt *
-            (((time - floor_charge_duration) * after_floor_percent) /
-                after_floor_charge_duration);
-
+            time <= 30
+                ? amt *
+                  (((time - floor_charge_duration) * after_floor_percent) /
+                      after_floor_charge_duration)
+                : Math.ceil(time / 30) *
+                  amt *
+                  (((30 - floor_charge_duration) * after_floor_percent) /
+                      after_floor_charge_duration);
         const total = amt + floor + after_floor;
         set_repay_amount(Math.floor(total));
     };
 
-    const _handleDuration = val => {
-        const time = Number(val);
+    const _handleDuration = ({ target: { value } }) => {
+        const time = Number(value);
         set_duration(time);
         set_errors({ ...errors, duration: false });
         if (amount < 1) return;
@@ -127,12 +129,10 @@ const CreateLoan = () => {
 
     const _handleDocumentUpload = ({ file }) => {
         set_identification_document(file);
-        // set_errors({ ...errors, identification_document: false });
     };
 
     const _handleBankStatement = ({ file }) => {
         set_bank_statement(file);
-        // set_errors({ ...errors, bank_statement: false });
     };
 
     return (
@@ -180,23 +180,25 @@ const CreateLoan = () => {
                             </label>
                             <label>
                                 duration
-                                <Select
+                                <Input
                                     className={`${
                                         errors.duration
                                             ? "show-error"
                                             : "hide-error"
                                     }`}
+                                    value={duration}
                                     onChange={_handleDuration}
-                                    placeholder="Select Period">
-                                    <Option value="30">30 days</Option>
-                                    <Option value="60">60 days</Option>
-                                    <Option value="90">90 days</Option>
-                                </Select>
+                                    placeholder="Enter Duration"
+                                />
                                 <p
                                     className={`form-error-text ${
-                                        errors.duration ? "show" : "hide"
+                                        Number(duration) > 90 || errors.duration
+                                            ? "show"
+                                            : "hide"
                                     }`}>
-                                    {errors.duration && "Select a duration!"}
+                                    {Number(duration) > 90
+                                        ? "Loan tenure cannot exceed 90 days"
+                                        : "Input duration"}
                                 </p>
                             </label>
                             <p className="repayment">

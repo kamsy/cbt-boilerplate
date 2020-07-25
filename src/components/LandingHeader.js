@@ -7,7 +7,6 @@ const LandingHeader = () => {
         const header = document.querySelector(".landing-page-header");
         const mobile_nav = document.querySelector(".mobile-nav-container");
         const list_items = document.querySelectorAll(".mobile-list");
-        console.log("list_items", list_items);
 
         const _toggleMenu = () => {
             hamburger.classList.toggle("show");
@@ -18,21 +17,12 @@ const LandingHeader = () => {
         });
         hamburger_cont.addEventListener("click", () => _toggleMenu());
         window.addEventListener("scroll", () => {
-            // let last_known_scroll_position = 0;
-            console.log("window", window, window.scrollY, window.pageYOffset);
-            // last_known_scroll_position = window.scrollY;
             const scroll_pos = window.pageYOffset;
             if (scroll_pos > 50) {
                 header.classList.add("show-bg");
             } else {
                 header.classList.remove("show-bg");
             }
-            // if (
-            //     scroll_pos > 200 &&
-            //     hamburger.classList.length === 2 &&
-            //     hamburger.classList[1] === "show"
-            // )
-            //     return _toggleMenu();
         });
     }, []);
     const _listGen = (path, label, extraClass = "") => {

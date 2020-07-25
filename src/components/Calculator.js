@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import "../scss/landing.scss";
-import { Input, Select } from "antd";
+import { Input } from "antd";
 import NumberFormat from "react-number-format";
 import { _formatMoney } from "../services/utils";
-const { Option } = Select;
 
 const Calculator = () => {
     const [amount, set_amount] = useState("");
@@ -32,13 +31,12 @@ const Calculator = () => {
         set_repay_amount(total);
     };
 
-    const _handleDuration = val => {
-        const time = Number(val);
+    const _handleDuration = ({ target: { value } }) => {
+        const time = Number(value);
         set_duration(time);
         if (amount < 1) return;
         calculateRepayment({ amt: amount, time });
     };
-
     return (
         <div className="calculator">
             <div className="calculator-sub">
@@ -58,19 +56,22 @@ const Calculator = () => {
                         className={`form-error-text ${
                             Number(amount) > 100000 ? "show" : "hide"
                         }`}>
-                        {Number(amount) > 100000 &&
-                            "Maximum loan amount is ₦100,000"}
+                        Maximum loan amount is ₦100,000
                     </p>
                 </label>
                 <label>
                     duration
-                    <Select
+                    <Input
+                        value={duration}
                         onChange={_handleDuration}
-                        placeholder="Select Period">
-                        <Option value="30">30 days</Option>
-                        <Option value="60">60 days</Option>
-                        <Option value="90">90 days</Option>
-                    </Select>
+                        placeholder="Enter Duration"
+                    />
+                    <p
+                        className={`form-error-text ${
+                            Number(duration) > 90 ? "show" : "hide"
+                        }`}>
+                        Loan tenure cannot exceed 90 days
+                    </p>
                 </label>
 
                 <div className="breakdown">
