@@ -292,6 +292,57 @@
 
     }
 
+    .table-container {
+        .table {
+            width: 100%
+        }
+
+        tr {
+            border-bottom: 1px solid rgba($grey, 0.5);
+        }
+
+        th,
+        td {
+            &:nth-child(1) {
+                width: 21%
+            }
+
+            &:nth-child(2) {
+                width: 16%
+            }
+
+            &:nth-child(3) {
+                width: 16%
+            }
+
+            &:nth-child(4) {
+                width: 31%
+            }
+
+            &:nth-child(5) {
+                width: 16%
+            }
+
+        }
+
+        tbody {
+            tr {
+                &:last-of-type {
+                    border: none;
+                }
+
+                td {
+                    &:first-of-type {
+                        color: $blue
+                    }
+                    &:nth-of-type(3){
+                        text-transform: capitalize
+                    }
+                }
+            }
+        }
+    }
+
     .form {
         .input-unit:first-of-type {
             margin-top: 0;

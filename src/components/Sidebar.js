@@ -55,7 +55,6 @@ const Sidebar = () => {
                 {_listGen("dashboard", "Dashboard")}
                 {_listGen("create-loan", "Request Loan")}
                 {_listGen("loans", "Loan History")}
-                {_listGen("transactions", "Transactions")}
                 {_listGen("wallet", "Wallet")}
                 {_listGen("bills", "Bills")}
                 {_listGen("profile", "Account")}

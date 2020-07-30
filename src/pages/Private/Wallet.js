@@ -5,7 +5,7 @@ import {
     pageTransitions
 } from "../../components/ProtectedLayout";
 import { _formatMoney, _limitText } from "../../services/utils";
-import { Button, Popconfirm } from "antd";
+import { Button, Popconfirm, Dropdown, Input, Pagination } from "antd";
 import "../../scss/wallet.scss";
 import { PaystackConsumer } from "react-paystack";
 import { decryptAndRead } from "../../services/localStorageHelper";
@@ -13,14 +13,18 @@ import { ENCRYPT_USER } from "../../variables";
 import BankServices from "../../services/bankServices";
 import AddBankModal from "../../components/Modals/AddBankModal";
 import { NotifySuccess } from "../../components/Notification";
-import UserServices from "../../services/userServices";
 import CardServices from "../../services/cardServices";
 import VisaCard from "../../assets/svgs/VisaCard";
 import MasterCard from "../../assets/svgs/MasterCard";
 import MicroChip from "../../assets/svgs/MicroChip";
-import MomentAdapter from "@date-io/moment";
 import WalletServices from "../../services/walletServices";
 import FundWalletModal from "../../components/Modals/FundWalletModal";
+import { EllipsisOutlined } from "@ant-design/icons";
+import MomentAdapter from "@date-io/moment";
+import TransactionsServices from "../../services/transactionsServices";
+import EmptyTable from "../../components/EmptyTable";
+const { Search } = Input;
+const moment = new MomentAdapter();
 
 const Wallet = () => {
     const { user_info } = decryptAndRead(ENCRYPT_USER);
@@ -147,7 +151,34 @@ const Wallet = () => {
         getCard();
         getBank();
         getWallet();
+        getTransactions({ page: 1 });
     }, []);
+
+    const [transactions, set_transactions] = useState([]);
+    const [open_input_modal, set_open_input_modal] = useState(false);
+    const [open_loan_detail_modal, set_open_loan_detail_modal] = useState(
+        false
+    );
+    const [loan_info, set_loan_info] = useState({});
+
+    const getTransactions = ({ page }) => {
+        setTimeout(() => {
+            window._toggleLoader();
+        }, 100);
+        TransactionsServices.getTransactionsService({ page }).then(
+            ({ status, data }) => {
+                setTimeout(() => {
+                    window._toggleLoader();
+                }, 500);
+                if (status === 200) {
+                    set_transactions(data.transactions || []);
+                }
+            }
+        );
+    };
+
+    const onPaginationChange = page => getTransactions({ page });
+
     return (
         <motion.div
             className="main wallet"
@@ -162,7 +193,8 @@ const Wallet = () => {
                 {...{
                     open_fund_wallet_modal,
                     set_open_fund_wallet_modal,
-                    getWallet
+                    getWallet,
+                    getTransactions
                 }}
             />
             <div className="top-section">
@@ -259,6 +291,65 @@ const Wallet = () => {
                         )}
                     </div>
                 </div>
+            </div>
+
+            <div className="search-container full">
+                <Search
+                    placeholder="Search transactions by type"
+                    size="large"
+                    enterButton="search"
+                    onSearch={value => console.log(value)}
+                />
+            </div>
+            <div className="table-container">
+                <table className="table">
+                    <thead className="table-header">
+                        <tr>
+                            <th>Transaction ID</th>
+                            <th>amount</th>
+                            <th>type</th>
+                            <th>description</th>
+                            <th>date</th>
+                        </tr>
+                    </thead>
+                    <tbody className="tableBody">
+                        {transactions.length < 1 ? (
+                            <EmptyTable text="No transactions" />
+                        ) : (
+                            transactions.map(
+                                ({
+                                    amount,
+                                    id,
+                                    created_at,
+                                    description,
+                                    type
+                                }) => (
+                                    <tr key={id}>
+                                        <td>{id}</td>
+                                        <td>{_formatMoney(amount / 100)}</td>
+                                        <td>{type}</td>
+                                        <td>{description}</td>
+                                        <td>
+                                            {moment
+                                                .moment(new Date(created_at))
+                                                .format("MMM DD, yyyy")}
+                                        </td>
+                                    </tr>
+                                )
+                            )
+                        )}
+                    </tbody>
+                </table>
+            </div>
+            <div className="pagination-container">
+                <Pagination
+                    total={transactions.total}
+                    hideOnSinglePage
+                    {...{
+                        onChange: onPaginationChange,
+                        current: transactions.current_page
+                    }}
+                />
             </div>
         </motion.div>
     );

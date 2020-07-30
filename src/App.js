@@ -22,7 +22,6 @@ import CreateLoan from "./pages/Private/CreateLoan";
 import { ENCRYPT_USER } from "./variables";
 import Page500 from "./pages/500";
 import Page404 from "./pages/404";
-import Transactions from "./pages/Private/Transactions";
 import Bills from "./pages/Private/Bills";
 const { localStorage } = window;
 export const url = "/app/";
@@ -194,11 +193,6 @@ const App = () => {
                             title="Loan History"
                         />
 
-                        <PrivateRoute
-                            path={`${url}transactions`}
-                            component={Transactions}
-                            title="Transactions"
-                        />
                         <PrivateRoute
                             path={`${url}bills`}
                             component={Bills}

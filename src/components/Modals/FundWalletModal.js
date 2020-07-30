@@ -15,7 +15,8 @@ const schema = yup.object().shape({
 const FundWalletModal = ({
     open_fund_wallet_modal,
     set_open_fund_wallet_modal,
-    getWallet
+    getWallet,
+    getTransactions
 }) => {
     const [loading, set_loading] = useState(false);
     const methods = useForm({
@@ -40,6 +41,7 @@ const FundWalletModal = ({
         if (status === 200) {
             NotifySuccess(data.message);
             getWallet();
+            getTransactions({ page: 1 });
             return closeModal();
         }
     };
