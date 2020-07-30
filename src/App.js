@@ -22,6 +22,7 @@ import CreateLoan from "./pages/Private/CreateLoan";
 import { ENCRYPT_USER } from "./variables";
 import Page500 from "./pages/500";
 import Page404 from "./pages/404";
+import Transactions from "./pages/Private/Transactions";
 const { localStorage } = window;
 export const url = "/app/";
 // variable to hold auth status and also functions to convert it
@@ -190,6 +191,12 @@ const App = () => {
                             path={`${url}loans`}
                             component={Loans}
                             title="Loan History"
+                        />
+
+                        <PrivateRoute
+                            path={`${url}transactions`}
+                            component={Transactions}
+                            title="Transactions"
                         />
 
                         <PrivateRoute

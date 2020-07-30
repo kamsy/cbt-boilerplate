@@ -30,8 +30,11 @@ body {
             color: $blue;
         }
 
-        .ant-spin-dot{font-size: 40px !important}
-         &.show {
+        .ant-spin-dot {
+            font-size: 40px !important
+        }
+
+        &.show {
             display: -webkit-box;
             display: -ms-flexbox;
             display: flex;
@@ -255,11 +258,11 @@ body {
 
 
             &:hover {
-                background: rgba($white,0.1)
+                background: rgba($white, 0.1)
             }
 
             &.active-route {
-                background: rgba($white,0.1);
+                background: rgba($white, 0.1);
             }
 
             &-name {
@@ -353,25 +356,23 @@ body {
     }
 
     .children-container {
-        padding: 5.5rem 36px 2rem;
+        position: relative;
+        padding: 5.5rem 36px;
         margin-left: auto;
         width: calc(100% - 160px);
-        min-height: 100%;
+        min-height: 100vh;
         background-color: rgba($blue, 0.02);
-
-        @include screen(1279) {
-            width: 100%
-        }
 
         @include screen(1279) {
             padding-left: 20px;
             padding-right: 20px;
+            width: 100%
         }
 
         .main {
             margin-left: auto;
             margin-right: auto;
-            overflow-y: scroll;
+            overflow-y: hidden;
 
             .table-container {
                 overflow-x: scroll;
@@ -399,10 +400,6 @@ body {
                 @include createCard($green)
             }
 
-            .paid-card {
-                @include createCard($blue)
-            }
-
             .reject-card {
                 @include createCard($red)
             }
@@ -410,7 +407,63 @@ body {
             .pending-card {
                 @include createCard($orange)
             }
+
+            .paid-card {
+                @include createCard($blue)
+            }
+
+
         }
+
+        .pagination-container {
+            position: absolute;
+            bottom: 36px;
+            width: calc(100% - 160px);
+            right: 36px;
+
+            @include screen(1279) {
+                width: 100%
+            }
+
+            @include screen(1279) {
+                right: 20px;
+            }
+
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: end;
+            -ms-flex-pack: end;
+            justify-content: flex-end;
+
+            .ant-pagination {
+                &-item {
+                    border-width: 0;
+                    -webkit-transition: 0.25s all ease-in-out;
+                    transition: 0.25s all ease-in-out;
+
+                    &-active {
+                        border: 1px solid $blue;
+
+                        a {
+                            color: $blue
+                        }
+                    }
+
+                    &-link {
+                        border: none;
+
+                        &:disabled {
+                            cursor: not-allowed;
+                        }
+
+                        cursor: pointer;
+                    }
+                }
+
+            }
+        }
+
     }
 
 

@@ -163,8 +163,9 @@ const Wallet = () => {
                         <p>{_formatMoney(wallet.amount / 100)}</p>
                     </div>
                 </div>
-                <Tabs defaultActiveKey="1">
-                    <TabPane tab="Bank" key="1">
+                <div className="bank-info-container">
+                    <h3>Bank info</h3>
+                    <div className="bank-info">
                         {!bank.id ? (
                             _renderEmptyState("bank")
                         ) : (
@@ -189,77 +190,66 @@ const Wallet = () => {
                                     onCancel={() => {}}
                                     okText="Yes"
                                     cancelText="No">
-                                    <Button className="custom-btn">
+                                    <Button className="custom-btn delete">
                                         Delete Bank
                                     </Button>
                                 </Popconfirm>
                             </div>
                         )}
-                    </TabPane>
-                    <TabPane tab="Card" key="2">
+                    </div>
+                </div>
+                <div className="card-info-container">
+                    <h3>Card info</h3>
+                    <div className="card-info">
                         {!card.id ? (
                             _renderEmptyState("card")
                         ) : (
                             <div className="card-information">
-                                <div className="left-col">
-                                    <div className="card">
-                                        <span className="chip">
-                                            <MicroChip />
-                                        </span>
-                                        <span className="last-four">
-                                            **** **** **** {card.last_four}
-                                        </span>
-                                        <span className="brand-logo">
-                                            {card.brand === "visa" ? (
-                                                <VisaCard />
-                                            ) : (
-                                                <MasterCard />
-                                            )}
-                                        </span>
-                                        <p>{_limitText(card.user.name, 25)}</p>
-                                    </div>
-                                    <Popconfirm
-                                        title="Are you sure you want to delete this card?"
-                                        getPopupContainer={() =>
-                                            document.querySelector(
-                                                ".card-information"
-                                            )
-                                        }
-                                        onConfirm={deleteCard}
-                                        onCancel={() => {}}
-                                        okText="Yes"
-                                        cancelText="No">
-                                        <Button className="custom-btn">
-                                            Delete Card
-                                        </Button>
-                                    </Popconfirm>
-                                </div>
-                                <div className="right-col">
-                                    <p>
+                                <div className="card">
+                                    <span className="chip">
+                                        <MicroChip />
+                                    </span>
+                                    <span className="last-four">
+                                        **** **** **** {card.last_four}
+                                    </span>
+                                    <span className="brand-logo">
+                                        {card.brand === "visa" ? (
+                                            <VisaCard />
+                                        ) : (
+                                            <MasterCard />
+                                        )}
+                                    </span>
+                                    <p className="card-bank">
                                         <span>Bank:</span>
                                         <span>{card.bank}</span>
                                     </p>
-                                    <p>
+                                    <p className="expiry">
                                         <span>expiry:</span>
                                         <span>
                                             {card.month}/{card.year}
                                         </span>
                                     </p>
-                                    <p>
-                                        <span>Added:</span>
-                                        <span>
-                                            {moment
-                                                .moment(
-                                                    new Date(card.created_at)
-                                                )
-                                                .format("MMM DD, yyyy")}
-                                        </span>
-                                    </p>
+                                    <p>{_limitText(card.user.name, 25)}</p>
                                 </div>
+                                <Popconfirm
+                                    title="Are you sure you want to delete this card?"
+                                    getPopupContainer={() =>
+                                        document.querySelector(
+                                            ".card-information"
+                                        )
+                                    }
+                                    onConfirm={deleteCard}
+                                    onCancel={() => {}}
+                                    okText="Yes"
+                                    cancelText="No">
+                                    <Button className="custom-btn delete">
+                                        Delete Card
+                                    </Button>
+                                </Popconfirm>
                             </div>
                         )}
-                    </TabPane>
-                </Tabs>
+                    </div>
+                </div>
             </div>
         </motion.div>
     );
