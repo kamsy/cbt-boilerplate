@@ -12,6 +12,10 @@ const schema = yup.object().shape({
     account_number: yup
         .string()
         .required("Enter your account number!")
+        .matches(
+            /^\d{10}(?!\d)$/,
+            "Alaye focus!... na account number be this?😐"
+        )
         .length(10),
     bank_name: yup.string().required("Please select a bank!")
 });

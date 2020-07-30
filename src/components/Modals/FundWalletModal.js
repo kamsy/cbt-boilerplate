@@ -65,7 +65,7 @@ const FundWalletModal = ({
                 onSubmit={handleSubmit(onSubmit)}>
                 <CustomInput
                     {...{
-                        label: "Enter amount to fund wallet with",
+                        label: "Amount to fund wallet with",
                         name: "amount",
                         register,
                         placeholder: "Enter amount",

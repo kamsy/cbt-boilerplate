@@ -19,7 +19,6 @@ import MasterCard from "../../assets/svgs/MasterCard";
 import MicroChip from "../../assets/svgs/MicroChip";
 import WalletServices from "../../services/walletServices";
 import FundWalletModal from "../../components/Modals/FundWalletModal";
-import { EllipsisOutlined } from "@ant-design/icons";
 import MomentAdapter from "@date-io/moment";
 import TransactionsServices from "../../services/transactionsServices";
 import EmptyTable from "../../components/EmptyTable";
@@ -155,11 +154,6 @@ const Wallet = () => {
     }, []);
 
     const [transactions, set_transactions] = useState([]);
-    const [open_input_modal, set_open_input_modal] = useState(false);
-    const [open_loan_detail_modal, set_open_loan_detail_modal] = useState(
-        false
-    );
-    const [loan_info, set_loan_info] = useState({});
 
     const getTransactions = ({ page }) => {
         setTimeout(() => {
@@ -314,10 +308,10 @@ const Wallet = () => {
                         </tr>
                     </thead>
                     <tbody className="tableBody">
-                        {transactions.length < 1 ? (
+                        {transactions.data?.length < 1 ? (
                             <EmptyTable text="No transactions" />
                         ) : (
-                            transactions.map(
+                            transactions.data?.map(
                                 ({
                                     amount,
                                     id,

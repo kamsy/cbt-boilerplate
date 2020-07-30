@@ -15,7 +15,7 @@ body {
     .window-loader {
         display: none;
         position: absolute;
-        height: 100vh;
+        min-height: 100%;
         width: 100%;
         z-index: 50;
         background: rgba(255, 255, 255, 0.5);
@@ -41,9 +41,6 @@ body {
         }
     }
 
-    // @include screen(1279) {
-    //     height: 100%
-    // }
 
     .header {
         z-index: 2;

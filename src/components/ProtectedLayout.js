@@ -59,10 +59,12 @@ const ProtectedLayout = ({ children, title }) => {
     }, []);
     return (
         <div className="protected-layout layout">
-            <Spin indicator={antIcon} className="window-loader" />
             <Header {...{ title }} />
             <Sidebar />
-            <main className="children-container">{children}</main>
+            <main className="children-container">
+                <Spin indicator={antIcon} className="window-loader" />
+                {children}
+            </main>
         </div>
     );
 };
