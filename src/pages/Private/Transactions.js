@@ -10,11 +10,10 @@ import { Dropdown, Menu, Input, Pagination } from "antd";
 import { Link } from "react-router-dom";
 import "../../scss/transactions.scss";
 import { url } from "../../App";
-import LoanServices from "../../services/loanServices";
 import MomentAdapter from "@date-io/moment";
 import { NotifySuccess } from "../../components/Notification";
-import PartRepaymentModal from "../../components/Modals/PartRepaymentModal";
-import ViewLoanModal from "../../components/Modals/ViewLoanModal";
+import TransactionsServices from "../../services/transactionsServices";
+import EmptyTable from "../../components/EmptyTable";
 const { Search } = Input;
 const moment = new MomentAdapter();
 
@@ -55,7 +54,7 @@ const Transactions = () => {
         </Menu>
     );
 
-    const [loans, set_transactions] = useState({});
+    const [transactions, set_transactions] = useState([]);
     const [open_input_modal, set_open_input_modal] = useState(false);
     const [open_loan_detail_modal, set_open_loan_detail_modal] = useState(
         false
@@ -66,14 +65,16 @@ const Transactions = () => {
         setTimeout(() => {
             window._toggleLoader();
         }, 100);
-        LoanServices.getLoansService({ page }).then(({ status, data }) => {
-            setTimeout(() => {
-                window._toggleLoader();
-            }, 500);
-            if (status === 200) {
-                set_transactions(data.loans || {});
+        TransactionsServices.getTransactionsService({ page }).then(
+            ({ status, data }) => {
+                setTimeout(() => {
+                    window._toggleLoader();
+                }, 500);
+                if (status === 200) {
+                    set_transactions(data.transactions || []);
+                }
             }
-        });
+        );
     };
 
     const onPaginationChange = page => getTransactions({ page });
@@ -90,9 +91,9 @@ const Transactions = () => {
             exit="out"
             transition={pageTransitions}
             variants={pageVariants}>
-            <div className="search-container">
+            <div className="search-container full">
                 <Search
-                    placeholder="Search transactions by username or fullname"
+                    placeholder="Search transactions by type"
                     size="large"
                     enterButton="search"
                     onSearch={value => console.log(value)}
@@ -112,89 +113,95 @@ const Transactions = () => {
                         </tr>
                     </thead>
                     <tbody className="tableBody">
-                        {loans.data?.map(
-                            ({
-                                duration,
-                                amount,
-                                repay_amount,
-                                due,
-                                paid,
-                                id,
-                                approved,
-                                rejected,
-                                reviewed,
-                                rejection_reason,
-                                created_at
-                            }) => (
-                                <tr key={id}>
-                                    <td>{_formatMoney(amount / 100)}</td>
-                                    <td>{duration} days</td>
-                                    <td>{_formatMoney(repay_amount / 100)}</td>
-                                    <td>{_formatMoney(paid / 100)}</td>
-                                    <td>
-                                        {moment
-                                            .moment(new Date(due))
-                                            .format("MMM DD, yyyy")}
-                                    </td>
-                                    <td>
-                                        <span
-                                            className={
-                                                paid === repay_amount ||
-                                                (paid > 0 &&
-                                                    paid < repay_amount)
-                                                    ? "paid-card"
+                        {transactions.length < 1 ? (
+                            <EmptyTable text="No transactions" />
+                        ) : (
+                            transactions.map(
+                                ({
+                                    duration,
+                                    amount,
+                                    repay_amount,
+                                    due,
+                                    paid,
+                                    id,
+                                    approved,
+                                    rejected,
+                                    reviewed,
+                                    rejection_reason,
+                                    created_at
+                                }) => (
+                                    <tr key={id}>
+                                        <td>{_formatMoney(amount / 100)}</td>
+                                        <td>{duration} days</td>
+                                        <td>
+                                            {_formatMoney(repay_amount / 100)}
+                                        </td>
+                                        <td>{_formatMoney(paid / 100)}</td>
+                                        <td>
+                                            {moment
+                                                .moment(new Date(due))
+                                                .format("MMM DD, yyyy")}
+                                        </td>
+                                        <td>
+                                            <span
+                                                className={
+                                                    paid === repay_amount ||
+                                                    (paid > 0 &&
+                                                        paid < repay_amount)
+                                                        ? "paid-card"
+                                                        : approved
+                                                        ? "approve-card"
+                                                        : rejected
+                                                        ? "reject-card"
+                                                        : "pending-card"
+                                                }>
+                                                {paid === repay_amount
+                                                    ? "repaid"
+                                                    : paid > 0 &&
+                                                      paid < repay_amount
+                                                    ? "Repaying"
                                                     : approved
-                                                    ? "approve-card"
+                                                    ? "approved"
                                                     : rejected
-                                                    ? "reject-card"
-                                                    : "pending-card"
-                                            }>
-                                            {paid === repay_amount
-                                                ? "repaid"
-                                                : paid > 0 &&
-                                                  paid < repay_amount
-                                                ? "Repaying"
-                                                : approved
-                                                ? "approved"
-                                                : rejected
-                                                ? "rejected"
-                                                : "pending"}
-                                        </span>
-                                    </td>
-                                    <td
-                                        id="table-dropdown"
-                                        className="table-dropdown">
-                                        <Dropdown
-                                            getPopupContainer={() =>
-                                                document.getElementById(
-                                                    "table-dropdown"
-                                                )
-                                            }
-                                            overlay={menu({
-                                                id,
-                                                approved,
-                                                rejected,
-                                                reviewed,
-                                                repay_amount,
-                                                paid,
-                                                repaid_loan:
-                                                    paid === repay_amount,
-                                                duration,
-                                                amount,
-                                                due,
-                                                rejection_reason,
-                                                created_at
-                                            })}>
-                                            <EllipsisOutlined
-                                                className="ellipsis"
-                                                rotate={90}
-                                                style={{
-                                                    fontSize: "24px"
-                                                }}
-                                            />
-                                        </Dropdown>
-                                    </td>
-                                </tr>
+                                                    ? "rejected"
+                                                    : "pending"}
+                                            </span>
+                                        </td>
+                                        <td
+                                            id="table-dropdown"
+                                            className="table-dropdown">
+                                            <Dropdown
+                                                getPopupContainer={() =>
+                                                    document.getElementById(
+                                                        "table-dropdown"
+                                                    )
+                                                }
+                                                overlay={menu({
+                                                    id,
+                                                    approved,
+                                                    rejected,
+                                                    reviewed,
+                                                    repay_amount,
+                                                    paid,
+                                                    repaid_loan:
+                                                        paid === repay_amount,
+                                                    duration,
+                                                    amount,
+                                                    due,
+                                                    rejection_reason,
+                                                    created_at
+                                                })}>
+                                                <EllipsisOutlined
+                                                    className="ellipsis"
+                                                    rotate={90}
+                                                    style={{
+                                                        fontSize: "24px"
+                                                    }}
+                                                />
+                                            </Dropdown>
+                                        </td>
+                                    </tr>
+                                )
                             )
                         )}
                     </tbody>
@@ -202,11 +209,11 @@ const Transactions = () => {
             </div>
             <div className="pagination-container">
                 <Pagination
-                    total={loans.total}
+                    total={transactions.total}
                     hideOnSinglePage
                     {...{
                         onChange: onPaginationChange,
-                        current: loans.current_page
+                        current: transactions.current_page
                     }}
                 />
             </div>

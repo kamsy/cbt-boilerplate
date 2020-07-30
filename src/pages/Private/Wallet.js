@@ -157,9 +157,9 @@ const Wallet = () => {
             <AddBankModal {...{ open_modal, set_open_modal, banks, getBank }} />
             <div className="top-section">
                 <div className="wallet-info-container">
-                    <h3>wallet info</h3>
+                    <h3>Quick Credit Wallet</h3>
                     <div className="wallet-info">
-                        <span>Quick Credit Wallet</span>
+                        <span>Balance</span>
                         <p>{_formatMoney(wallet.amount / 100)}</p>
                     </div>
                 </div>
@@ -219,16 +219,12 @@ const Wallet = () => {
                                             <MasterCard />
                                         )}
                                     </span>
-                                    <p className="card-bank">
-                                        <span>Bank:</span>
-                                        <span>{card.bank}</span>
-                                    </p>
-                                    <p className="expiry">
-                                        <span>expiry:</span>
-                                        <span>
-                                            {card.month}/{card.year}
-                                        </span>
-                                    </p>
+                                    <span className="card-bank">
+                                        {card.bank}
+                                    </span>
+                                    <span className="expiry">
+                                        {card.month}/{card.year}
+                                    </span>
                                     <p>{_limitText(card.user.name, 25)}</p>
                                 </div>
                                 <Popconfirm

@@ -69,12 +69,13 @@
 
         .wallet-info {
             span {
-                font-size: 14px;
+                font-size: 20px;
                 color: $blue
             }
 
             p {
-                font-size: 30px;
+                font-weight: bold;
+                font-size: 36px;
             }
 
         }
@@ -226,10 +227,16 @@
                     background: rgba($white, 0.05);
                 }
 
+                span {
+                    font-size: 16px;
+                    font-weight: bold;
+                    color: $white
+                }
+
                 .last-four {
                     position: absolute;
                     left: 24px;
-                    top: 50%;
+                    top: 60%;
                     -webkit-transform: translate(0, -50%);
                     transform: translate(0, -50%);
                     font-size: 20px;
@@ -240,8 +247,15 @@
                 .chip {
                     position: absolute;
                     left: 24px;
-                    top: 12px
+                    top: 64px
                 }
+
+                .expiry {
+                    position: absolute;
+                    right: 24px;
+                    bottom: 12px;
+                }
+
 
                 &-bank {
                     position: absolute;
@@ -249,16 +263,11 @@
                     top: 12px
                 }
 
-                .expiry {
-                    position: absolute;
-                    left: 24px;
-                    top: 12px
-                }
 
                 .brand-logo {
                     position: absolute;
                     right: 24px;
-                    bottom: 12px
+                    top: 12px
                 }
 
                 p {

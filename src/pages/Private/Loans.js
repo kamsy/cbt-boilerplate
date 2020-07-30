@@ -15,6 +15,7 @@ import MomentAdapter from "@date-io/moment";
 import { NotifySuccess } from "../../components/Notification";
 import PartRepaymentModal from "../../components/Modals/PartRepaymentModal";
 import ViewLoanModal from "../../components/Modals/ViewLoanModal";
+import EmptyTable from "../../components/EmptyTable";
 const { Search } = Input;
 const moment = new MomentAdapter();
 
@@ -178,93 +179,99 @@ const Loans = () => {
                             <th>action</th>
                         </tr>
                     </thead>
-                    <tbody className="tableBody">
-                        {loans.data?.map(
-                            ({
-                                duration,
-                                amount,
-                                repay_amount,
-                                due,
-                                paid,
-                                id,
-                                approved,
-                                rejected,
-                                reviewed,
-                                rejection_reason,
-                                created_at
-                            }) => (
-                                <tr key={id}>
-                                    <td>{_formatMoney(amount / 100)}</td>
-                                    <td>{duration} days</td>
-                                    <td>{_formatMoney(repay_amount / 100)}</td>
-                                    <td>{_formatMoney(paid / 100)}</td>
-                                    <td>
-                                        {moment
-                                            .moment(new Date(due))
-                                            .format("MMM DD, yyyy")}
-                                    </td>
-                                    <td>
-                                        <span
-                                            className={
-                                                paid === repay_amount ||
-                                                (paid > 0 &&
-                                                    paid < repay_amount)
-                                                    ? "paid-card"
+                    {loans.data?.length < 1 ? (
+                        <EmptyTable text="No loans" />
+                    ) : (
+                        <tbody className="tableBody">
+                            {loans.data?.map(
+                                ({
+                                    duration,
+                                    amount,
+                                    repay_amount,
+                                    due,
+                                    paid,
+                                    id,
+                                    approved,
+                                    rejected,
+                                    reviewed,
+                                    rejection_reason,
+                                    created_at
+                                }) => (
+                                    <tr key={id}>
+                                        <td>{_formatMoney(amount / 100)}</td>
+                                        <td>{duration} days</td>
+                                        <td>
+                                            {_formatMoney(repay_amount / 100)}
+                                        </td>
+                                        <td>{_formatMoney(paid / 100)}</td>
+                                        <td>
+                                            {moment
+                                                .moment(new Date(due))
+                                                .format("MMM DD, yyyy")}
+                                        </td>
+                                        <td>
+                                            <span
+                                                className={
+                                                    paid === repay_amount ||
+                                                    (paid > 0 &&
+                                                        paid < repay_amount)
+                                                        ? "paid-card"
+                                                        : approved
+                                                        ? "approve-card"
+                                                        : rejected
+                                                        ? "reject-card"
+                                                        : "pending-card"
+                                                }>
+                                                {paid === repay_amount
+                                                    ? "repaid"
+                                                    : paid > 0 &&
+                                                      paid < repay_amount
+                                                    ? "Repaying"
                                                     : approved
-                                                    ? "approve-card"
+                                                    ? "approved"
                                                     : rejected
-                                                    ? "reject-card"
-                                                    : "pending-card"
-                                            }>
-                                            {paid === repay_amount
-                                                ? "repaid"
-                                                : paid > 0 &&
-                                                  paid < repay_amount
-                                                ? "Repaying"
-                                                : approved
-                                                ? "approved"
-                                                : rejected
-                                                ? "rejected"
-                                                : "pending"}
-                                        </span>
-                                    </td>
-                                    <td
-                                        id="table-dropdown"
-                                        className="table-dropdown">
-                                        <Dropdown
-                                            getPopupContainer={() =>
-                                                document.getElementById(
-                                                    "table-dropdown"
-                                                )
-                                            }
-                                            overlay={menu({
-                                                id,
-                                                approved,
-                                                rejected,
-                                                reviewed,
-                                                repay_amount,
-                                                paid,
-                                                repaid_loan:
-                                                    paid === repay_amount,
-                                                duration,
-                                                amount,
-                                                due,
-                                                rejection_reason,
-                                                created_at
-                                            })}>
-                                            <EllipsisOutlined
-                                                className="ellipsis"
-                                                rotate={90}
-                                                style={{
-                                                    fontSize: "24px"
-                                                }}
-                                            />
-                                        </Dropdown>
-                                    </td>
-                                </tr>
-                            )
-                        )}
-                    </tbody>
+                                                    ? "rejected"
+                                                    : "pending"}
+                                            </span>
+                                        </td>
+                                        <td
+                                            id="table-dropdown"
+                                            className="table-dropdown">
+                                            <Dropdown
+                                                getPopupContainer={() =>
+                                                    document.getElementById(
+                                                        "table-dropdown"
+                                                    )
+                                                }
+                                                overlay={menu({
+                                                    id,
+                                                    approved,
+                                                    rejected,
+                                                    reviewed,
+                                                    repay_amount,
+                                                    paid,
+                                                    repaid_loan:
+                                                        paid === repay_amount,
+                                                    duration,
+                                                    amount,
+                                                    due,
+                                                    rejection_reason,
+                                                    created_at
+                                                })}>
+                                                <EllipsisOutlined
+                                                    className="ellipsis"
+                                                    rotate={90}
+                                                    style={{
+                                                        fontSize: "24px"
+                                                    }}
+                                                />
+                                            </Dropdown>
+                                        </td>
+                                    </tr>
+                                )
+                            )}
+                        </tbody>
+                    )}
                 </table>
             </div>
             <div className="pagination-container">
