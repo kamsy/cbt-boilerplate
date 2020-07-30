@@ -34,13 +34,13 @@ const Sidebar = () => {
                     activeClassName="active-route"
                     to={`${url}${path}`}
                     className="sidebar-link">
-                    {path === "dashboard" ? (
+                    {/* {path === "dashboard" ? (
                         <DashboardOutlined />
                     ) : path === "create-loan" ? (
                         <Envelope />
                     ) : (
                         <LoanHistory />
-                    )}
+                    )} */}
                     <span className="sidebar-link-name">{label}</span>
                 </NavLink>
             </li>
