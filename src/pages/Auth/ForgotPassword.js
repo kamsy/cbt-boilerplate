@@ -27,7 +27,6 @@ export default () => {
     const { handleSubmit, control, errors, register } = methods;
 
     const onSubmit = data => {
-        console.log("data", data);
         setTimeout(() => {
             message.success("A reset link has been sent to your email.");
             setTimeout(() => {

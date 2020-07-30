@@ -1,7 +1,7 @@
 @import 'variables';
 @import 'mixins';
 
-.loans {
+.wallet {
 
 
     .top-section {
@@ -27,8 +27,8 @@
             .wallet-info,
             .card-info,
             .bank-info {
-                padding: 52px 24px;
-                height: 338px;
+                padding: 36px 24px;
+                height: 329px;
                 background: $white;
                 border-radius: 4px;
                 @include shadowMixin;
@@ -59,7 +59,7 @@
                 .wallet-info,
                 .card-info,
                 .bank-info {
-                    padding: 36px 12px;
+                    padding: 24px 12px;
                 }
             }
 
@@ -68,7 +68,7 @@
 
 
         .wallet-info {
-            span {
+            .balance {
                 font-size: 20px;
                 color: $blue
             }
@@ -76,6 +76,10 @@
             p {
                 font-weight: bold;
                 font-size: 36px;
+            }
+
+            .custom-btn {
+                margin: 0;
             }
 
         }

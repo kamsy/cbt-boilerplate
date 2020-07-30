@@ -49,7 +49,7 @@ const AddBankModal = ({ set_open_modal, open_modal, banks, getBank }) => {
 
     return (
         <Modal
-            getContainer={() => document.getElementById("loans-history")}
+            getContainer={() => document.getElementById("wallet-history")}
             destroyOnClose
             title="Add Bank"
             visible={open_modal}

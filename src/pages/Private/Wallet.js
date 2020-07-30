@@ -5,7 +5,7 @@ import {
     pageTransitions
 } from "../../components/ProtectedLayout";
 import { _formatMoney, _limitText } from "../../services/utils";
-import { Tabs, Button, Popconfirm } from "antd";
+import { Button, Popconfirm } from "antd";
 import "../../scss/wallet.scss";
 import { PaystackConsumer } from "react-paystack";
 import { decryptAndRead } from "../../services/localStorageHelper";
@@ -19,14 +19,15 @@ import VisaCard from "../../assets/svgs/VisaCard";
 import MasterCard from "../../assets/svgs/MasterCard";
 import MicroChip from "../../assets/svgs/MicroChip";
 import MomentAdapter from "@date-io/moment";
-
-const moment = new MomentAdapter();
-
-const { TabPane } = Tabs;
+import WalletServices from "../../services/walletServices";
+import FundWalletModal from "../../components/Modals/FundWalletModal";
 
 const Wallet = () => {
     const { user_info } = decryptAndRead(ENCRYPT_USER);
     const [open_modal, set_open_modal] = useState(false);
+    const [open_fund_wallet_modal, set_open_fund_wallet_modal] = useState(
+        false
+    );
     const [banks, set_banks] = useState([]);
     const [bank, set_bank] = useState({});
     const [card, set_card] = useState({});
@@ -107,7 +108,7 @@ const Wallet = () => {
     };
 
     const getWallet = () => {
-        UserServices.getWalletService().then(({ status, data }) => {
+        WalletServices.getWalletService().then(({ status, data }) => {
             if (status === 200) {
                 set_wallet(data?.wallet || {});
             }
@@ -140,6 +141,8 @@ const Wallet = () => {
         }
     };
 
+    const onFundWallet = () => set_open_fund_wallet_modal(true);
+
     useEffect(() => {
         getCard();
         getBank();
@@ -147,20 +150,30 @@ const Wallet = () => {
     }, []);
     return (
         <motion.div
-            className="main loans"
-            id="loans-history"
+            className="main wallet"
+            id="wallet-history"
             initial="initial"
             animate="in"
             exit="out"
             transition={pageTransitions}
             variants={pageVariants}>
             <AddBankModal {...{ open_modal, set_open_modal, banks, getBank }} />
+            <FundWalletModal
+                {...{
+                    open_fund_wallet_modal,
+                    set_open_fund_wallet_modal,
+                    getWallet
+                }}
+            />
             <div className="top-section">
                 <div className="wallet-info-container">
                     <h3>Quick Credit Wallet</h3>
                     <div className="wallet-info">
-                        <span>Balance</span>
+                        <span className="balance">Balance</span>
                         <p>{_formatMoney(wallet.amount / 100)}</p>
+                        <Button className="custom-btn" onClick={onFundWallet}>
+                            Fund Wallet
+                        </Button>
                     </div>
                 </div>
                 <div className="bank-info-container">
