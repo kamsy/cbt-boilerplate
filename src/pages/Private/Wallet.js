@@ -310,6 +310,7 @@ const Wallet = () => {
                             <th>type</th>
                             <th>description</th>
                             <th>date</th>
+                            <th>time</th>
                         </tr>
                     </thead>
                     <tbody className="tableBody">
@@ -333,6 +334,11 @@ const Wallet = () => {
                                             {moment
                                                 .moment(new Date(created_at))
                                                 .format("MMM DD, yyyy")}
+                                        </td>
+                                        <td>
+                                            {moment
+                                                .moment(new Date(created_at))
+                                                .format("h:mm:ss a")}
                                         </td>
                                     </tr>
                                 )

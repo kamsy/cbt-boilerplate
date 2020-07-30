@@ -304,23 +304,27 @@
         th,
         td {
             &:nth-child(1) {
-                width: 21%
+                width: 20%
             }
 
             &:nth-child(2) {
-                width: 16%
+                width: 15%
             }
 
             &:nth-child(3) {
-                width: 16%
+                width: 15%
             }
 
             &:nth-child(4) {
-                width: 31%
+                width: 25%
             }
 
             &:nth-child(5) {
-                width: 16%
+                width: 15%
+            }
+
+            &:nth-child(6) {
+                width: 10%
             }
 
         }
@@ -335,8 +339,12 @@
                     &:first-of-type {
                         color: $blue
                     }
-                    &:nth-of-type(3){
+
+                    &:nth-of-type(3) {
                         text-transform: capitalize
+                    }
+                    &:nth-of-type(6) {
+                        text-transform: uppercase
                     }
                 }
             }
