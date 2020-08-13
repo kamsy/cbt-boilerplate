@@ -16,6 +16,7 @@ import { NotifySuccess } from "../../components/Notification";
 import PartRepaymentModal from "../../components/Modals/PartRepaymentModal";
 import ViewLoanModal from "../../components/Modals/ViewLoanModal";
 import EmptyTable from "../../components/EmptyTable";
+import TableSelectFilters from "../../components/TableSelectFIlters";
 const { Search } = Input;
 const moment = new MomentAdapter();
 
@@ -155,17 +156,13 @@ const Loans = () => {
                     openInputModal
                 }}
             />
-            <div className="search-container">
-                <Search
-                    placeholder="Search loans by username or fullname"
-                    size="large"
-                    enterButton="search"
-                    onSearch={value => console.log(value)}
-                />
+            <div className="drop-down-container">
+                <TableSelectFilters />
                 <div className="link-container">
                     <Link to={`${url}create-loan`}>Request Loan</Link>
                 </div>
             </div>
+
             <div className="table-container">
                 <table className="table">
                     <thead className="table-header">

@@ -5,7 +5,7 @@ import {
     pageTransitions
 } from "../../components/ProtectedLayout";
 import { _formatMoney, _limitText } from "../../services/utils";
-import { Button, Popconfirm, Input, Pagination } from "antd";
+import { Button, Popconfirm, Select, Pagination } from "antd";
 import "../../scss/wallet.scss";
 import { PaystackConsumer } from "react-paystack";
 import { decryptAndRead } from "../../services/localStorageHelper";
@@ -22,7 +22,8 @@ import FundWalletModal from "../../components/Modals/FundWalletModal";
 import MomentAdapter from "@date-io/moment";
 import TransactionsServices from "../../services/transactionsServices";
 import EmptyTable from "../../components/EmptyTable";
-const { Search } = Input;
+import TableSelectFilters from "../../components/TableSelectFIlters";
+const { Option } = Select;
 const moment = new MomentAdapter();
 
 const Wallet = () => {
@@ -289,13 +290,8 @@ const Wallet = () => {
                 </div>
             </div>
 
-            <div className="search-container full">
-                <Search
-                    placeholder="Search transactions by type"
-                    size="large"
-                    enterButton="search"
-                    onSearch={value => console.log(value)}
-                />
+            <div className="drop-down-container full">
+                <TableSelectFilters {...{ handler: () => {} }} />
             </div>
             <div className="table-container">
                 <table className="table">
