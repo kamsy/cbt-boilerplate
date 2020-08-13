@@ -72,7 +72,7 @@ const BillerModal = ({
 
     return (
         <Modal
-            getContainer={() => document.getElementById("bills-history")}
+            getContainer={() => document.querySelector(".shared-modal-comp")}
             title={biller_name}
             visible={open_biller_modal}
             footer={null}

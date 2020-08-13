@@ -79,7 +79,7 @@
         }
     }
 
-    &.loading{
+    &.loading {
         background: $grey !important;
     }
 
@@ -257,7 +257,8 @@
         align-items: center
     }
 
-    .bank-logo ,.biller-logo{
+    .bank-logo,
+    .biller-logo {
         margin-right: 24px;
         width: 40px;
         height: 40px;
@@ -279,7 +280,7 @@
 
 .error {
     &-page {
-        background: rgba($blue,0.02);
+        background: rgba($blue, 0.02);
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
@@ -302,28 +303,32 @@
             display: -ms-flexbox;
             display: flex;
             -webkit-box-align: center;
-                -ms-flex-align: center;
-                    align-items: center;
+            -ms-flex-align: center;
+            align-items: center;
             -webkit-box-pack: center;
-                -ms-flex-pack: center;
-                    justify-content: center;
+            -ms-flex-pack: center;
+            justify-content: center;
 
 
+        }
+    }
+
+    &-text {
+        &-big {
+            font-size: 144px;
+            color: $blue;
+            display: block;
+        }
+
+        &-small {
+            font-size: 16px;
+            color: $blue;
+            display: block;
+            margin-top: -36px
+        }
     }
 }
 
-&-text {
-    &-big {
-        font-size: 144px;
-        color: $blue;
-        display: block;
-    }
-
-    &-small {
-        font-size: 16px;
-        color: $blue;
-        display: block;
-        margin-top: -36px
-    }
-}
+.ant-modal-mask{
+    background: rgba(0,0,0,0.7)
 }

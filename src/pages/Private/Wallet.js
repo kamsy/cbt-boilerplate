@@ -5,7 +5,7 @@ import {
     pageTransitions
 } from "../../components/ProtectedLayout";
 import { _formatMoney, _limitText } from "../../services/utils";
-import { Button, Popconfirm, Select, Pagination } from "antd";
+import { Button, Popconfirm, Pagination } from "antd";
 import "../../scss/wallet.scss";
 import { PaystackConsumer } from "react-paystack";
 import { decryptAndRead } from "../../services/localStorageHelper";
@@ -23,7 +23,6 @@ import MomentAdapter from "@date-io/moment";
 import TransactionsServices from "../../services/transactionsServices";
 import EmptyTable from "../../components/EmptyTable";
 import TableSelectFilters from "../../components/TableSelectFIlters";
-const { Option } = Select;
 const moment = new MomentAdapter();
 
 const Wallet = () => {

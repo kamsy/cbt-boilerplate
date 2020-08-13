@@ -21,6 +21,7 @@
     "qs": "^6.9.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-google-charts": "^3.0.15",
     "react-hook-form": "^6.0.1",
     "react-idle-timer": "^4.2.12",
     "react-number-format": "^4.4.1",
