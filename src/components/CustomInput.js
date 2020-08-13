@@ -36,7 +36,8 @@ const CustomInput = ({
                                 ref: register,
                                 defaultValue,
                                 disabled,
-                                type
+                                type,
+                                name
                             }}
                             className={`form-input ${
                                 type === "date" || type === "money"

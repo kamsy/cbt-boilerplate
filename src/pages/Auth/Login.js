@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { url, fakeAuth } from "../../App";
 import { useForm } from "react-hook-form";
@@ -29,7 +29,18 @@ const Login = () => {
     const methods = useForm({
         resolver: yupResolver(schema)
     });
-    const { handleSubmit, control, errors, register, setError } = methods;
+    const {
+        handleSubmit,
+        control,
+        errors,
+        register,
+        setError,
+        setValue
+    } = methods;
+    useEffect(() => {
+        const inputs = document.querySelectorAll(".ant-input");
+        inputs.forEach(inp => setValue(inp.name, inp.value));
+    }, [setValue]);
 
     const onSubmit = async payload => {
         set_loading(true);

@@ -8,7 +8,7 @@ import "../../scss/bills.scss";
 import BillServices from "../../services/billsServices";
 import BillerModal from "../../components/Modals/BillerModal";
 import CustomInput from "../../components/CustomInput";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 import CustomButton from "../../components/CustomButton";
@@ -60,13 +60,6 @@ const Bills = () => {
     const { handleSubmit, control, errors, register } = methods;
 
     const onSubmit = async payload => {
-        console.log(
-            "payload",
-            payload.amount
-                .split("₦")[1]
-                .split(",")
-                .join("")
-        );
         set_loading(true);
         const {
             response,
