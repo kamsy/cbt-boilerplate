@@ -2,6 +2,39 @@
 @import 'mixins';
 
 .bills {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+
+    @include screen(768) {
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap
+    }
+
+    .left-cont {
+        margin: 0 24px 0 0;
+        width: 348px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+
+        @include screen(768) {
+            width: 100%;
+            margin: 0 0 24px
+        }
+    }
+
+    .right-cont {
+        width: calc(100% - 24px - 348px);
+
+        @include screen(768) {
+            width: 100%
+        }
+    }
 
     .section-header {
         font-size: 20px;
@@ -14,7 +47,7 @@
     }
 
     .airtime-container {
-        margin: 0 0  32px;
+        margin: 16px 0 32px;
         display: inline-block;
         background: $white;
         @include shadowMixin;
@@ -37,7 +70,13 @@
             border-radius: 4px;
             padding: 16px 24px;
             margin: 0 24px 24px 0;
-            width: calc((100% - 72px) / 4);
+            width: 210px;
+
+            @include screen(425) {
+                width: 100%;
+                margin:  0 0 24px
+            }
+
             display: -webkit-box;
             display: -ms-flexbox;
             display: flex;

@@ -45,9 +45,9 @@ const CreateLoan = () => {
 
     const onSubmit = async () => {
         if (
-            amount > 0 &&
+            amount > 10000 &&
             amount <= 100000 &&
-            duration >= 30 &&
+            duration > 0 &&
             bank_statement &&
             identification_document
         ) {
@@ -72,8 +72,8 @@ const CreateLoan = () => {
         } else {
             set_errors({
                 ...errors,
-                amount: amount < 1,
-                duration: duration < 30,
+                amount: amount < 10000,
+                duration: duration < 1,
                 bank_statement: !bank_statement,
                 identification_document: !identification_document
             });
@@ -81,13 +81,15 @@ const CreateLoan = () => {
     };
     const _handleAmount = ({ value }) => {
         const amt = Number(value);
-        if (amt > 0) set_errors({ ...errors, amount: false });
+        // if (amt < 10000) return;
+        if (amt > 10000) set_errors({ ...errors, amount: false });
         set_amount(amt);
         if (duration < 1) return;
         calculateRepayment({ amt, time: duration });
     };
 
     const calculateRepayment = ({ amt, time }) => {
+        if (time < 1 && amt < 10000) return;
         const floor_percent = 0.05;
         const after_floor_percent = 0.25;
         const floor_charge_duration = 1;
@@ -173,7 +175,9 @@ const CreateLoan = () => {
                                             ? "show"
                                             : "hide"
                                     }`}>
-                                    {Number(amount) > 100000
+                                    {Number(amount) < 10000
+                                        ? "Minimum loan amount is ₦10,000"
+                                        : Number(amount) > 100000
                                         ? "Maximum loan amount is ₦100,000"
                                         : "Input an amount"}
                                 </p>

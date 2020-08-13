@@ -42,23 +42,28 @@ const BillerModal = ({
 
     const onSubmit = async payload => {
         set_loading(true);
-        const { response } = await BillServices.buyDataService({
+        const {
+            response,
+            status,
+            data: { message }
+        } = await BillServices.buyDataService({
             ...payload,
             phone: `+234${payload.phone.substring(1)}`,
             amount: payload.amount * 100
         });
         set_loading(false);
+        if (status === 200) {
+            NotifySuccess(message);
+        }
         if (response) {
             const {
                 status,
-                data: { message }
+                data: { message: msg }
             } = response;
             if (status === 503) {
-                NotifyError(message);
+                NotifyError(msg);
             } else if (status === 406) {
-                NotifyError(message);
-            } else if (status === 200) {
-                NotifySuccess(message);
+                NotifyError(msg);
             }
         }
     };
