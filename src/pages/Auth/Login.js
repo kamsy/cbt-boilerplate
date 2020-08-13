@@ -50,7 +50,7 @@ const Login = () => {
                     expires_in: 3600,
                     user_info: data.data.user
                 },
-                true
+                false
             );
             return history.push(`${url}dashboard`);
         }

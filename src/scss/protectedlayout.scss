@@ -17,6 +17,8 @@ body {
         position: absolute;
         min-height: 100%;
         width: 100%;
+        left: 0;
+        top: 0;
         z-index: 50;
         background: rgba(255, 255, 255, 0.5);
         -webkit-box-align: center;
@@ -395,7 +397,7 @@ body {
 
                             td {
                                 background: $white;
-                                color: rgba(0,0,0,0.3);
+                                color: rgba(0, 0, 0, 0.3);
                                 text-align: center;
                                 position: absolute;
                                 min-width: 1048px;

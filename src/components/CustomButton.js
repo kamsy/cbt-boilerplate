@@ -6,7 +6,9 @@ const antIcon = (
     <LoadingOutlined style={{ fontSize: 20, color: "#fff" }} spin />
 );
 const CustomButton = ({ onClick, text, loading, extraClass = "" }) => (
-    <Button className={`submit-btn ${extraClass}`} {...{ onClick }}>
+    <Button
+        className={`submit-btn ${extraClass} ${loading ? "loading" : ""}`}
+        {...{ onClick }}>
         {!loading ? text : <Spin indicator={antIcon} />}
     </Button>
 );

@@ -30,6 +30,16 @@ export const decryptAndRead = key => {
     const expiry = localStorage.getItem(EXPIRY);
     const fromStorage = localStorage.getItem(key);
     if (
+        (expiry === null && fromStorage) ||
+        (fromStorage !== null &&
+            fromStorage !== undefined &&
+            fromStorage !== "" &&
+            new Date().getTime() < expiry)
+    ) {
+        const bytes = CryptoJS.AES.decrypt(fromStorage.toString(), secret);
+        const response = bytes.toString(CryptoJS.enc.Utf8);
+        return { ...JSON.parse(response), expired: false };
+    } else if (
         fromStorage !== null &&
         fromStorage !== undefined &&
         fromStorage !== "" &&
@@ -38,15 +48,6 @@ export const decryptAndRead = key => {
         const bytes = CryptoJS.AES.decrypt(fromStorage.toString(), secret);
         const response = bytes.toString(CryptoJS.enc.Utf8);
         return { ...JSON.parse(response), expired: true };
-    } else if (
-        fromStorage !== null &&
-        fromStorage !== undefined &&
-        fromStorage !== "" &&
-        new Date().getTime() < expiry
-    ) {
-        const bytes = CryptoJS.AES.decrypt(fromStorage.toString(), secret);
-        const response = bytes.toString(CryptoJS.enc.Utf8);
-        return { ...JSON.parse(response), expired: false };
     } else {
         return null;
     }

@@ -4,72 +4,70 @@ import {
     pageVariants,
     pageTransitions
 } from "../../components/ProtectedLayout";
-import { _formatMoney } from "../../services/utils";
-import { EllipsisOutlined } from "@ant-design/icons";
-import { Dropdown, Menu, Input, Pagination } from "antd";
-import { Link } from "react-router-dom";
-import "../../scss/loans.scss";
-import { url } from "../../App";
-import LoanServices from "../../services/loanServices";
-import MomentAdapter from "@date-io/moment";
-import { NotifySuccess } from "../../components/Notification";
-import PartRepaymentModal from "../../components/Modals/PartRepaymentModal";
-import ViewLoanModal from "../../components/Modals/ViewLoanModal";
-import EmptyTable from "../../components/EmptyTable";
+import "../../scss/bills.scss";
 import BillServices from "../../services/billsServices";
+import BillerModal from "../../components/Modals/BillerModal";
+import CustomInput from "../../components/CustomInput";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers";
+import * as yup from "yup";
+import CustomButton from "../../components/CustomButton";
 
-const { Search } = Input;
-const moment = new MomentAdapter();
+const schema = yup.object().shape({
+    phone: yup
+        .string()
+        .required("Enter a phone number!")
+        .matches(
+            /^([0]?\d([7](?=0)|[8](?=0|1)|[9](?=0))\d{9}(?!\d))$/,
+            "Alaye focus!... na 9ja number be this?😐"
+        ),
+    amount: yup.string().required("Enter an amount!")
+});
 
 const Bills = () => {
-    const menu = ({
-        id,
-        approved,
-        reviewed,
-        repaid_loan,
-        repay_amount,
-        paid,
-        duration,
-        amount,
-        rejected,
-        due,
-        created_at,
-        rejection_reason
-    }) => (
-        <Menu>
-            <Menu.Item key="1" onClick={() => {}}>
-                View
-            </Menu.Item>
-        </Menu>
-    );
-
-    const [loans, set_billers] = useState({});
-    const [open_input_modal, set_open_input_modal] = useState(false);
-    const [open_loan_detail_modal, set_open_loan_detail_modal] = useState(
-        false
-    );
-    const [loan_info, set_loan_info] = useState({});
+    const [billers, set_billers] = useState([]);
+    const [open_biller_modal, set_open_biller_modal] = useState(false);
+    const [loading, set_loading] = useState(false);
+    const [biller_info, set_biller_info] = useState([]);
 
     const getBillers = ({ page }) => {
         setTimeout(() => {
             window._toggleLoader();
         }, 100);
         BillServices.getBillersService({ page }).then(({ status, data }) => {
-            console.log("getBillers -> data", data);
             setTimeout(() => {
                 window._toggleLoader();
             }, 500);
             if (status === 200) {
-                set_billers(data.loans || {});
+                set_billers(data || []);
             }
         });
     };
 
-    const onPaginationChange = page => getBillers({ page });
+    const handleSelectedBiller = info => {
+        set_biller_info(info);
+        set_open_biller_modal(true);
+    };
 
     useEffect(() => {
         getBillers({ page: 1 });
     }, []);
+
+    const methods = useForm({
+        resolver: yupResolver(schema)
+    });
+    const {
+        handleSubmit,
+        control,
+        errors,
+        register,
+        reset,
+        setValue,
+        getValues
+    } = methods;
+    console.log(getValues());
+    const onSubmit = async payload => {};
+
     return (
         <motion.div
             className="main bills"
@@ -79,14 +77,77 @@ const Bills = () => {
             exit="out"
             transition={pageTransitions}
             variants={pageVariants}>
-            <div className="search-container full">
-                <Search
-                    placeholder="Search loans by username or fullname"
-                    size="large"
-                    enterButton="search"
-                    onSearch={value => console.log(value)}
-                />
+            <h3 className="section-header">Airtime</h3>
+            <div className="airtime-container">
+                <form
+                    className="form-buy-airtime form"
+                    name="buy-airtimer-form"
+                    onSubmit={handleSubmit(onSubmit)}>
+                    <CustomInput
+                        {...{
+                            label: "Enter Phone Number",
+                            name: "phone",
+                            register,
+                            placeholder: "Enter phone number",
+                            errors,
+                            control
+                        }}
+                    />
+                    <CustomInput
+                        {...{
+                            label: "Enter Amount",
+                            name: "amount",
+                            register,
+                            placeholder: "Enter amount to recharge",
+                            errors,
+                            control
+                        }}
+                    />
+                    <CustomButton
+                        {...{
+                            text: "Buy Airtime",
+                            extraClass: "full-size",
+                            onClick: handleSubmit(onSubmit),
+                            loading
+                        }}
+                    />
+                </form>
             </div>
+            <h3 className="section-header">Internet Service Providers (ISP)</h3>
+            <span className="desc">
+                Select your ISP to purchase a data bundle
+            </span>
+            <div className="billers-container">
+                {billers.map(({ name, logo, plans }) => {
+                    return (
+                        <div
+                            key={name}
+                            className="biller"
+                            role="button"
+                            onClick={() =>
+                                handleSelectedBiller({
+                                    plans,
+                                    logo,
+                                    biller_name: name
+                                })
+                            }>
+                            <img
+                                src={logo}
+                                alt={`${name} logo`}
+                                className="biller-img"
+                            />
+                            <span className="biller-name">{name}</span>
+                        </div>
+                    );
+                })}
+            </div>
+            <BillerModal
+                {...{
+                    open_biller_modal,
+                    ...biller_info,
+                    set_open_biller_modal
+                }}
+            />
         </motion.div>
     );
 };

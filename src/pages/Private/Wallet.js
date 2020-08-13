@@ -5,7 +5,7 @@ import {
     pageTransitions
 } from "../../components/ProtectedLayout";
 import { _formatMoney, _limitText } from "../../services/utils";
-import { Button, Popconfirm, Dropdown, Input, Pagination } from "antd";
+import { Button, Popconfirm, Input, Pagination } from "antd";
 import "../../scss/wallet.scss";
 import { PaystackConsumer } from "react-paystack";
 import { decryptAndRead } from "../../services/localStorageHelper";
@@ -317,13 +317,16 @@ const Wallet = () => {
                                     id,
                                     created_at,
                                     description,
-                                    type
+                                    type,
+                                    status
                                 }) => (
                                     <tr key={id}>
                                         <td>{id}</td>
                                         <td>{_formatMoney(amount / 100)}</td>
                                         <td>{type}</td>
-                                        <td>{description}</td>
+                                        <td className={status}>
+                                            {description}
+                                        </td>
                                         <td>
                                             {moment
                                                 .moment(new Date(created_at))

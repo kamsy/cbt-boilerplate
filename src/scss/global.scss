@@ -79,6 +79,10 @@
         }
     }
 
+    &.loading{
+        background: $grey !important;
+    }
+
 }
 
 
@@ -253,7 +257,7 @@
         align-items: center
     }
 
-    .bank-logo {
+    .bank-logo ,.biller-logo{
         margin-right: 24px;
         width: 40px;
         height: 40px;

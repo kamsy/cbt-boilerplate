@@ -78,6 +78,7 @@ const FundWalletModal = ({
                 <CustomButton
                     {...{
                         text: "Fund my Wallet",
+                        extraClass: "full-size",
                         onClick: handleSubmit(onSubmit),
                         loading
                     }}

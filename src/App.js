@@ -207,21 +207,12 @@ const App = () => {
                         <PrivateRoute
                             path={`${url}wallet`}
                             component={Wallet}
-                            title="Wallet"
+                            title="Wallet & Transactions"
                         />
-                        <Route eaxct path={`${url}#/500`} component={Page500} />
+                        <Route exact path={`${url}#/500`} component={Page500} />
 
                         <Route exact path={`${url}#/404`} component={Page404} />
                         <Route path="*" component={Page404}></Route>
-                        {/* render={props => (
-                                    <Redirect
-                                        to={{
-                                            pathname: `${url}#/404`
-                                        }}
-                                        {...props}
-                                    />
-                                )}
-                            /> */}
                     </Switch>
                 </AnimatePresence>
             </Suspense>
