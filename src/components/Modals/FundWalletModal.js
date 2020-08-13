@@ -18,6 +18,7 @@ const FundWalletModal = ({
     getWallet,
     getTransactions
 }) => {
+    console.log("open_fund_wallet_modal", open_fund_wallet_modal);
     const [loading, set_loading] = useState(false);
     const methods = useForm({
         resolver: yupResolver(schema)
@@ -40,8 +41,8 @@ const FundWalletModal = ({
         const { status, data } = res;
         if (status === 200) {
             NotifySuccess(data.message);
-            getWallet();
-            getTransactions({ page: 1 });
+            getWallet && getWallet();
+            getTransactions && getTransactions({ page: 1 });
             return closeModal();
         }
     };
@@ -53,7 +54,7 @@ const FundWalletModal = ({
 
     return (
         <Modal
-            getContainer={() => document.getElementById("wallet-history")}
+            getContainer={() => document.querySelector(".shared-modal-comp")}
             destroyOnClose
             title="Fund Wallet"
             visible={open_fund_wallet_modal}

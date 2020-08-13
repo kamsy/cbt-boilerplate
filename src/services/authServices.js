@@ -1,6 +1,6 @@
 import { postFunc } from "./httpService";
 
-export const base_url = "https://api.gbasgbos.xyz/api/";
+export const base_url = "https://api.godwhen.xyz/api/";
 
 const AuthServices = {
     loginService: payload => postFunc(`${base_url}login`, payload),

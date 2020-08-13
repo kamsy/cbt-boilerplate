@@ -175,7 +175,7 @@ const Wallet = () => {
 
     return (
         <motion.div
-            className="main wallet"
+            className="main wallet shared-modal-comp"
             id="wallet-history"
             initial="initial"
             animate="in"
@@ -195,8 +195,10 @@ const Wallet = () => {
                 <div className="wallet-info-container">
                     <h3>Quick Credit Wallet</h3>
                     <div className="wallet-info">
-                        <span className="balance">Balance</span>
-                        <p>{_formatMoney(wallet.amount / 100)}</p>
+                        <div className="card">
+                            <span className="balance">Balance</span>
+                            <p>{_formatMoney(wallet.amount / 100)}</p>
+                        </div>
                         <Button className="custom-btn" onClick={onFundWallet}>
                             Fund Wallet
                         </Button>

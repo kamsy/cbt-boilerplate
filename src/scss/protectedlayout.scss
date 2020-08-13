@@ -9,7 +9,7 @@ body {
 
 .protected-layout {
     background-color: rgba($blue, 0.02);
-    height: 100vh;
+    min-height: 100%;
     width: 100%;
 
     .window-loader {
@@ -203,8 +203,8 @@ body {
         padding: 5.5rem 0;
         width: 160px;
         height: 100%;
-        // background: -webkit-gradient(linear,  left top, left bottom,  color-stop(70%, $dark-blue) , to($green));
-        // background: linear-gradient(to bottom,  $dark-blue 70% , $green);
+        // background: -webkit-gradient(linear,  left top, left bottom,  color-stop(55%, $dark-blue) , to($green));
+        // background: linear-gradient(to bottom,  $dark-blue 55% , $green);
         background: $blue;
         -webkit-transition: all 0.7s ease-in;
         transition: all 0.7s ease-in;

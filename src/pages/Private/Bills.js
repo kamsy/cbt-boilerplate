@@ -13,6 +13,7 @@ import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 import CustomButton from "../../components/CustomButton";
 import { NotifyError, NotifySuccess } from "../../components/Notification";
+import FundWalletModal from "../../components/Modals/FundWalletModal";
 
 const schema = yup.object().shape({
     phone: yup
@@ -61,21 +62,19 @@ const Bills = () => {
 
     const onSubmit = async payload => {
         set_loading(true);
-        const {
-            response,
-            status,
-            data: { message }
-        } = await BillServices.buyAirtimeService({
-            phone: `+234${payload.phone.substring(1)}`,
-            amount:
-                payload.amount
-                    .split("₦")[1]
-                    .split(",")
-                    .join("") * 100
-        });
+        const { response, status, data } = await BillServices.buyAirtimeService(
+            {
+                phone: `+234${payload.phone.substring(1)}`,
+                amount:
+                    payload.amount
+                        .split("₦")[1]
+                        .split(",")
+                        .join("") * 100
+            }
+        );
         set_loading(false);
         if (status === 200) {
-            NotifySuccess(message);
+            NotifySuccess(data.message);
         }
         if (response) {
             const {
@@ -90,15 +89,30 @@ const Bills = () => {
         }
     };
 
+    const [open_fund_wallet_modal, set_open_fund_wallet_modal] = useState(
+        false
+    );
+
     return (
         <motion.div
-            className="main bills"
+            className="main bills shared-modal-comp"
             id="bills-history"
             initial="initial"
             animate="in"
             exit="out"
             transition={pageTransitions}
             variants={pageVariants}>
+            <BillerModal
+                {...{
+                    open_biller_modal,
+                    ...biller_info,
+                    set_open_biller_modal,
+                    set_open_fund_wallet_modal
+                }}
+            />
+            <FundWalletModal
+                {...{ open_fund_wallet_modal, set_open_fund_wallet_modal }}
+            />
             <div className="left-cont">
                 <h3 className="section-header">Airtime</h3>
                 <span className="desc">
@@ -174,13 +188,6 @@ const Bills = () => {
                     })}
                 </div>
             </div>
-            <BillerModal
-                {...{
-                    open_biller_modal,
-                    ...biller_info,
-                    set_open_biller_modal
-                }}
-            />
         </motion.div>
     );
 };

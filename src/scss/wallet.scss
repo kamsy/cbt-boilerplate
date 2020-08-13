@@ -62,12 +62,43 @@
                     padding: 24px 12px;
                 }
             }
-
-
         }
 
 
         .wallet-info {
+            .card {
+                padding: 12px 24px;
+                height: 190px;
+                background: rgba($blue, 0.05);
+                @include shadowMixin;
+                border-radius: 10px;
+                position: relative;
+                overflow: hidden;
+
+                &::after,
+                &::before {
+                    content: '';
+                    position: absolute;
+                    width: 100%;
+                    background: rgba($blue, 0.05);
+                    left: 0;
+                    height: 50px;
+                    -webkit-transform: rotate(45deg);
+                    transform: rotate(45deg)
+                }
+
+                &::after {
+                    left: -150px;
+                    bottom: 90px
+                }
+
+                &::before {
+                    height: 80px;
+                    top: 0;
+                    left: 100px
+                }
+            }
+
             .balance {
                 font-size: 20px;
                 color: $blue
@@ -79,7 +110,7 @@
             }
 
             .custom-btn {
-                margin: 0;
+                margin: 18px 0 0;
             }
 
         }
@@ -138,7 +169,6 @@
                 font-size: 30px;
             }
 
-
             .card {
                 padding: 12px 24px;
                 height: 190px;
@@ -191,9 +221,6 @@
 
             .bank-name {
                 margin: 0 24px 0 0;
-                // @include screen(900){
-                //     margin:  0 24px -50px 0
-                // }
             }
 
         }
@@ -355,11 +382,11 @@
                     }
                 }
 
-                .failed{
+                .failed {
                     color: $red
                 }
 
-                .success{
+                .success {
                     color: $green
                 }
             }

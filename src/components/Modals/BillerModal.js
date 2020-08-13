@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Select } from "antd";
+import { Modal, Select, message as AntMsg } from "antd";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
@@ -7,6 +7,7 @@ import CustomInput from "../CustomInput";
 import CustomButton from "../CustomButton";
 import BillServices from "../../services/billsServices";
 import { NotifySuccess, NotifyError } from "../Notification";
+
 const { Option } = Select;
 
 const schema = yup.object().shape({
@@ -25,7 +26,8 @@ const BillerModal = ({
     plans,
     logo,
     set_open_biller_modal,
-    biller_name
+    biller_name,
+    set_open_fund_wallet_modal
 }) => {
     const [loading, set_loading] = useState(false);
     const methods = useForm({
@@ -42,18 +44,14 @@ const BillerModal = ({
 
     const onSubmit = async payload => {
         set_loading(true);
-        const {
-            response,
-            status,
-            data: { message }
-        } = await BillServices.buyDataService({
+        const { response, status, data } = await BillServices.buyDataService({
             ...payload,
             phone: `+234${payload.phone.substring(1)}`,
             amount: payload.amount * 100
         });
         set_loading(false);
         if (status === 200) {
-            NotifySuccess(message);
+            NotifySuccess(data.message);
         }
         if (response) {
             const {
@@ -63,7 +61,11 @@ const BillerModal = ({
             if (status === 503) {
                 NotifyError(msg);
             } else if (status === 406) {
-                NotifyError(msg);
+                AntMsg.error(msg);
+                set_open_biller_modal(false);
+                setTimeout(() => {
+                    set_open_fund_wallet_modal(true);
+                }, 500);
             }
         }
     };
@@ -71,7 +73,6 @@ const BillerModal = ({
     return (
         <Modal
             getContainer={() => document.getElementById("bills-history")}
-            destroyOnClose
             title={biller_name}
             visible={open_biller_modal}
             footer={null}
