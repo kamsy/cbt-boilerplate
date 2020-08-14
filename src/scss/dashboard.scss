@@ -4,8 +4,24 @@
 .dashboard {
     @include DashboardTableStyle;
 
+    .last-five{
+        font-weight: 900;
+        font-size: 20px;
+    }
+
     .table-container {
         margin-top: 24px;
+        tbody{
+            tr{
+                &:nth-of-type(6),
+                &:nth-of-type(7),
+                &:nth-of-type(8),
+                &:nth-of-type(9),
+                &:nth-of-type(10){
+                    display: none
+                }
+            }
+        }
     }
 
     .top-section {

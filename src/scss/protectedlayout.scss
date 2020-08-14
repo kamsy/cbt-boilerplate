@@ -206,6 +206,7 @@ body {
         // background: -webkit-gradient(linear,  left top, left bottom,  color-stop(55%, $dark-blue) , to($green));
         // background: linear-gradient(to bottom,  $dark-blue 55% , $green);
         background: $blue;
+        @include shadowMixin;
         -webkit-transition: all 0.7s ease-in;
         transition: all 0.7s ease-in;
 
@@ -224,7 +225,7 @@ body {
                 height: 100vh;
                 padding: 5.5rem 0;
                 width: 160px;
-                background: $blue;
+                background:blue;
                 -webkit-transition: all 0.7s ease-in;
                 transition: all 0.7s ease-in;
             }
@@ -243,6 +244,7 @@ body {
             -ms-flex-align: center;
             align-items: center;
             margin-bottom: 4px;
+            position: relative;
 
             svg {
                 fill: $white;
@@ -262,6 +264,15 @@ body {
 
             &.active-route {
                 background: rgba($white, 0.1);
+                &::before{
+                    background: $white;
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    height: 100%;
+                    width: 4px;
+                }
             }
 
             &-name {

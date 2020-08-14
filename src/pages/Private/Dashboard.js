@@ -128,6 +128,7 @@ const Dashboard = () => {
                 </div>
                 <div className="right-cont"></div>
             </div>
+            <h3 className="last-five">Last 5 transactions</h3>
             <div className="table-container">
                 <table className="table">
                     <thead className="table-header">
