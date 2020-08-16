@@ -8,7 +8,7 @@ const antIcon = (
     <LoadingOutlined style={{ fontSize: 20, color: "#fff" }} spin />
 );
 
-const pageVariants = {
+const auth_pageVariants = {
     initial: {
         y: "+100vh",
         opacity: 0
@@ -23,7 +23,7 @@ const pageVariants = {
     }
 };
 
-const auth_pageVariants = {
+const pageVariants = {
     initial: {
         opacity: 0
     },

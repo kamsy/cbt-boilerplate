@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 import CustomInput from "../../components/CustomInput";
-
 import { motion } from "framer";
 import AuthServices from "../../services/authServices";
 import CustomButton from "../../components/CustomButton";

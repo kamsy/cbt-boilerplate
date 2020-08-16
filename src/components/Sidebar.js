@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { url } from "../App";
 import { NavLink } from "react-router-dom";
-import { DashboardOutlined } from "@ant-design/icons";
-import Envelope from "../assets/svgs/Envelope";
-import LoanHistory from "../assets/svgs/LoanHistory";
+// import { DashboardOutlined } from "@ant-design/icons";
+// import Envelope from "../assets/svgs/Envelope";
+// import LoanHistory from "../assets/svgs/LoanHistory";
 
 const Sidebar = () => {
     useEffect(() => {

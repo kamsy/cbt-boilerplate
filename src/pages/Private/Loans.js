@@ -6,7 +6,7 @@ import {
 } from "../../components/ProtectedLayout";
 import { _formatMoney } from "../../services/utils";
 import { EllipsisOutlined } from "@ant-design/icons";
-import { Dropdown, Menu, Input, Pagination } from "antd";
+import { Dropdown, Menu, Pagination } from "antd";
 import { Link } from "react-router-dom";
 import "../../scss/loans.scss";
 import { url } from "../../App";
@@ -17,7 +17,6 @@ import PartRepaymentModal from "../../components/Modals/PartRepaymentModal";
 import ViewLoanModal from "../../components/Modals/ViewLoanModal";
 import EmptyTable from "../../components/EmptyTable";
 import TableSelectFilters from "../../components/TableSelectFIlters";
-const { Search } = Input;
 const moment = new MomentAdapter();
 
 const Loans = () => {

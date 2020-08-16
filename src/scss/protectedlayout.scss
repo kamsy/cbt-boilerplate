@@ -225,7 +225,7 @@ body {
                 height: 100vh;
                 padding: 5.5rem 0;
                 width: 160px;
-                background:blue;
+                background:$blue;
                 -webkit-transition: all 0.7s ease-in;
                 transition: all 0.7s ease-in;
             }
@@ -549,9 +549,6 @@ body {
 
 
             }
-
-
-
         }
 
         .pagination-container {
