@@ -17,10 +17,14 @@ import Chart from "react-google-charts";
 import FundWalletModal from "../../components/Modals/FundWalletModal";
 import BuyAirtimeModal from "../../components/Modals/BuyAirtimeModal";
 import BillerModal from "../../components/Modals/BillerModal";
+import BillServices from "../../services/billsServices";
+import SelectISPModal from "../../components/Modals/SelectISPModal";
+
 const moment = new MomentAdapter();
 
 const Dashboard = () => {
     const [transactions, set_transactions] = useState([]);
+    const [billers, set_billers] = useState([]);
 
     const getTransactions = ({ page }) => {
         setTimeout(() => {
@@ -37,9 +41,17 @@ const Dashboard = () => {
             }
         );
     };
+    const getBillers = ({ page }) => {
+        BillServices.getBillersService({ page }).then(({ status, data }) => {
+            if (status === 200) {
+                set_billers(data || []);
+            }
+        });
+    };
 
     useEffect(() => {
         getTransactions({ page: 1 });
+        getBillers({ page: 1 });
     }, []);
 
     const [open_fund_wallet_modal, set_open_fund_wallet_modal] = useState(
@@ -49,6 +61,18 @@ const Dashboard = () => {
     const [open_airtime_modal, set_open_airtime_modal] = useState(false);
 
     const [open_biller_modal, set_open_biller_modal] = useState(false);
+    const [open_select_biller_modal, set_open_select_biller_modal] = useState(
+        false
+    );
+    const [biller_info, set_biller_info] = useState([]);
+
+    const handleSelectedBiller = info => {
+        console.log("info", info);
+        set_biller_info(info);
+        set_open_select_biller_modal(false);
+        set_open_biller_modal(true);
+    };
+
     return (
         <motion.div
             className="main dashboard shared-modal-comp"
@@ -57,6 +81,14 @@ const Dashboard = () => {
             exit="out"
             transition={pageTransitions}
             variants={pageVariants}>
+            <SelectISPModal
+                {...{
+                    open_select_biller_modal,
+                    set_open_select_biller_modal,
+                    handleSelectedBiller,
+                    billers
+                }}
+            />
             <FundWalletModal
                 {...{ open_fund_wallet_modal, set_open_fund_wallet_modal }}
             />
@@ -72,7 +104,8 @@ const Dashboard = () => {
                 {...{
                     open_biller_modal,
                     set_open_biller_modal,
-                    set_open_fund_wallet_modal
+                    set_open_fund_wallet_modal,
+                    ...biller_info
                 }}
             />
             <div className="top-section">
@@ -86,7 +119,10 @@ const Dashboard = () => {
                         </span>
                         <span className="text">Buy Airtime</span>
                     </div>
-                    <div className="card" role="button">
+                    <div
+                        className="card"
+                        role="button"
+                        onClick={() => set_open_select_biller_modal(true)}>
                         <span className="svg-cont">
                             <InternetSvg />
                         </span>

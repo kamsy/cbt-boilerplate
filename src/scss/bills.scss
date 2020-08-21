@@ -28,19 +28,6 @@
         }
     }
 
-    .right-cont {
-        width: calc(100% - 24px - 348px);
-
-        @include screen(768) {
-            width: 100%
-        }
-    }
-
-    .section-header {
-        font-size: 20px;
-        font-weight: bold;
-        margin-top: 6px;
-    }
 
     .desc {
         color: rgba(0, 0, 0, 0.4)
@@ -55,49 +42,19 @@
         border-radius: 8px;
     }
 
-    .billers-container {
-        margin-top: 16px;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -ms-flex-wrap: wrap;
-        flex-wrap: wrap;
+    .section-header {
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 6px;
+    }
 
-        .biller {
-            @include shadowMixin;
-            cursor: pointer;
-            background: $white;
-            border-radius: 4px;
-            padding: 16px 24px;
-            margin: 0 24px 24px 0;
-            width: 210px;
+    .right-cont {
+        width: calc(100% - 24px - 348px);
 
-            @include screen(425) {
-                width: 100%;
-                margin:  0 0 24px
-            }
-
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-align: center;
-            -ms-flex-align: center;
-            align-items: center;
-
-            &:nth-of-type(4n) {
-                margin-right: 0
-            }
-
-            &-name {
-                font-size: 16px;
-                margin-left: 24px;
-            }
-
-            &-img {
-                width: 40px;
-                height: 40px;
-            }
+        @include screen(768) {
+            width: 100%
         }
+        @include ISPsStyle;
     }
 
 

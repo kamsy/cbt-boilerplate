@@ -3,21 +3,24 @@
 
 .dashboard {
     @include DashboardTableStyle;
+    overflow: hidden auto;
 
-    .last-five{
+    .last-five {
         font-weight: 900;
         font-size: 20px;
     }
 
     .table-container {
         margin-top: 24px;
-        tbody{
-            tr{
+
+        tbody {
+            tr {
+
                 &:nth-of-type(6),
                 &:nth-of-type(7),
                 &:nth-of-type(8),
                 &:nth-of-type(9),
-                &:nth-of-type(10){
+                &:nth-of-type(10) {
                     display: none
                 }
             }
@@ -30,6 +33,7 @@
         display: flex;
         -ms-flex-wrap: wrap;
         flex-wrap: wrap;
+        margin-bottom: 24px;
 
         .left-cont {
             display: -webkit-box;
@@ -37,8 +41,13 @@
             display: flex;
             -ms-flex-wrap: wrap;
             flex-wrap: wrap;
-            width: calc((100% - 48px) / 3);
+            max-width: 391px;
             margin: 0 24px 24px 0;
+
+            @include screen(768) {
+                max-width: 100%;
+                margin-right: 0
+            }
 
             .card {
                 cursor: pointer;
@@ -46,8 +55,18 @@
                 padding: 24px;
                 background: $white;
                 @include shadowMixin;
-                width: calc((100% - 24px) / 2);
                 margin: 0 24px 24px 0;
+                width: calc((100% - 24px) / 2);
+
+                @include screen(768) {
+                    width: calc((100% - 24px) / 2);
+                }
+
+                @include screen(450) {
+                    width: 100%;
+                    margin-right: 0;
+                }
+
                 display: -webkit-box;
                 display: -ms-flexbox;
                 display: flex;
@@ -109,10 +128,15 @@
         .middle-cont {
             border-radius: 8px;
             height: 300px;
-            svg{
+
+            svg {
                 border-radius: 8px;
             }
         }
+    }
+
+    .select-isp-modal {
+        @include ISPsStyle;
     }
 
 }

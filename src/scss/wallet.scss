@@ -28,25 +28,70 @@
                 background: $white;
                 border-radius: 4px;
                 @include shadowMixin;
+
+                .card {
+                    padding: 12px 24px;
+                    height: 190px;
+                    background: rgba($blue, 0.05);
+                    @include shadowMixin;
+                    border-radius: 10px;
+                    position: relative;
+                    overflow: hidden;
+
+                    &::after,
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        width: 100%;
+                        background: rgba($blue, 0.05);
+                        left: 0;
+                        height: 50px;
+                        -webkit-transform: rotate(45deg);
+                        transform: rotate(45deg)
+                    }
+
+                    &::after {
+                        left: -150px;
+                        bottom: 90px
+                    }
+
+                    &::before {
+                        height: 80px;
+                        top: 0;
+                        left: 100px
+                    }
+                }
+
+                .balance {
+                    font-size: 20px;
+
+                    @include screen(768) {
+                        font-size: 18px
+                    }
+
+                    color: $blue
+                }
+
+                p {
+                    font-weight: bold;
+                    font-size: 36px;
+                    word-break: break-all;
+
+                    @include screen(768) {
+                        font-size: 28px
+                    }
+                }
+
+                .custom-btn {
+                    margin: 18px 0 0;
+                }
             }
-        }
 
-        @include screen(1024) {
-
-            .wallet-info-container {
-                width: calc((100% - 36px)/ 2);
+            @include screen(1024) {
+                width: 100%
             }
 
-            .bank-info-container {
-                margin-right: 0;
-            }
-        }
-
-        @include screen(768) {
-
-            .wallet-info-container {
-                width: 100%;
-                margin-right: 0;
+            @include screen(768) {
 
                 .wallet-info,
                 .card-info,
@@ -54,63 +99,21 @@
                     padding: 24px 12px;
                 }
             }
-        }
-
-
-        .wallet-info {
-            .card {
-                padding: 12px 24px;
-                height: 190px;
-                background: rgba($blue, 0.05);
-                @include shadowMixin;
-                border-radius: 10px;
-                position: relative;
-                overflow: hidden;
-
-                &::after,
-                &::before {
-                    content: '';
-                    position: absolute;
-                    width: 100%;
-                    background: rgba($blue, 0.05);
-                    left: 0;
-                    height: 50px;
-                    -webkit-transform: rotate(45deg);
-                    transform: rotate(45deg)
-                }
-
-                &::after {
-                    left: -150px;
-                    bottom: 90px
-                }
-
-                &::before {
-                    height: 80px;
-                    top: 0;
-                    left: 100px
-                }
-            }
-
-            .balance {
-                font-size: 20px;
-                color: $blue
-            }
-
-            p {
-                font-weight: bold;
-                font-size: 36px;
-            }
-
-            .custom-btn {
-                margin: 18px 0 0;
-            }
 
         }
 
         .bank-card-info-container {
-
             width: calc((100% - 72px)/ 3 * 2);
             margin: 0 36px 24px 0;
+
+            @include screen(1024) {
+                width: 100%
+            }
+
+            @include screen(768) {
+                width: 100%;
+                margin-right: 0;
+            }
 
             .ant-tabs-tabpane {
                 padding: 36px 24px;
@@ -184,10 +187,28 @@
                     margin: 0 24px 24px 0;
                     height: 190px;
                     width: calc((100% - 48px) / 3);
+                    min-width: 250px;
                     border-radius: 10px;
 
                     &:nth-child(3n) {
                         margin-right: 0
+                    }
+
+
+                    @include screen(1024) {
+                        width: calc((100% - 24px)/ 2);
+
+                        &:nth-child(2n) {
+                            margin-right: 0
+                        }
+
+
+                    }
+
+                    @include screen(650) {
+                        width: 100%;
+                        min-width: unset;
+                        margin-right: 0;
                     }
 
 
@@ -196,6 +217,18 @@
 
                             -webkit-transform: rotateY(180deg);
                             transform: rotateY(180deg)
+                        }
+                    }
+
+                    &.bank-card {
+                        .card-front {
+                            -webkit-box-pack: unset;
+                            -ms-flex-pack: unset;
+                            justify-content: flex-end;
+
+                            .account-num {
+                                margin-top: 24px;
+                            }
                         }
                     }
                 }
@@ -250,6 +283,11 @@
                     background: $blue;
                     border-radius: 10px;
                     padding: 12px 24px;
+
+                    @include screen(650) {
+                        padding: 12px 16px;
+                    }
+
                     position: absolute;
                     height: 100%;
                     width: 100%;
@@ -339,6 +377,8 @@
                     }
 
                 }
+
+
             }
         }
 

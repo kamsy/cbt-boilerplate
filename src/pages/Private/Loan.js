@@ -22,8 +22,6 @@ const Loan = () => {
             window._toggleLoader();
         }, 100);
         LoanServices.getLoanService(id).then(({ status, data }) => {
-            console.log("getLoan -> status", status);
-            console.log("getLoan -> data", data);
             setTimeout(() => {
                 window._toggleLoader();
             }, 500);

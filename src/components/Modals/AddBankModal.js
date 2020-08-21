@@ -20,7 +20,7 @@ const schema = yup.object().shape({
     bank_name: yup.string().required("Please select a bank!")
 });
 
-const AddBankModal = ({ set_open_modal, open_modal, banks, getBank }) => {
+const AddBankModal = ({ set_open_modal, open_modal, banks, getBanks }) => {
     const [paystack_bank_code, set_paystack_bank_code] = useState(null);
     const [loading, set_loading] = useState(false);
     const methods = useForm({
@@ -46,7 +46,7 @@ const AddBankModal = ({ set_open_modal, open_modal, banks, getBank }) => {
             set_loading(false);
         }, 500);
         if (res.status === 201) {
-            getBank();
+            getBanks();
             return set_open_modal(false);
         }
     };

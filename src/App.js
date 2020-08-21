@@ -207,7 +207,7 @@ const App = () => {
                         <PrivateRoute
                             path={`${url}wallet`}
                             component={Wallet}
-                            title="Wallet & Transactions"
+                            title="Wallet"
                         />
                         <Route exact path={`${url}#/500`} component={Page500} />
 

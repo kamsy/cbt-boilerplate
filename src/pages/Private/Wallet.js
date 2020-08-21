@@ -37,8 +37,9 @@ const Wallet = () => {
     const [open_fund_wallet_modal, set_open_fund_wallet_modal] = useState(
         false
     );
+    const [banks_with_logos, set_banks_with_logos] = useState([]);
     const [banks, set_banks] = useState([]);
-    const [bank, set_bank] = useState({});
+    const [cards, set_cards] = useState([]);
     const [card, set_card] = useState({});
     const [wallet, set_wallet] = useState({});
 
@@ -63,64 +64,30 @@ const Wallet = () => {
         onClose: e => console.log(e)
     };
 
-    const _renderEmptyState = tab => (
-        <div className="empty-state">
-            <span>
-                You have not added a {tab},<br /> Click the button below to add
-                a {tab}.
-            </span>
-            {tab === "card" ? (
-                <PaystackConsumer {...componentProps}>
-                    {({ initializePayment }) => (
-                        <Button
-                            className="custom-btn"
-                            onClick={initializePayment}>
-                            Add Card
-                        </Button>
-                    )}
-                </PaystackConsumer>
-            ) : (
-                <Button
-                    className="custom-btn"
-                    onClick={() => {
-                        BankServices.getBanksWithLogosPaystackService().then(
-                            ({ status, data }) => {
-                                if (status === 200) {
-                                    set_banks(data);
-                                }
-                            }
-                        );
-
-                        return set_open_modal(true);
-                    }}>
-                    Add Bank
-                </Button>
-            )}
-        </div>
-    );
-
-    const getBank = () => {
-        BankServices.getBankService().then(({ status, data }) => {
-            if (status === 200) {
-                set_bank(data?.bank || {});
-            }
-        });
+    const getBanks = async () => {
+        const res = await BankServices.getBanksService();
+        const { status, data } = res;
+        console.log("getBanks -> data", data);
+        if (status === 200) {
+            set_banks(data?.banks || []);
+        }
     };
 
-    const getCard = () => {
-        CardServices.getCardService().then(({ status, data }) => {
-            if (status === 200) {
-                set_card(data?.card || {});
-            }
-        });
+    const getCards = async () => {
+        const res = await CardServices.getCardsService();
+        const { status, data } = res;
+        console.log("getCards -> res", res);
+        if (status === 200) {
+            set_cards(data?.cards || []);
+        }
     };
 
-    const getWallet = () => {
-        WalletServices.getWalletService().then(({ status, data }) => {
-            if (status === 200) {
-                set_wallet(data?.wallet || {});
-            }
-        });
+    const getWallet = async () => {
+        const res = await WalletServices.getWalletService();
+        const { status, data } = res;
+        if (status === 200) {
+            set_wallet(data?.wallet || {});
+        }
     };
 
     const deleteBank = async () => {
@@ -132,7 +99,7 @@ const Wallet = () => {
         const { status, data } = res;
         if (status === 200) {
             NotifySuccess(data.message);
-            set_bank({});
+            // set_banks();
         }
     };
 
@@ -145,15 +112,15 @@ const Wallet = () => {
         const { status, data } = res;
         if (status === 200) {
             NotifySuccess(data.message);
-            set_card({});
+            // set_card({});
         }
     };
 
     const onFundWallet = () => set_open_fund_wallet_modal(true);
 
     useEffect(() => {
-        getCard();
-        getBank();
+        getCards();
+        getBanks();
         getWallet();
         getTransactions({ page: 1 });
     }, []);
@@ -201,7 +168,14 @@ const Wallet = () => {
                     set_item_to_delete_info
                 }}
             />
-            <AddBankModal {...{ open_modal, set_open_modal, banks, getBank }} />
+            <AddBankModal
+                {...{
+                    open_modal,
+                    set_open_modal,
+                    banks: banks_with_logos,
+                    getBanks
+                }}
+            />
             <FundWalletModal
                 {...{
                     open_fund_wallet_modal,
@@ -233,7 +207,7 @@ const Wallet = () => {
                                         BankServices.getBanksWithLogosPaystackService().then(
                                             ({ status, data }) => {
                                                 if (status === 200) {
-                                                    set_banks(data);
+                                                    set_banks_with_logos(data);
                                                 }
                                             }
                                         );
@@ -244,35 +218,40 @@ const Wallet = () => {
                                 </Button>
                             </div>
 
-                            <a href="#" className="card-cont">
-                                <div className="card">
-                                    <div className="card-front">
-                                        <span className="bank-name">
-                                            {bank.bank_name}
-                                        </span>
+                            {banks.map(({ bank_name, account_number, id }) => (
+                                <a
+                                    href="#"
+                                    className="card-cont bank-card"
+                                    key={id}>
+                                    <div className="card">
+                                        <div className="card-front">
+                                            <span className="bank-name">
+                                                {bank_name}
+                                            </span>
 
-                                        <span className="account-num">
-                                            {bank.account_number}
-                                        </span>
+                                            <span className="account-num">
+                                                {account_number}
+                                            </span>
+                                        </div>
+                                        <div
+                                            className="card-back"
+                                            role="button"
+                                            onClick={() =>
+                                                toggleConfirmActionModal({
+                                                    type: "bank",
+                                                    bank_name: bank_name,
+                                                    modalHeaderTitle:
+                                                        "Confirm deleting this bank",
+                                                    confirmAction: deleteBank
+                                                })
+                                            }>
+                                            <span className="delete-btn">
+                                                Delete {bank_name}
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div
-                                        className="card-back"
-                                        role="button"
-                                        onClick={() =>
-                                            toggleConfirmActionModal({
-                                                type: "bank",
-                                                bank_name: bank.bank_name,
-                                                modalHeaderTitle:
-                                                    "Confirm deleting this bank",
-                                                confirmAction: deleteBank
-                                            })
-                                        }>
-                                        <span className="delete-btn">
-                                            Delete {bank.bank_name}
-                                        </span>
-                                    </div>
-                                </div>
-                            </a>
+                                </a>
+                            ))}
                         </TabPane>
                         <TabPane tab="Card" key="2">
                             <div className="add-card card-cont">
@@ -287,60 +266,73 @@ const Wallet = () => {
                                 </PaystackConsumer>
                             </div>
 
-                            <a href="#" className="card-cont">
-                                <div className="card">
-                                    <div className="card-front">
-                                        <div className="top">
-                                            <span className="card-bank">
-                                                {card.bank}
-                                            </span>
-                                            <span className="brand-logo">
-                                                {card.brand === "visa" ? (
-                                                    <VisaCard />
-                                                ) : card.brand ===
-                                                  "mastercard" ? (
-                                                    <MasterCard />
-                                                ) : null}
-                                            </span>
+                            {cards.map(
+                                ({
+                                    bank,
+                                    brand,
+                                    last_four,
+                                    user,
+                                    month,
+                                    year,
+                                    id
+                                }) => (
+                                    <a href="#" className="card-cont" key={id}>
+                                        <div className="card">
+                                            <div className="card-front">
+                                                <div className="top">
+                                                    <span className="card-bank">
+                                                        {bank}
+                                                    </span>
+                                                    <span className="brand-logo">
+                                                        {brand === "visa" ? (
+                                                            <VisaCard />
+                                                        ) : brand ===
+                                                          "mastercard" ? (
+                                                            <MasterCard />
+                                                        ) : null}
+                                                    </span>
+                                                </div>
+                                                <div className="mid">
+                                                    <span className="chip">
+                                                        <MicroChip />
+                                                    </span>
+                                                    <span className="last-four">
+                                                        **** **** ****{" "}
+                                                        {last_four}
+                                                    </span>
+                                                </div>
+                                                <div className="btm">
+                                                    <p className="card-hlder">
+                                                        {_limitText(
+                                                            user.name || "",
+                                                            25
+                                                        )}
+                                                    </p>
+                                                    <span className="expiry">
+                                                        {month}/{year}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div
+                                                className="card-back"
+                                                role="button"
+                                                onClick={() =>
+                                                    toggleConfirmActionModal({
+                                                        type: "card",
+                                                        card_number: `**** **** ****${card.last_four}`,
+                                                        modalHeaderTitle:
+                                                            "Confirm deleting this card",
+                                                        confirmAction: deleteCard
+                                                    })
+                                                }>
+                                                <span className="delete-btn">
+                                                    Delete Card
+                                                </span>
+                                            </div>
                                         </div>
-                                        <div className="mid">
-                                            <span className="chip">
-                                                <MicroChip />
-                                            </span>
-                                            <span className="last-four">
-                                                **** **** **** {card.last_four}
-                                            </span>
-                                        </div>
-                                        <div className="btm">
-                                            <p className="card-hlder">
-                                                {_limitText(
-                                                    card.user?.name || "",
-                                                    25
-                                                )}
-                                            </p>
-                                            <span className="expiry">
-                                                {card.month}/{card.year}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className="card-back"
-                                        role="button"
-                                        onClick={() =>
-                                            toggleConfirmActionModal({
-                                                type: "card",
-                                                card_number: `**** **** ****${card.last_four}`,
-                                                modalHeaderTitle:
-                                                    "Confirm deleting this card",
-                                                confirmAction: deleteCard
-                                            })
-                                        }>
-                                        <span className="delete-btn">
-                                            Delete Card
-                                        </span>
-                                    </div>
-                                </div>
-                            </a>
+                                    </a>
+                                )
+                            )}
                         </TabPane>
                     </Tabs>
                     {/* <div className="bank-info">

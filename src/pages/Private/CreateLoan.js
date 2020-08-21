@@ -38,6 +38,7 @@ const CreateLoan = () => {
     const [repay_amount, set_repay_amount] = useState("");
     const [duration, set_duration] = useState(0);
     const [bank_statement, set_bank_statement] = useState(null);
+    const [repayment_brkdwn, set_repayment_brkdwn] = useState([]);
 
     const [identification_document, set_identification_document] = useState(
         null
@@ -108,8 +109,36 @@ const CreateLoan = () => {
                   amt *
                   (((30 - floor_charge_duration) * after_floor_percent) /
                       after_floor_charge_duration);
-        const total = amt + floor + after_floor;
-        set_repay_amount(Math.floor(total));
+        const total = Math.floor(amt + floor + after_floor);
+        set_repay_amount(total);
+        console.log("calculateRepayment -> Math.floor(total)", total);
+        const repayment_brkdwn_arr = [];
+        if (time <= 30) {
+            repayment_brkdwn_arr.push({ month: "First month", amount: total });
+        } else if (time > 30 && time <= 60) {
+            repayment_brkdwn_arr.push({
+                month: "First month",
+                amount: total / 2
+            });
+            repayment_brkdwn_arr.push({
+                month: "Second month",
+                amount: total / 2
+            });
+        } else if (time > 60) {
+            repayment_brkdwn_arr.push({
+                month: "First month",
+                amount: total / 3
+            });
+            repayment_brkdwn_arr.push({
+                month: "Second month",
+                amount: total / 3
+            });
+            repayment_brkdwn_arr.push({
+                month: "Third month",
+                amount: total / 3
+            });
+        }
+        set_repayment_brkdwn(repayment_brkdwn_arr);
     };
 
     const _handleDuration = ({ target: { value } }) => {
@@ -209,6 +238,20 @@ const CreateLoan = () => {
                                 <span>Amount to Repay</span>
                                 <span>{_formatMoney(repay_amount || 0)}</span>
                             </p>
+                            <div
+                                className={`repayment-brkdwn ${
+                                    repay_amount > 0 ? "show" : ""
+                                }`}>
+                                <p className="p-hdr">Repayment Plan:</p>
+                                {repayment_brkdwn.map(({ amount, month }) => (
+                                    <p className="brk-dwn-item">
+                                        <span className="month">{month}:</span>
+                                        <span className="amt">
+                                            {_formatMoney(Math.floor(amount))}
+                                        </span>
+                                    </p>
+                                ))}
+                            </div>
                             <p className="penalty-note">
                                 <strong>
                                     NB: A{" "}
