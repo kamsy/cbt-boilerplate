@@ -1,9 +1,12 @@
 import React, { useEffect } from "react";
 import { url } from "../App";
 import { NavLink } from "react-router-dom";
-// import { DashboardOutlined } from "@ant-design/icons";
-// import Envelope from "../assets/svgs/Envelope";
-// import LoanHistory from "../assets/svgs/LoanHistory";
+import DashboardSvg from "../assets/svgs/Sidebar/DashboardSvg";
+import LoanSvg from "../assets/svgs/Sidebar/LoanSvg";
+import WalletSvg from "../assets/svgs/Sidebar/WalletSvg";
+import BillsSvg from "../assets/svgs/Sidebar/BillsSvg";
+import AccountSvg from "../assets/svgs/Sidebar/AccountSvg";
+import TransactionsHistorySvg from "../assets/svgs/Sidebar/TransactionsHistorySvg";
 
 const Sidebar = () => {
     useEffect(() => {
@@ -34,13 +37,19 @@ const Sidebar = () => {
                     activeClassName="active-route"
                     to={`${url}${path}`}
                     className="sidebar-link">
-                    {/* {path === "dashboard" ? (
-                        <DashboardOutlined />
+                    {path === "dashboard" ? (
+                        <DashboardSvg />
                     ) : path === "create-loan" ? (
-                        <Envelope />
+                        <LoanSvg />
+                    ) : path === "wallet" ? (
+                        <WalletSvg />
+                    ) : path === "bills" ? (
+                        <BillsSvg />
+                    ) : path === "profile" ? (
+                        <AccountSvg />
                     ) : (
-                        <LoanHistory />
-                    )} */}
+                        <TransactionsHistorySvg />
+                    )}
                     <span className="sidebar-link-name">{label}</span>
                 </NavLink>
             </li>

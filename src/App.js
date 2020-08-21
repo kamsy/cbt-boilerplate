@@ -212,7 +212,7 @@ const App = () => {
                         <Route exact path={`${url}#/500`} component={Page500} />
 
                         <Route exact path={`${url}#/404`} component={Page404} />
-                        <Route path="*" component={Page404}></Route>
+                        <Route path="*" component={Page404} />
                     </Switch>
                 </AnimatePresence>
             </Suspense>

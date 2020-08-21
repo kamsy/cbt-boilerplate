@@ -5,7 +5,7 @@ import {
     pageTransitions
 } from "../../components/ProtectedLayout";
 import { _formatMoney, _limitText } from "../../services/utils";
-import { Button, Popconfirm, Pagination } from "antd";
+import { Button, Popconfirm, Pagination, Tabs } from "antd";
 import "../../scss/wallet.scss";
 import { PaystackConsumer } from "react-paystack";
 import { decryptAndRead } from "../../services/localStorageHelper";
@@ -23,10 +23,16 @@ import MomentAdapter from "@date-io/moment";
 import TransactionsServices from "../../services/transactionsServices";
 import EmptyTable from "../../components/EmptyTable";
 import TableSelectFilters from "../../components/TableSelectFIlters";
+import ConfirmActionModal from "../../components/Modals/ConfirmActionModal";
+
 const moment = new MomentAdapter();
+
+const { TabPane } = Tabs;
 
 const Wallet = () => {
     const { user_info } = decryptAndRead(ENCRYPT_USER);
+    const [open_confirm_modal, set_open_confirm_modal] = useState(false);
+    const [item_to_delete_info, set_item_to_delete_info] = useState({});
     const [open_modal, set_open_modal] = useState(false);
     const [open_fund_wallet_modal, set_open_fund_wallet_modal] = useState(
         false
@@ -77,14 +83,13 @@ const Wallet = () => {
                 <Button
                     className="custom-btn"
                     onClick={() => {
-                        banks.length === 0 &&
-                            BankServices.getBanksWithLogosPaystackService().then(
-                                ({ status, data }) => {
-                                    if (status === 200) {
-                                        set_banks(data);
-                                    }
+                        BankServices.getBanksWithLogosPaystackService().then(
+                            ({ status, data }) => {
+                                if (status === 200) {
+                                    set_banks(data);
                                 }
-                            );
+                            }
+                        );
 
                         return set_open_modal(true);
                     }}>
@@ -173,6 +178,12 @@ const Wallet = () => {
 
     const onPaginationChange = page => getTransactions({ page });
 
+    const toggleConfirmActionModal = data => {
+        console.warn("clicked");
+        set_item_to_delete_info(data);
+        set_open_confirm_modal(true);
+    };
+
     return (
         <motion.div
             className="main wallet shared-modal-comp"
@@ -182,6 +193,14 @@ const Wallet = () => {
             exit="out"
             transition={pageTransitions}
             variants={pageVariants}>
+            <ConfirmActionModal
+                {...{
+                    open_confirm_modal,
+                    set_open_confirm_modal,
+                    item_to_delete_info,
+                    set_item_to_delete_info
+                }}
+            />
             <AddBankModal {...{ open_modal, set_open_modal, banks, getBank }} />
             <FundWalletModal
                 {...{
@@ -204,9 +223,127 @@ const Wallet = () => {
                         </Button>
                     </div>
                 </div>
-                <div className="bank-info-container">
-                    <h3>Bank info</h3>
-                    <div className="bank-info">
+                <div className="bank-card-info-container">
+                    <Tabs defaultActiveKey="1">
+                        <TabPane tab="Bank" key="1">
+                            <div className="add-card card-cont">
+                                <Button
+                                    className="custom-btn"
+                                    onClick={() => {
+                                        BankServices.getBanksWithLogosPaystackService().then(
+                                            ({ status, data }) => {
+                                                if (status === 200) {
+                                                    set_banks(data);
+                                                }
+                                            }
+                                        );
+
+                                        return set_open_modal(true);
+                                    }}>
+                                    Add Bank
+                                </Button>
+                            </div>
+
+                            <a href="#" className="card-cont">
+                                <div className="card">
+                                    <div className="card-front">
+                                        <span className="bank-name">
+                                            {bank.bank_name}
+                                        </span>
+
+                                        <span className="account-num">
+                                            {bank.account_number}
+                                        </span>
+                                    </div>
+                                    <div
+                                        className="card-back"
+                                        role="button"
+                                        onClick={() =>
+                                            toggleConfirmActionModal({
+                                                type: "bank",
+                                                bank_name: bank.bank_name,
+                                                modalHeaderTitle:
+                                                    "Confirm deleting this bank",
+                                                confirmAction: deleteBank
+                                            })
+                                        }>
+                                        <span className="delete-btn">
+                                            Delete {bank.bank_name}
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+                        </TabPane>
+                        <TabPane tab="Card" key="2">
+                            <div className="add-card card-cont">
+                                <PaystackConsumer {...componentProps}>
+                                    {({ initializePayment }) => (
+                                        <Button
+                                            className="custom-btn"
+                                            onClick={initializePayment}>
+                                            Add Card
+                                        </Button>
+                                    )}
+                                </PaystackConsumer>
+                            </div>
+
+                            <a href="#" className="card-cont">
+                                <div className="card">
+                                    <div className="card-front">
+                                        <div className="top">
+                                            <span className="card-bank">
+                                                {card.bank}
+                                            </span>
+                                            <span className="brand-logo">
+                                                {card.brand === "visa" ? (
+                                                    <VisaCard />
+                                                ) : card.brand ===
+                                                  "mastercard" ? (
+                                                    <MasterCard />
+                                                ) : null}
+                                            </span>
+                                        </div>
+                                        <div className="mid">
+                                            <span className="chip">
+                                                <MicroChip />
+                                            </span>
+                                            <span className="last-four">
+                                                **** **** **** {card.last_four}
+                                            </span>
+                                        </div>
+                                        <div className="btm">
+                                            <p className="card-hlder">
+                                                {_limitText(
+                                                    card.user?.name || "",
+                                                    25
+                                                )}
+                                            </p>
+                                            <span className="expiry">
+                                                {card.month}/{card.year}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div
+                                        className="card-back"
+                                        role="button"
+                                        onClick={() =>
+                                            toggleConfirmActionModal({
+                                                type: "card",
+                                                card_number: `**** **** ****${card.last_four}`,
+                                                modalHeaderTitle:
+                                                    "Confirm deleting this card",
+                                                confirmAction: deleteCard
+                                            })
+                                        }>
+                                        <span className="delete-btn">
+                                            Delete Card
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+                        </TabPane>
+                    </Tabs>
+                    {/* <div className="bank-info">
                         {!bank.id ? (
                             _renderEmptyState("bank")
                         ) : (
@@ -237,9 +374,9 @@ const Wallet = () => {
                                 </Popconfirm>
                             </div>
                         )}
-                    </div>
+                    </div> */}
                 </div>
-                <div className="card-info-container">
+                {/* <div className="card-info-container">
                     <h3>Card info</h3>
                     <div className="card-info">
                         {!card.id ? (
@@ -286,7 +423,7 @@ const Wallet = () => {
                             </div>
                         )}
                     </div>
-                </div>
+                </div> */}
             </div>
 
             <div className="drop-down-container full">

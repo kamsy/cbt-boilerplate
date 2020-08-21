@@ -3,6 +3,7 @@
 
 .wallet {
     @include DashboardTableStyle;
+
     .top-section {
         padding-bottom: 2rem;
         display: -webkit-box;
@@ -11,9 +12,7 @@
         -ms-flex-wrap: wrap;
         flex-wrap: wrap;
 
-        .wallet-info-container,
-        .bank-info-container,
-        .card-info-container {
+        .wallet-info-container {
             width: calc((100% - 72px)/ 3);
             margin: 0 36px 24px 0;
 
@@ -23,9 +22,7 @@
                 margin: 13px 0 24px
             }
 
-            .wallet-info,
-            .card-info,
-            .bank-info {
+            .wallet-info {
                 padding: 36px 24px;
                 height: 329px;
                 background: $white;
@@ -36,9 +33,7 @@
 
         @include screen(1024) {
 
-            .wallet-info-container,
-            .bank-info-container,
-            .card-info-container {
+            .wallet-info-container {
                 width: calc((100% - 36px)/ 2);
             }
 
@@ -49,9 +44,7 @@
 
         @include screen(768) {
 
-            .wallet-info-container,
-            .bank-info-container,
-            .card-info-container {
+            .wallet-info-container {
                 width: 100%;
                 margin-right: 0;
 
@@ -114,8 +107,23 @@
 
         }
 
-        .bank-info,
-        .card-info {
+        .bank-card-info-container {
+
+            width: calc((100% - 72px)/ 3 * 2);
+            margin: 0 36px 24px 0;
+
+            .ant-tabs-tabpane {
+                padding: 36px 24px;
+                background: $white;
+                border-radius: 4px;
+                @include shadowMixin;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -ms-flex-wrap: wrap;
+                flex-wrap: wrap;
+            }
+
             .empty-state {
                 display: -webkit-box;
                 display: -ms-flexbox;
@@ -142,185 +150,196 @@
             }
 
 
-            .delete.custom-btn {
-                background: rgba($red, 0.3);
-                margin-top: 20px;
-                color: $red !important;
 
-                &::after {
-                    background: $red !important;
-                    color: $white !important;
-                }
-
-
-                &:hover {
-                    background: $red !important;
-                    color: $white !important;
-
-                }
-            }
-
-        }
-
-        .bank-info {
-
-            p {
-                font-size: 30px;
-            }
-
-            .card {
-                padding: 12px 24px;
-                height: 190px;
-                background: $blue;
-                border-radius: 10px;
-                position: relative;
-                -webkit-box-align: end;
-                -ms-flex-align: end;
-                align-items: flex-end;
+            .add-card {
+                background: transparent;
+                border: 1px solid $grey;
                 display: -webkit-box;
                 display: -ms-flexbox;
                 display: flex;
-                -ms-flex-wrap: wrap;
-                flex-wrap: wrap;
-                -webkit-box-pack: justify;
-                -ms-flex-pack: justify;
-                justify-content: space-between;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                justify-content: center;
 
-                &::after,
-                &::before {
-                    content: '';
-                    position: absolute;
+                .custom-btn {
+                    padding: 12px 24px;
+                    margin: 0;
+                    border-radius: 10px;
                     width: 100%;
-                    background: rgba($white, 0.05);
-                    left: 0;
-                    height: 50px;
-                    -webkit-transform: rotate(45deg);
-                    transform: rotate(45deg)
+                    height: 100%;
+                    background: transparent;
+
+                    span {
+                        color: $blue
+                    }
                 }
-
-                &::after {
-                    left: -150px;
-                    bottom: 90px
-                }
-
-                &::before {
-                    height: 80px;
-                    top: 0;
-                    left: 100px
-                }
-            }
-
-            .bank-name,
-            .account-num {
-                font-size: 18px;
-                font-weight: bold;
-                color: $white;
-                display: inline-block
-            }
-
-            .bank-name {
-                margin: 0 24px 0 0;
-            }
-
-        }
-
-        .card-info {
-            &-container {
-                margin-right: 0
-            }
-
-            p {
-                font-size: 30px;
             }
 
             .card {
-                padding: 12px 24px;
-                height: 190px;
+                &-cont {
+                    position: relative;
+                    margin: 0 24px 24px 0;
+                    height: 190px;
+                    width: calc((100% - 48px) / 3);
+                    border-radius: 10px;
+
+                    &:nth-child(3n) {
+                        margin-right: 0
+                    }
+
+
+                    &:focus {
+                        .card {
+
+                            -webkit-transform: rotateY(180deg);
+                            transform: rotateY(180deg)
+                        }
+                    }
+                }
+
+                height: 100%;
                 width: 100%;
-                background: $blue;
-                border-radius: 10px;
-                position: relative;
+                position: absolute;
+                -webkit-transform-style: preserve-3d;
+                transform-style: preserve-3d;
+                -webkit-transition: all 0.5s ease-in-out;
+                transition: all 0.5s ease-in-out;
 
-                &::after,
-                &::before {
-                    content: '';
-                    position: absolute;
-                    width: 100%;
-                    left: 0;
-                    bottom: 0;
-                    border-top-left-radius: 75%;
-                }
-
-                &::after {
-                    height: 100px;
-                    border-top-right-radius: 60%;
-                    background: rgba($white, 0.1);
-                    z-index: 2
-                }
-
-                &::before {
-                    height: 140px;
-                    border-top-right-radius: 5%;
-                    background: rgba($white, 0.05);
-                }
-
-                span {
-                    font-size: 16px;
-                    font-weight: bold;
-                    color: $white
-                }
-
-                .last-four {
-                    position: absolute;
-                    left: 24px;
-                    top: 60%;
-                    -webkit-transform: translate(0, -50%);
-                    transform: translate(0, -50%);
-                    font-size: 20px;
-                    font-weight: bold;
-                    color: $white
-                }
-
-                .chip {
-                    position: absolute;
-                    left: 24px;
-                    top: 64px
-                }
-
-                .expiry {
-                    position: absolute;
-                    right: 24px;
-                    bottom: 12px;
-                }
-
-
-                &-bank {
-                    position: absolute;
-                    left: 24px;
-                    top: 12px
-                }
-
-
-                .brand-logo {
-                    position: absolute;
-                    right: 24px;
-                    top: 12px
+                &:last-of-type {
+                    margin: 0
                 }
 
                 p {
-                    text-transform: uppercase;
-                    margin: 0;
-                    position: absolute;
-                    left: 24px;
-                    bottom: 12px;
-                    font-size: 16px;
-                    font-weight: bold;
-                    color: $white
+                    font-size: 30px;
                 }
 
 
-            }
 
+                .card-back {
+                    position: absolute;
+                    height: 100%;
+                    width: 100%;
+                    -webkit-backface-visibility: hidden;
+                    backface-visibility: hidden;
+                    -webkit-transform: rotateY(180deg);
+                    transform: rotateY(180deg);
+                    background: rgba($red, 0.05);
+                    border-radius: 10px;
+                    z-index: 10;
+                    overflow: hidden;
+                    display: -webkit-box;
+                    display: -ms-flexbox;
+                    display: flex;
+                    -webkit-box-align: center;
+                    -ms-flex-align: center;
+                    align-items: center;
+                    -webkit-box-pack: center;
+                    -ms-flex-pack: center;
+                    justify-content: center;
+
+                    .delete-btn {
+                        color: $red;
+                    }
+                }
+
+                .card-front {
+
+                    background: $blue;
+                    border-radius: 10px;
+                    padding: 12px 24px;
+                    position: absolute;
+                    height: 100%;
+                    width: 100%;
+                    -webkit-backface-visibility: hidden;
+                    backface-visibility: hidden;
+                    display: -webkit-box;
+                    display: -ms-flexbox;
+                    display: flex;
+                    -webkit-box-orient: vertical;
+                    -webkit-box-direction: normal;
+                    -ms-flex-direction: column;
+                    flex-direction: column;
+                    -webkit-box-pack: justify;
+                    -ms-flex-pack: justify;
+                    justify-content: space-between;
+
+                    &::after,
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        width: 100%;
+                        left: 0;
+                        bottom: 0;
+                        border-top-left-radius: 75%;
+                    }
+
+                    &::after {
+                        height: 100px;
+                        border-top-right-radius: 60%;
+                        background: rgba($white, 0.1);
+                        z-index: 2
+                    }
+
+                    &::before {
+                        height: 140px;
+                        border-top-right-radius: 5%;
+                        background: rgba($white, 0.05);
+                    }
+
+                    span {
+                        font-size: 16px;
+                        font-weight: bold;
+                        color: $white
+                    }
+
+                    .top {
+                        display: -webkit-box;
+                        display: -ms-flexbox;
+                        display: flex;
+                        -webkit-box-pack: justify;
+                        -ms-flex-pack: justify;
+                        justify-content: space-between;
+                    }
+
+                    .mid {
+                        display: -webkit-box;
+                        display: -ms-flexbox;
+                        display: flex;
+                        -webkit-box-orient: vertical;
+                        -webkit-box-direction: normal;
+                        -ms-flex-direction: column;
+                        flex-direction: column;
+
+                        .last-four {
+                            font-size: 20px;
+                            font-weight: bold;
+                            color: $white
+                        }
+
+                    }
+
+                    .btm {
+                        display: -webkit-box;
+                        display: -ms-flexbox;
+                        display: flex;
+                        -webkit-box-pack: justify;
+                        -ms-flex-pack: justify;
+                        justify-content: space-between;
+
+                        .card-hlder {
+                            text-transform: uppercase;
+                            margin: 0;
+                            font-size: 16px;
+                            font-weight: bold;
+                            color: $white
+                        }
+                    }
+
+                }
+            }
         }
 
     }
@@ -332,5 +351,22 @@
         }
     }
 
+    .confirm-delete-modal {
+        .action-explanation {
+            font-size: 16px;
+        }
 
+        .btns-cont {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: end;
+            -ms-flex-pack: end;
+            justify-content: flex-end;
+
+            .delete {
+                margin-left: 24px;
+            }
+        }
+    }
 }
