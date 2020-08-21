@@ -22,6 +22,7 @@ import FacebookSvg from "../assets/svgs/FacebookSvg";
 import TwitterSvg from "../assets/svgs/TwitterSvg";
 import InstagramSvg from "../assets/svgs/InstagramSvg";
 import LinkedInSvg from "../assets/svgs/LinkedInSvg";
+import LandingBgDots from "../assets/svgs/LandingBgDots";
 
 const { Panel } = Collapse;
 
@@ -54,6 +55,9 @@ export default () => {
                         90days and have your money sent straight to your bank
                         account in minutes.
                     </p>
+                    <div className="dotted-svg-bg">
+                        <LandingBgDots />
+                    </div>
                     <Button className="view-pricing-btn">View Pricing</Button>
                     <img
                         src={IphoneX}

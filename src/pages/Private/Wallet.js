@@ -5,7 +5,7 @@ import {
     pageTransitions
 } from "../../components/ProtectedLayout";
 import { _formatMoney, _limitText } from "../../services/utils";
-import { Button, Popconfirm, Pagination, Tabs } from "antd";
+import { Button, Pagination, Tabs } from "antd";
 import "../../scss/wallet.scss";
 import { PaystackConsumer } from "react-paystack";
 import { decryptAndRead } from "../../services/localStorageHelper";

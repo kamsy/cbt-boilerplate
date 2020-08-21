@@ -1,12 +1,6 @@
-import React, { useState } from "react";
-import { Modal, Select } from "antd";
-import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers";
-import * as yup from "yup";
-import CustomInput from "../CustomInput";
+import React from "react";
+import { Modal } from "antd";
 import CustomButton from "../CustomButton";
-import BankServices from "../../services/bankServices";
-const { Option } = Select;
 
 const ConfirmActionModal = ({
     set_open_confirm_modal,
