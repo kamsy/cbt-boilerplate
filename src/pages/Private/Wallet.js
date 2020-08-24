@@ -67,7 +67,6 @@ const Wallet = () => {
     const getBanks = async () => {
         const res = await BankServices.getBanksService();
         const { status, data } = res;
-        console.log("getBanks -> data", data);
         if (status === 200) {
             set_banks(data?.banks || []);
         }
@@ -76,7 +75,6 @@ const Wallet = () => {
     const getCards = async () => {
         const res = await CardServices.getCardsService();
         const { status, data } = res;
-        console.log("getCards -> res", res);
         if (status === 200) {
             set_cards(data?.cards || []);
         }

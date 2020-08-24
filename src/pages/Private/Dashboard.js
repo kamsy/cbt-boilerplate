@@ -48,10 +48,20 @@ const Dashboard = () => {
             }
         });
     };
+    const getBiller = ({ page }) => {
+        BillServices.t({ page }).then(({ status, data }) => {
+            console.log("getBiller -> status", status);
+            console.log("getBiller -> data", data);
+            if (status === 200) {
+                set_billers(data || []);
+            }
+        });
+    };
 
     useEffect(() => {
         getTransactions({ page: 1 });
         getBillers({ page: 1 });
+        getBiller({ page: 1 });
     }, []);
 
     const [open_fund_wallet_modal, set_open_fund_wallet_modal] = useState(

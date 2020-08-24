@@ -55,7 +55,9 @@ axios.interceptors.request.use(config => {
     if (decryptedToken) {
         const { token, expired } = decryptedToken;
         if (!expired) {
-            config.headers["Authorization"] = `Bearer ${token}`;
+            config.headers[
+                "Authorization"
+            ] = `Bearer VPWaJ3o0XKgKuDaCWy3KZ9DW7QkIJOwqHcdjUKTSh-E`;
         }
     }
     config.headers["Accept"] = "application/json";
