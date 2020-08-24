@@ -40,7 +40,6 @@ const Wallet = () => {
     const [banks_with_logos, set_banks_with_logos] = useState([]);
     const [banks, set_banks] = useState([]);
     const [cards, set_cards] = useState([]);
-    const [card, set_card] = useState({});
     const [wallet, set_wallet] = useState({});
 
     const componentProps = {
@@ -53,7 +52,9 @@ const Wallet = () => {
             CardServices.verifyCardService(reference).then(
                 ({ status, data }) => {
                     if (status === 201) {
-                        set_card(data.card);
+                        const cards_arr = [...cards];
+                        cards_arr.push(data.card);
+                        set_cards(cards_arr);
                     }
                     setTimeout(() => {
                         window._toggleLoader();
@@ -88,29 +89,35 @@ const Wallet = () => {
         }
     };
 
-    const deleteBank = async () => {
+    const deleteBank = async id => {
         window._toggleLoader();
-        const res = await BankServices.deleteBankService();
+        const res = await BankServices.deleteBankService(id);
         setTimeout(() => {
             window._toggleLoader();
         }, 500);
         const { status, data } = res;
         if (status === 200) {
             NotifySuccess(data.message);
-            // set_banks();
+            const banks_arr = [...banks];
+            const index_of_bank = banks_arr.findIndex(bank => bank.id === id);
+            banks_arr.splice(index_of_bank, 1);
+            set_banks(banks_arr);
         }
     };
 
-    const deleteCard = async () => {
+    const deleteCard = async id => {
         window._toggleLoader();
-        const res = await CardServices.deleteCardService();
+        const res = await CardServices.deleteCardService(id);
         setTimeout(() => {
             window._toggleLoader();
         }, 500);
         const { status, data } = res;
         if (status === 200) {
             NotifySuccess(data.message);
-            // set_card({});
+            const cards_arr = [...cards];
+            const index_of_bank = cards_arr.findIndex(card => card.id === id);
+            cards_arr.splice(index_of_bank, 1);
+            set_cards(cards_arr);
         }
     };
 
@@ -236,6 +243,7 @@ const Wallet = () => {
                                             role="button"
                                             onClick={() =>
                                                 toggleConfirmActionModal({
+                                                    id,
                                                     type: "bank",
                                                     bank_name: bank_name,
                                                     modalHeaderTitle:
@@ -316,8 +324,9 @@ const Wallet = () => {
                                                 role="button"
                                                 onClick={() =>
                                                     toggleConfirmActionModal({
+                                                        id,
                                                         type: "card",
-                                                        card_number: `**** **** ****${card.last_four}`,
+                                                        card_number: `**** **** ****${last_four}`,
                                                         modalHeaderTitle:
                                                             "Confirm deleting this card",
                                                         confirmAction: deleteCard

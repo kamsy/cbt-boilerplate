@@ -7,11 +7,7 @@ const BillServices = {
         postFunc(`${base_url}user/bills/validate`, payload),
     buyAirtimeService: payload =>
         postFunc(`${base_url}user/bills/airtime`, payload),
-    buyDataService: payload => postFunc(`${base_url}user/bills/data`, payload),
-    t: payload =>
-        getFunc(
-            "https://flexitedu.iposbi.com/api/sponsorgroup/SponsorGroup/GetPaymentPlanBySponsor?pageIndex=0&pageSize=10"
-        )
+    buyDataService: payload => postFunc(`${base_url}user/bills/data`, payload)
 };
 
 export default BillServices;

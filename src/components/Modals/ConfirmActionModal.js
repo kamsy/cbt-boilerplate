@@ -16,7 +16,7 @@ const ConfirmActionModal = ({
 
     const _confirmAction = () => {
         closeModal();
-        item_to_delete_info.confirmAction();
+        item_to_delete_info.confirmAction(item_to_delete_info.id);
     };
 
     return (
