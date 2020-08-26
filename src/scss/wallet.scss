@@ -120,11 +120,21 @@
                 background: $white;
                 border-radius: 4px;
                 @include shadowMixin;
-                display: -webkit-box;
-                display: -ms-flexbox;
-                display: flex;
-                -ms-flex-wrap: wrap;
-                flex-wrap: wrap;
+                display: grid;
+                grid-gap: 24px;
+                grid-template-columns: repeat(3, minmax(250px, 1fr));
+
+                @include screen(1025, 1575) {
+                    grid-template-columns: repeat(2, minmax(250px, 1fr));
+                }
+
+                @include screen(889) {
+                    grid-template-columns: repeat(2, minmax(250px, 1fr));
+                }
+
+                @include screen(610) {
+                    grid-template-columns:  1fr
+                }
             }
 
             .empty-state {
@@ -184,34 +194,9 @@
             .card {
                 &-cont {
                     position: relative;
-                    margin: 0 24px 24px 0;
                     height: 190px;
-                    width: calc((100% - 48px) / 3);
-                    min-width: 250px;
+                    width: 100%;
                     border-radius: 10px;
-
-                    &:nth-child(3n) {
-                        margin-right: 0
-                    }
-
-
-                    @include screen(1024) {
-                        width: calc((100% - 24px)/ 2);
-
-                        &:nth-child(2n) {
-                            margin-right: 0
-                        }
-
-
-                    }
-
-                    @include screen(650) {
-                        width: 100%;
-                        min-width: unset;
-                        margin-right: 0;
-                    }
-
-
                     &:focus {
                         .card {
 

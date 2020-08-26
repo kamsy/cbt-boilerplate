@@ -183,6 +183,7 @@ const Wallet = () => {
             />
             <FundWalletModal
                 {...{
+                    cards,
                     open_fund_wallet_modal,
                     set_open_fund_wallet_modal,
                     getWallet,
