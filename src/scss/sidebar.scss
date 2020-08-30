@@ -1,0 +1,108 @@
+@import 'variables';
+@import 'mixins';
+
+
+.sidebar {
+    bottom: 0;
+    z-index: 3;
+    left: 0;
+    position: fixed;
+    padding: 1.5rem 0 5.5rem;
+    width: 160px;
+    height: calc(100% - 72px);
+    background: $white;
+    @include shadowMixin;
+    -webkit-transition: all 0.7s ease-in;
+    transition: all 0.7s ease-in;
+
+
+    &-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        &-item {
+            margin-bottom: 4px;
+
+        }
+        -webkit-transition: all 0.7s ease-in;
+        transition: all 0.7s ease-in;
+
+
+        @include screen(1279) {
+            bottom: 0;
+            height: 100% ;
+            width: 160px;
+            background: $white;
+        }
+
+    }
+
+    &-link {
+        width: 100%;
+        padding: 8px 24px;
+        -webkit-transition: background 0.5s ease-in-out;
+        transition: background 0.5s ease-in-out;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        margin-bottom: 4px;
+        position: relative;
+
+        svg {
+            path {
+                fill: $blue;
+            }
+
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+        }
+
+        @include screen(1279) {
+            padding: 8px 20px;
+        }
+
+
+        &:hover {
+            background: rgba($blue, 0.1)
+        }
+
+        &.active-route {
+            background: rgba($blue, 0.1);
+
+            &::before {
+                background: $blue;
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 4px;
+            }
+        }
+
+        &-name {
+            color: $blue;
+            text-decoration: none;
+
+            &:hover {
+                color: $blue;
+            }
+        }
+    }
+
+    @include screen(1279) {
+        left: -100vw;
+        opacity: 0;
+        background: rgba(#000, 0.5);
+        width: 100%;
+        padding: 0;
+        &.show {
+            left: 0;
+            opacity: 1;
+        }
+    }
+}

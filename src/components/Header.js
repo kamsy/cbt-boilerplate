@@ -1,23 +1,21 @@
 import React, { useEffect } from "react";
 import { fakeAuth, url } from "../App";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Menu, Dropdown } from "antd";
 import Avatar from "../assets/images/person.png";
 import PowerOffSvg from "../assets/svgs/PowerOffSvg";
 import { clear } from "../services/localStorageHelper";
 import ProfileUser from "../assets/svgs/ProfileUser";
-
-const Header = ({ title }) => {
+import Logo from "../assets/images/Logo.png";
+import "../scss/header.scss";
+const Header = () => {
     const history = useHistory();
-    const params = useParams();
     useEffect(() => {
         const hamburger_cont = document.querySelector(".hamburger-container");
         const hamburger1 = document.querySelector(".hamburger");
-        const hamburger2 = document.querySelector(".hamburger-sb");
         const sidebar = document.querySelector(".sidebar");
         hamburger_cont.addEventListener("click", () => {
             hamburger1.classList.toggle("show");
-            hamburger2.classList.toggle("show");
             sidebar.classList.toggle("show");
         });
     }, []);
@@ -47,14 +45,17 @@ const Header = ({ title }) => {
     return (
         <div className="header">
             <ul className="header-list">
-                <div className="hamburger-container">
-                    <span className="hamburger" />
+                <div className="logo-cont">
+                    <div className="hamburger-container">
+                        <span className="hamburger" />
+                    </div>
+                    <img
+                        src={Logo}
+                        alt="quick's credit logo"
+                        className="logo"
+                    />
                 </div>
-                <span className="nav-title">
-                    {history.location.pathname.includes(params.id)
-                        ? `${title} #${params.id}`
-                        : title}
-                </span>
+
                 <Dropdown
                     overlay={menu}
                     trigger={["click"]}

@@ -39,11 +39,11 @@ export const fakeAuth = {
 const loggedIn = JSON.parse(localStorage.getItem("loggedIn"));
 
 // Private Router function
-const PrivateRoute = ({ component: Component, title, ...rest }) => {
+const PrivateRoute = ({ component: Component, ...rest }) => {
     return (
         <Route exact {...rest}>
             {fakeAuth.isAuthenticated ? (
-                <ProtectedLayout {...{ title, fakeAuth }}>
+                <ProtectedLayout {...{ fakeAuth }}>
                     <Component {...rest} />
                 </ProtectedLayout>
             ) : (
@@ -179,35 +179,23 @@ const App = () => {
                         <PrivateRoute
                             path={`${url}dashboard`}
                             component={Dashboard}
-                            title="Dashboard"
                         />
                         <PrivateRoute
                             path={`${url}create-loan`}
                             component={CreateLoan}
-                            title="Request Loan"
                         />
 
-                        <PrivateRoute
-                            path={`${url}loans`}
-                            component={Loans}
-                            title="Loan History"
-                        />
+                        <PrivateRoute path={`${url}loans`} component={Loans} />
 
-                        <PrivateRoute
-                            path={`${url}bills`}
-                            component={Bills}
-                            title="Bills"
-                        />
+                        <PrivateRoute path={`${url}bills`} component={Bills} />
 
                         <PrivateRoute
                             path={`${url}profile`}
                             component={Profile}
-                            title="Account"
                         />
                         <PrivateRoute
                             path={`${url}wallet`}
                             component={Wallet}
-                            title="Wallet"
                         />
                         <Route exact path={`${url}#/500`} component={Page500} />
 

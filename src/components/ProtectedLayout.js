@@ -52,14 +52,14 @@ export {
     auth_pageTransitions
 };
 
-const ProtectedLayout = ({ children, title }) => {
+const ProtectedLayout = ({ children }) => {
     useEffect(() => {
         window._toggleLoader = () =>
             document.querySelector(".window-loader").classList.toggle("show");
     }, []);
     return (
         <div className="protected-layout layout">
-            <Header {...{ title }} />
+            <Header />
             <Sidebar />
             <main className="children-container">
                 <Spin indicator={antIcon} className="window-loader" />
