@@ -192,15 +192,11 @@ const Bills = () => {
                     open_biller_modal,
                     ...biller_info,
                     set_open_biller_modal,
-                    set_open_fund_wallet_modal,
-                    open_fund_wallet_modal,
                     set_transaction_payload,
                     set_open_trans_confirm_modal
                 }}
             />
-            <FundWalletModal
-                {...{ open_fund_wallet_modal, set_open_fund_wallet_modal }}
-            />
+
             <div className="left-cont">
                 <h3 className="section-header">Airtime</h3>
                 <span className="desc">

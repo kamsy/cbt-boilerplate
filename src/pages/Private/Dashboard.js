@@ -19,6 +19,11 @@ import BuyAirtimeModal from "../../components/Modals/BuyAirtimeModal";
 import BillerModal from "../../components/Modals/BillerModal";
 import BillServices from "../../services/billsServices";
 import SelectISPModal from "../../components/Modals/SelectISPModal";
+import { message as AntMsg } from "antd";
+import ConfirmTransactionModal from "../../components/Modals/ConfirmTransactionModal";
+import { NotifySuccess, NotifyError } from "../../components/Notification";
+import WalletServices from "../../services/walletServices";
+import CardServices from "../../services/cardServices";
 
 const moment = new MomentAdapter();
 
@@ -52,7 +57,7 @@ const Dashboard = () => {
     useEffect(() => {
         getTransactions({ page: 1 });
         getBillers({ page: 1 });
-
+        getCards();
     }, []);
 
     const [open_fund_wallet_modal, set_open_fund_wallet_modal] = useState(
@@ -66,12 +71,150 @@ const Dashboard = () => {
         false
     );
     const [biller_info, set_biller_info] = useState([]);
-
+    const [cards, set_cards] = useState([]);
+    console.log("cards", cards);
     const handleSelectedBiller = info => {
-        console.log("info", info);
         set_biller_info(info);
         set_open_select_biller_modal(false);
         set_open_biller_modal(true);
+    };
+
+    const getCards = async () => {
+        const res = await CardServices.getCardsService();
+        const { status, data } = res;
+        if (status === 200) {
+            set_cards(data?.cards || []);
+        }
+    };
+
+    const buyAirtime = async () => {
+        const payload = transaction_payload;
+        setTimeout(() => {
+            window._toggleLoader();
+        }, 100);
+        const { response, status, data } = await BillServices.buyAirtimeService(
+            {
+                phone: `+234${payload.phone.substring(1)}`,
+                amount:
+                    payload.amount
+                        .split("₦")[1]
+                        .split(",")
+                        .join("") * 100
+            }
+        );
+
+        setTimeout(() => {
+            window._toggleLoader();
+        }, 100);
+        if (status === 200) {
+            NotifySuccess(data.message);
+        }
+        if (status === 500) {
+            NotifyError(data.message);
+        }
+        if (response) {
+            const {
+                status,
+                data: { message: msg }
+            } = response;
+            if (status === 503) {
+                NotifyError(msg);
+            } else if (status === 406) {
+                NotifyError(msg);
+            }
+        }
+    };
+
+    const buyDataBundle = async () => {
+        const payload = transaction_payload;
+        setTimeout(() => {
+            window._toggleLoader();
+        }, 100);
+        const { response, status, data } = await BillServices.buyDataService({
+            ...payload,
+            phone: `+234${payload.phone.substring(1)}`,
+            amount: payload.amount * 100
+        });
+
+        setTimeout(() => {
+            window._toggleLoader();
+        }, 500);
+        if (status === 200) {
+            NotifySuccess(data.message);
+        }
+        if (response) {
+            const {
+                status,
+                data: { message: msg }
+            } = response;
+            if (status === 503) {
+                NotifyError(msg);
+            } else if (status === 406) {
+                AntMsg.error(msg);
+                set_open_biller_modal(false);
+                setTimeout(() => {
+                    set_open_fund_wallet_modal(true);
+                }, 500);
+            }
+        }
+    };
+
+    const fundWallet = async () => {
+        const payload = transaction_payload;
+        const amount =
+            payload.amount
+                .split(",")
+                .join("")
+                .split("₦")
+                .join("") * 100;
+
+        window._toggleLoader();
+        const res = await WalletServices.fundWalletService({
+            ...payload,
+            amount
+        });
+        setTimeout(() => {
+            window._toggleLoader();
+        }, 100);
+        const { status, data } = res;
+        if (status === 200) {
+            NotifySuccess(data.message);
+            getTransactions({ page: 1 });
+        }
+    };
+
+    const [open_trans_confirm_modal, set_open_trans_confirm_modal] = useState(
+        false
+    );
+
+    const [transaction_payload, set_transaction_payload] = useState({});
+
+    const cancelTransaction = () => {
+        set_transaction_payload({});
+        set_open_trans_confirm_modal(false);
+    };
+
+    const confirmTransaction = () => {
+        switch (transaction_payload.type) {
+            case "airtime":
+                buyAirtime();
+                break;
+            case "data":
+                buyDataBundle();
+                break;
+            case "wallet":
+                fundWallet();
+                break;
+            default:
+                return;
+        }
+        set_open_trans_confirm_modal(false);
+    };
+
+    const confirmBuyAirtime = payload => {
+        set_transaction_payload({ type: "airtime", ...payload });
+        set_open_airtime_modal(false);
+        set_open_trans_confirm_modal(true);
     };
 
     return (
@@ -82,6 +225,19 @@ const Dashboard = () => {
             exit="out"
             transition={pageTransitions}
             variants={pageVariants}>
+            <ConfirmTransactionModal
+                {...{
+                    question:
+                        transaction_payload.type === "wallet"
+                            ? `Are you sure you want to fund your wallet with ${transaction_payload.amount}?`
+                            : transaction_payload.type === "airtime"
+                            ? `Are you sure you want to buy airtime of ${transaction_payload.amount}?`
+                            : `Are you sure you want to purchase ${transaction_payload.bundle}?`,
+                    open_trans_confirm_modal,
+                    _confirmAction: confirmTransaction,
+                    _cancelAction: cancelTransaction
+                }}
+            />
             <SelectISPModal
                 {...{
                     open_select_biller_modal,
@@ -91,10 +247,17 @@ const Dashboard = () => {
                 }}
             />
             <FundWalletModal
-                {...{ open_fund_wallet_modal, set_open_fund_wallet_modal }}
+                {...{
+                    open_fund_wallet_modal,
+                    cards,
+                    set_open_fund_wallet_modal,
+                    set_open_trans_confirm_modal,
+                    set_fund_payload: set_transaction_payload
+                }}
             />
             <BuyAirtimeModal
                 {...{
+                    confirmBuyAirtime,
                     open_airtime_modal,
                     set_open_airtime_modal,
                     set_open_fund_wallet_modal
@@ -106,7 +269,9 @@ const Dashboard = () => {
                     open_biller_modal,
                     set_open_biller_modal,
                     set_open_fund_wallet_modal,
-                    ...biller_info
+                    ...biller_info,
+                    set_transaction_payload,
+                    set_open_trans_confirm_modal
                 }}
             />
             <div className="top-section">

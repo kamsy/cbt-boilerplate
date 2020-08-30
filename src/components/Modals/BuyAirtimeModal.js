@@ -22,45 +22,15 @@ const schema = yup.object().shape({
 const BuyAirtimeModal = ({
     open_airtime_modal,
     set_open_airtime_modal,
-    set_open_fund_wallet_modal
+    confirmBuyAirtime
 }) => {
-    const [loading, set_loading] = useState(false);
     const methods = useForm({
         resolver: yupResolver(schema)
     });
     const { handleSubmit, control, errors, register, reset } = methods;
 
     const onSubmit = async payload => {
-        set_loading(true);
-        const { response, status, data } = await BillServices.buyAirtimeService(
-            {
-                phone: `+234${payload.phone.substring(1)}`,
-                amount:
-                    payload.amount
-                        .split("₦")[1]
-                        .split(",")
-                        .join("") * 100
-            }
-        );
-        set_loading(false);
-        if (status === 200) {
-            NotifySuccess(data.message);
-        }
-        if (response) {
-            const {
-                status,
-                data: { message: msg }
-            } = response;
-            if (status === 503) {
-                NotifyError(msg);
-            } else if (status === 406) {
-                AntMsg.error(msg);
-                set_open_airtime_modal(false);
-                setTimeout(() => {
-                    set_open_fund_wallet_modal(false);
-                }, 500);
-            }
-        }
+        confirmBuyAirtime(payload);
     };
 
     const closeModal = () => {
@@ -105,8 +75,7 @@ const BuyAirtimeModal = ({
                     {...{
                         text: "Buy Airtime",
                         extraClass: "full-size",
-                        onClick: handleSubmit(onSubmit),
-                        loading
+                        onClick: handleSubmit(onSubmit)
                     }}
                 />
             </form>

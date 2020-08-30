@@ -35,7 +35,7 @@ const FundWalletModal = ({
     } = methods;
     const onSubmit = payload => {
         set_open_trans_confirm_modal(true);
-        set_fund_payload(payload);
+        set_fund_payload({ type: "wallet", ...payload });
         return set_open_fund_wallet_modal(false);
     };
     const closeModal = () => {
