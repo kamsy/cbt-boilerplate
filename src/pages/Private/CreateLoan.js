@@ -13,6 +13,8 @@ import LoanServices from "../../services/loanServices";
 import { NotifySuccess } from "../../components/Notification";
 import { useHistory } from "react-router-dom";
 import { url } from "../../App";
+import { decryptAndRead } from "../../services/localStorageHelper";
+import { ENCRYPT_USER } from "../../variables";
 
 function beforeUpload(file) {
     const isPDF = file.type === "application/pdf";
@@ -27,6 +29,8 @@ function beforeUpload(file) {
 }
 
 const CreateLoan = () => {
+    const { user_info } = decryptAndRead(ENCRYPT_USER);
+    console.log("CreateLoan -> user_info", user_info);
     const history = useHistory();
     const [errors, set_errors] = useState({
         amount: false,
@@ -82,8 +86,6 @@ const CreateLoan = () => {
     };
     const _handleAmount = ({ value }) => {
         const amt = Number(value);
-        console.log("_handleAmount -> amt", amt);
-        // if (amt < 10000) return;
         if (amt > 100000) return set_errors({ ...errors, amount: false });
         set_amount(amt);
         if (duration < 1) return;
@@ -112,7 +114,6 @@ const CreateLoan = () => {
                       after_floor_charge_duration);
         const total = Math.floor(amt + floor + after_floor);
         set_repay_amount(total);
-        console.log("calculateRepayment -> Math.floor(total)", total);
         const repayment_brkdwn_arr = [];
         if (time <= 30) {
             repayment_brkdwn_arr.push({ month: "First month", amount: total });

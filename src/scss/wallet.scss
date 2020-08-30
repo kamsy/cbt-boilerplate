@@ -12,19 +12,69 @@
         -ms-flex-wrap: wrap;
         flex-wrap: wrap;
 
-        .wallet-info-container {
-            width: calc((100% - 36px)/ 3);
-            margin: 0 36px 24px 0;
 
-            h3 {
-                text-transform: capitalize;
-                font-size: 16px;
-                margin: 13px 0 24px
+
+        .bank-card-info-container {
+            width: 100%;
+
+            .ant-tabs-tabpane {
+                padding: 36px 24px;
+                background: $white;
+                border-radius: 4px;
+                @include shadowMixin;
+                display: grid;
+                grid-gap: 24px;
+                grid-template-columns: repeat(3, minmax(250px, 1fr));
+
+                @include screen(1025, 1575) {
+                    grid-template-columns: repeat(2, minmax(250px, 1fr));
+                }
+
+                @include screen(889) {
+                    grid-template-columns: repeat(2, minmax(250px, 1fr));
+                }
+
+                @include screen(610) {
+                    grid-template-columns: 1fr
+                }
+
+            }
+
+            .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+                color: $blue;
+                font-weight: 500;
+            }
+
+            .ant-tabs-ink-bar {
+                background: $blue;
+            }
+
+            .empty-state {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-orient: vertical;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: column;
+                flex-direction: column;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                justify-content: center;
+
+                span {
+                    text-align: center
+                }
+
+                .custom-btn {
+                    margin-top: 40px;
+                    width: 200px;
+                }
             }
 
             .wallet-info {
-                padding: 36px 24px;
-                background: $white;
                 border-radius: 4px;
                 @include shadowMixin;
 
@@ -88,83 +138,6 @@
                 }
             }
 
-            @include screen(1024) {
-                width: 100%
-            }
-
-            @include screen(768) {
-
-                .wallet-info,
-                .card-info,
-                .bank-info {
-                    padding: 24px 12px;
-                }
-            }
-
-        }
-
-        .bank-card-info-container {
-            width: calc((100% - 36px)/ 3 * 2);
-            margin: 0 0 24px;
-
-            @include screen(1024) {
-                width: 100%
-            }
-
-            @include screen(768) {
-                width: 100%;
-                margin-right: 0;
-            }
-
-            .ant-tabs-tabpane {
-                padding: 36px 24px;
-                background: $white;
-                border-radius: 4px;
-                @include shadowMixin;
-                display: grid;
-                grid-gap: 24px;
-                grid-template-columns: repeat(3, minmax(250px, 1fr));
-
-                @include screen(1025, 1575) {
-                    grid-template-columns: repeat(2, minmax(250px, 1fr));
-                }
-
-                @include screen(889) {
-                    grid-template-columns: repeat(2, minmax(250px, 1fr));
-                }
-
-                @include screen(610) {
-                    grid-template-columns:  1fr
-                }
-            }
-
-            .empty-state {
-                display: -webkit-box;
-                display: -ms-flexbox;
-                display: flex;
-                -webkit-box-orient: vertical;
-                -webkit-box-direction: normal;
-                -ms-flex-direction: column;
-                flex-direction: column;
-                -webkit-box-align: center;
-                -ms-flex-align: center;
-                align-items: center;
-                -webkit-box-pack: center;
-                -ms-flex-pack: center;
-                justify-content: center;
-
-                span {
-                    text-align: center
-                }
-
-                .custom-btn {
-                    margin-top: 40px;
-                    width: 200px;
-                }
-            }
-
-
-
             .add-card {
                 background: transparent;
                 border: 1px solid $grey;
@@ -198,6 +171,8 @@
                     height: 190px;
                     width: 100%;
                     border-radius: 10px;
+                    @include shadowMixin;
+
                     &:focus {
                         .card {
 
@@ -247,7 +222,7 @@
                     transform: rotateY(180deg);
                     background: rgba($red, 0.05);
                     border-radius: 10px;
-                    z-index: 10;
+                    z-index: 5;
                     overflow: hidden;
                     display: -webkit-box;
                     display: -ms-flexbox;
@@ -265,7 +240,6 @@
                 }
 
                 .card-front {
-
                     background: $blue;
                     border-radius: 10px;
                     padding: 12px 24px;
@@ -289,29 +263,10 @@
                     -webkit-box-pack: justify;
                     -ms-flex-pack: justify;
                     justify-content: space-between;
-
-                    &::after,
-                    &::before {
-                        content: '';
-                        position: absolute;
-                        width: 100%;
-                        left: 0;
-                        bottom: 0;
-                        border-top-left-radius: 75%;
-                    }
-
-                    &::after {
-                        height: 100px;
-                        border-top-right-radius: 60%;
-                        background: rgba($white, 0.1);
-                        z-index: 2
-                    }
-
-                    &::before {
-                        height: 140px;
-                        border-top-right-radius: 5%;
-                        background: rgba($white, 0.05);
-                    }
+                    background-image: url('../assets/svgs/waves.svg');
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                    background-position: -350px 50px;
 
                     span {
                         font-size: 16px;

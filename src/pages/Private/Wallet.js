@@ -245,22 +245,22 @@ const Wallet = () => {
                 }}
             />
             <div className="top-section">
-                <div className="wallet-info-container">
-                    <h3>Quick Credit Wallet</h3>
-                    <div className="wallet-info">
-                        <div className="card">
-                            <span className="balance">Balance</span>
-                            <p>{_formatMoney(wallet.amount / 100)}</p>
-                            <Button
-                                className="custom-btn"
-                                onClick={onFundWallet}>
-                                Fund Wallet
-                            </Button>
-                        </div>
-                    </div>
-                </div>
                 <div className="bank-card-info-container">
-                    <Tabs defaultActiveKey="1">
+                    <Tabs defaultActiveKey="0">
+                        <TabPane tab="Wallet" key="0">
+                            <div className="wallet-info">
+                                <div className="card">
+                                    <span className="balance">Balance</span>
+                                    <p>{_formatMoney(wallet.amount / 100)}</p>
+                                    <Button
+                                        className="custom-btn"
+                                        onClick={onFundWallet}>
+                                        Fund Wallet
+                                    </Button>
+                                </div>
+                            </div>
+                        </TabPane>
+
                         <TabPane tab="Bank" key="1">
                             <div className="add-card card-cont">
                                 <Button

@@ -32,9 +32,8 @@ const ConfirmActionModal = ({
                 You are about to delete{" "}
                 {item_to_delete_info.type === "bank"
                     ? item_to_delete_info.bank_name
-                    : item_to_delete_info.card_number}{" "}
-                {item_to_delete_info["card_number" || "bank_name"]}. Are you
-                sure about this?
+                    : item_to_delete_info.card_number}
+                . Are you sure about this?
             </span>
             <div className="btns-cont">
                 <CustomButton

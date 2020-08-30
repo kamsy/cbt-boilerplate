@@ -31,7 +31,6 @@ const schema = yup.object().shape({
 const Bills = () => {
     const [billers, set_billers] = useState([]);
     const [open_biller_modal, set_open_biller_modal] = useState(false);
-    const [loading, set_loading] = useState(false);
     const [biller_info, set_biller_info] = useState([]);
 
     const getBillers = ({ page }) => {
@@ -143,7 +142,6 @@ const Bills = () => {
     );
 
     const [transaction_payload, set_transaction_payload] = useState({});
-    console.log("transaction_payload", transaction_payload);
 
     const cancelTransaction = () => {
         set_transaction_payload({});
@@ -238,8 +236,7 @@ const Bills = () => {
                             {...{
                                 text: "Buy Airtime",
                                 extraClass: "full-size",
-                                onClick: handleSubmit(confirmBuyAirtime),
-                                loading
+                                onClick: handleSubmit(confirmBuyAirtime)
                             }}
                         />
                     </form>
