@@ -83,6 +83,7 @@ body {
             justify-content: space-between;
 
             .nav-title {
+                color: rgba(#000, .85);
                 font-weight: bold;
                 font-size: 24px;
                 -webkit-transition: 0.5s all ease-in-out;
@@ -225,7 +226,7 @@ body {
                 height: 100vh;
                 padding: 5.5rem 0;
                 width: 160px;
-                background:$blue;
+                background: $blue;
                 -webkit-transition: all 0.7s ease-in;
                 transition: all 0.7s ease-in;
             }
@@ -264,7 +265,8 @@ body {
 
             &.active-route {
                 background: rgba($white, 0.1);
-                &::before{
+
+                &::before {
                     background: $white;
                     content: '';
                     position: absolute;
@@ -471,11 +473,13 @@ body {
 
                     .ant-select {
                         border-radius: 4px;
+
                         &-selector {
                             height: 48px;
                             outline: none;
                             padding: 12px 24px;
                             border: none;
+
                             &:focus {
                                 outline: none
                             }
@@ -639,4 +643,18 @@ body {
         }
     }
 
+    .shared-modal-comp {
+        button+button {
+            margin-left: 36px;
+        }
+
+        .btns-cont {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: end;
+                -ms-flex-pack: end;
+                    justify-content: flex-end;
+        }
+    }
 }

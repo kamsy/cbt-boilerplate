@@ -82,8 +82,9 @@ const CreateLoan = () => {
     };
     const _handleAmount = ({ value }) => {
         const amt = Number(value);
+        console.log("_handleAmount -> amt", amt);
         // if (amt < 10000) return;
-        if (amt > 10000) set_errors({ ...errors, amount: false });
+        if (amt > 100000) return set_errors({ ...errors, amount: false });
         set_amount(amt);
         if (duration < 1) return;
         calculateRepayment({ amt, time: duration });
@@ -193,6 +194,7 @@ const CreateLoan = () => {
                                     isNumericString
                                     value={amount}
                                     thousandSeparator
+                                    maxLength={8}
                                     prefix="₦"
                                     onValueChange={_handleAmount}
                                     allowNegative={false}

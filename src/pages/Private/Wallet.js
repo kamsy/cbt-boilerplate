@@ -24,6 +24,7 @@ import TransactionsServices from "../../services/transactionsServices";
 import EmptyTable from "../../components/EmptyTable";
 import TableSelectFilters from "../../components/TableSelectFIlters";
 import ConfirmActionModal from "../../components/Modals/ConfirmActionModal";
+import ConfirmTransactionModal from "../../components/Modals/ConfirmTransactionModal";
 
 const moment = new MomentAdapter();
 
@@ -31,7 +32,14 @@ const { TabPane } = Tabs;
 
 const Wallet = () => {
     const { user_info } = decryptAndRead(ENCRYPT_USER);
+    const [confirm_transaction_modal, set_confirm_transaction_modal] = useState(
+        false
+    );
     const [open_confirm_modal, set_open_confirm_modal] = useState(false);
+    const [open_trans_confirm_modal, set_open_trans_confirm_modal] = useState(
+        false
+    );
+    const [fund_payload, set_fund_payload] = useState({});
     const [item_to_delete_info, set_item_to_delete_info] = useState({});
     const [open_modal, set_open_modal] = useState(false);
     const [open_fund_wallet_modal, set_open_fund_wallet_modal] = useState(
@@ -151,9 +159,47 @@ const Wallet = () => {
     const onPaginationChange = page => getTransactions({ page });
 
     const toggleConfirmActionModal = data => {
-        console.warn("clicked");
         set_item_to_delete_info(data);
         set_open_confirm_modal(true);
+    };
+
+    const fundWallet = async () => {
+        const amount =
+            fund_payload.amount
+                .split(",")
+                .join("")
+                .split("₦")
+                .join("") * 100;
+
+        window._toggleLoader();
+        const res = await WalletServices.fundWalletService({
+            ...fund_payload,
+            amount
+        });
+        setTimeout(() => {
+            window._toggleLoader();
+        }, 100);
+        const { status, data } = res;
+        if (status === 200) {
+            NotifySuccess(data.message);
+            getWallet && getWallet();
+            getTransactions && getTransactions({ page: 1 });
+            return openConfirmTransactionModal();
+        }
+    };
+
+    const openConfirmTransactionModal = () => {
+        set_confirm_transaction_modal(!confirm_transaction_modal);
+    };
+
+    const confirmTransaction = () => {
+        set_open_trans_confirm_modal(false);
+        fundWallet();
+    };
+
+    const cancelTransaction = () => {
+        set_fund_payload({});
+        set_open_trans_confirm_modal(false);
     };
 
     return (
@@ -165,6 +211,14 @@ const Wallet = () => {
             exit="out"
             transition={pageTransitions}
             variants={pageVariants}>
+            <ConfirmTransactionModal
+                {...{
+                    question: `Are you sure you want to fund your wallet with ${fund_payload.amount}`,
+                    open_trans_confirm_modal,
+                    _confirmAction: confirmTransaction,
+                    _cancelAction: cancelTransaction
+                }}
+            />
             <ConfirmActionModal
                 {...{
                     open_confirm_modal,
@@ -186,8 +240,8 @@ const Wallet = () => {
                     cards,
                     open_fund_wallet_modal,
                     set_open_fund_wallet_modal,
-                    getWallet,
-                    getTransactions
+                    set_open_trans_confirm_modal,
+                    set_fund_payload
                 }}
             />
             <div className="top-section">
@@ -197,10 +251,12 @@ const Wallet = () => {
                         <div className="card">
                             <span className="balance">Balance</span>
                             <p>{_formatMoney(wallet.amount / 100)}</p>
+                            <Button
+                                className="custom-btn"
+                                onClick={onFundWallet}>
+                                Fund Wallet
+                            </Button>
                         </div>
-                        <Button className="custom-btn" onClick={onFundWallet}>
-                            Fund Wallet
-                        </Button>
                     </div>
                 </div>
                 <div className="bank-card-info-container">
@@ -481,6 +537,7 @@ const Wallet = () => {
             <div className="pagination-container">
                 <Pagination
                     total={transactions.total}
+                    showSizeChanger={false}
                     hideOnSinglePage
                     {...{
                         onChange: onPaginationChange,

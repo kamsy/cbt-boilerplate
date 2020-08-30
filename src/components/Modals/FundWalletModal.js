@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { Modal, Select } from "antd";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 import CustomInput from "../CustomInput";
 import CustomButton from "../CustomButton";
-import { NotifySuccess } from "../Notification";
-import WalletServices from "../../services/walletServices";
 import VisaCard from "../../assets/svgs/VisaCard";
 import MasterCard from "../../assets/svgs/MasterCard";
 
@@ -19,12 +17,10 @@ const schema = yup.object().shape({
 const FundWalletModal = ({
     open_fund_wallet_modal,
     set_open_fund_wallet_modal,
-    getWallet,
-    getTransactions,
-    cards
+    cards,
+    set_open_trans_confirm_modal,
+    set_fund_payload
 }) => {
-    console.log("cards", cards);
-    const [loading, set_loading] = useState(false);
     const methods = useForm({
         resolver: yupResolver(schema)
     });
@@ -37,31 +33,11 @@ const FundWalletModal = ({
         setValue,
         clearErrors
     } = methods;
-    const onSubmit = async payload => {
-        const amount =
-            payload.amount
-                .split(",")
-                .join("")
-                .split("₦")
-                .join("") * 100;
-        console.log("amount", amount);
-
-        set_loading(true);
-
-        const res = await WalletServices.fundWalletService({
-            ...payload,
-            amount
-        });
-        set_loading(false);
-        const { status, data } = res;
-        if (status === 200) {
-            NotifySuccess(data.message);
-            getWallet && getWallet();
-            getTransactions && getTransactions({ page: 1 });
-            return closeModal();
-        }
+    const onSubmit = payload => {
+        set_open_trans_confirm_modal(true);
+        set_fund_payload(payload);
+        return set_open_fund_wallet_modal(false);
     };
-
     const closeModal = () => {
         reset();
         return set_open_fund_wallet_modal(false);
@@ -143,8 +119,7 @@ const FundWalletModal = ({
                     {...{
                         text: "Fund my Wallet",
                         extraClass: "full-size",
-                        onClick: handleSubmit(onSubmit),
-                        loading
+                        onClick: handleSubmit(onSubmit)
                     }}
                 />
             </form>

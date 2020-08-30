@@ -1,12 +1,10 @@
-import React, { useState } from "react";
-import { Modal, Select, message as AntMsg } from "antd";
+import React from "react";
+import { Modal, Select } from "antd";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 import CustomInput from "../CustomInput";
 import CustomButton from "../CustomButton";
-import BillServices from "../../services/billsServices";
-import { NotifySuccess, NotifyError } from "../Notification";
 
 const { Option } = Select;
 
@@ -27,9 +25,9 @@ const BillerModal = ({
     logo,
     set_open_biller_modal,
     biller_name,
-    set_open_fund_wallet_modal
+    set_transaction_payload,
+    set_open_trans_confirm_modal
 }) => {
-    const [loading, set_loading] = useState(false);
     const methods = useForm({
         resolver: yupResolver(schema)
     });
@@ -41,33 +39,14 @@ const BillerModal = ({
         reset,
         setValue
     } = methods;
-
-    const onSubmit = async payload => {
-        set_loading(true);
-        const { response, status, data } = await BillServices.buyDataService({
-            ...payload,
-            phone: `+234${payload.phone.substring(1)}`,
-            amount: payload.amount * 100
-        });
-        set_loading(false);
-        if (status === 200) {
-            NotifySuccess(data.message);
-        }
-        if (response) {
-            const {
-                status,
-                data: { message: msg }
-            } = response;
-            if (status === 503) {
-                NotifyError(msg);
-            } else if (status === 406) {
-                AntMsg.error(msg);
-                set_open_biller_modal(false);
-                setTimeout(() => {
-                    set_open_fund_wallet_modal(true);
-                }, 500);
-            }
-        }
+    const onSubmit = payload => {
+        set_transaction_payload({ type: "data", ...payload });
+        set_open_trans_confirm_modal(true);
+        return set_open_biller_modal(false);
+    };
+    const closeModal = () => {
+        reset();
+        return set_open_biller_modal(false);
     };
 
     return (
@@ -76,10 +55,7 @@ const BillerModal = ({
             title={biller_name}
             visible={open_biller_modal}
             footer={null}
-            onCancel={() => {
-                reset();
-                set_open_biller_modal(false);
-            }}>
+            onCancel={closeModal}>
             <form
                 className="form-biller form"
                 name="biller-form"
@@ -161,8 +137,7 @@ const BillerModal = ({
                     {...{
                         text: "Buy Data Bundle",
                         extraClass: "full-size",
-                        onClick: handleSubmit(onSubmit),
-                        loading
+                        onClick: handleSubmit(onSubmit)
                     }}
                 />
             </form>
