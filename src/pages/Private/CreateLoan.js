@@ -15,6 +15,9 @@ import { useHistory } from "react-router-dom";
 import { url } from "../../App";
 import { decryptAndRead } from "../../services/localStorageHelper";
 import { ENCRYPT_USER } from "../../variables";
+import MomentAdapter from "@date-io/moment";
+
+const moment = new MomentAdapter();
 
 function beforeUpload(file) {
     const isPDF = file.type === "application/pdf";
@@ -116,27 +119,48 @@ const CreateLoan = () => {
         set_repay_amount(total);
         const repayment_brkdwn_arr = [];
         if (time <= 30) {
-            repayment_brkdwn_arr.push({ month: "First month", amount: total });
+            repayment_brkdwn_arr.push({
+                month: moment
+                    .moment(new Date())
+                    .add(time, "days")
+                    .format("MMM DD, yyyy"),
+                amount: total
+            });
         } else if (time > 30 && time <= 60) {
             repayment_brkdwn_arr.push({
-                month: "First month",
+                month: moment
+                    .moment(new Date())
+                    .add(30, "days")
+                    .format("MMM DD, yyyy"),
                 amount: total / 2
             });
             repayment_brkdwn_arr.push({
-                month: "Second month",
+                month: moment
+                    .moment(new Date())
+                    .add(time, "days")
+                    .format("MMM DD, yyyy"),
                 amount: total / 2
             });
         } else if (time > 60) {
             repayment_brkdwn_arr.push({
-                month: "First month",
+                month: moment
+                    .moment(new Date())
+                    .add(30, "days")
+                    .format("MMM DD, yyyy"),
                 amount: total / 3
             });
             repayment_brkdwn_arr.push({
-                month: "Second month",
+                month: moment
+                    .moment(new Date())
+                    .add(60, "days")
+                    .format("MMM DD, yyyy"),
                 amount: total / 3
             });
             repayment_brkdwn_arr.push({
-                month: "Third month",
+                month: moment
+                    .moment(new Date())
+                    .add(time, "days")
+                    .format("MMM DD, yyyy"),
                 amount: total / 3
             });
         }
