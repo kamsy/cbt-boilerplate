@@ -27,10 +27,13 @@ import CardServices from "../../services/cardServices";
 import VisaCard from "../../assets/svgs/VisaCard";
 import MasterCard from "../../assets/svgs/MasterCard";
 import MicroChip from "../../assets/svgs/MicroChip";
+import { decryptAndRead } from "../../services/localStorageHelper";
+import { ENCRYPT_USER } from "../../variables";
 
 const moment = new MomentAdapter();
 
 const Dashboard = () => {
+    const { user_info } = decryptAndRead(ENCRYPT_USER);
     const [transactions, set_transactions] = useState([]);
     const [billers, set_billers] = useState([]);
 
@@ -279,7 +282,7 @@ const Dashboard = () => {
             />
 
             <h1 className="page-title">Dashboard</h1>
-            <p>Welcome back, Michael Okoh</p>
+            <p>Welcome back, {user_info.name}</p>
             <div className="top-section">
                 <div
                     className="card"
