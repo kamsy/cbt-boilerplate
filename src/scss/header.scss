@@ -31,6 +31,17 @@
         img {
             width: 50px;
         }
+
+        .comp-name {
+            margin: 0;
+            color: $blue;
+            font-family: Work Sans;
+            font-style: normal;
+            font-weight: bold;
+            @include fluid-type(24px, 18px);
+            line-height: 67px;
+            letter-spacing: -0.02em;
+        }
     }
 
     @include screen(1279) {
@@ -136,11 +147,73 @@
 
     .ant-dropdown-link {
         cursor: pointer;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
 
-        img {
-            width: 20px;
+        .avatar-cont {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 10px;
+            background: #C4C4C4;
+
+            img {
+                max-width: 100%;
+            }
         }
 
+
+        .user-info {
+            height: 40px;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            -webkit-box-pack: start;
+            -ms-flex-pack: start;
+            justify-content: flex-start;
+
+            p {
+                margin: 0;
+                font-family: Open Sans;
+                font-style: normal;
+                font-weight: bold;
+                font-size: 16px;
+                @include fluid-type(16px, 14px);
+                line-height: 22px;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                color: #333333;
+            }
+
+            span {
+                font-family: Open Sans;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 13px;
+                @include fluid-type(13px, 11px);
+                line-height: 18px;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                color: #333333;
+            }
+        }
     }
 
     .ant-dropdown-menu-item {

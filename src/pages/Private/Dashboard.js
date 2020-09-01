@@ -7,7 +7,7 @@ import {
 import "../../scss/dashboard.scss";
 import TransactionsServices from "../../services/transactionsServices";
 import EmptyTable from "../../components/EmptyTable";
-import { _formatMoney } from "../../services/utils";
+import { _formatMoney, _limitText } from "../../services/utils";
 import MomentAdapter from "@date-io/moment";
 import AirtimeSvg from "../../assets/svgs/AirtimeSvg";
 import InternetSvg from "../../assets/svgs/InternetSvg";
@@ -24,6 +24,9 @@ import ConfirmTransactionModal from "../../components/Modals/ConfirmTransactionM
 import { NotifySuccess, NotifyError } from "../../components/Notification";
 import WalletServices from "../../services/walletServices";
 import CardServices from "../../services/cardServices";
+import VisaCard from "../../assets/svgs/VisaCard";
+import MasterCard from "../../assets/svgs/MasterCard";
+import MicroChip from "../../assets/svgs/MicroChip";
 
 const moment = new MomentAdapter();
 
@@ -72,7 +75,7 @@ const Dashboard = () => {
     );
     const [biller_info, set_biller_info] = useState([]);
     const [cards, set_cards] = useState([]);
-    console.log("cards", cards);
+
     const handleSelectedBiller = info => {
         set_biller_info(info);
         set_open_select_biller_modal(false);
@@ -274,43 +277,126 @@ const Dashboard = () => {
                     set_open_trans_confirm_modal
                 }}
             />
+
+            <h1 className="page-title">Dashboard</h1>
+            <p>Welcome back, Michael Okoh</p>
             <div className="top-section">
-                <div className="left-cont">
-                    <div
-                        className="card"
-                        role="button"
-                        onClick={() => set_open_airtime_modal(true)}>
-                        <span className="svg-cont">
-                            <AirtimeSvg />
-                        </span>
-                        <span className="text">Buy Airtime</span>
-                    </div>
-                    <div
-                        className="card"
-                        role="button"
-                        onClick={() => set_open_select_biller_modal(true)}>
-                        <span className="svg-cont">
-                            <InternetSvg />
-                        </span>
-                        <span className="text">Buy Data Bundle</span>
-                    </div>
-                    <div
-                        className="card"
-                        role="button"
-                        onClick={() => set_open_fund_wallet_modal(true)}>
-                        <span className="svg-cont">
-                            <WalletSvg />
-                        </span>
-                        <span className="text">Fund Wallet</span>
-                    </div>
-                    <div className="card" role="button">
-                        <span className="svg-cont">
-                            <TransferSvg />
-                        </span>
-                        <span className="text">Wallet to Wallet transfer</span>
+                <div
+                    className="card"
+                    role="button"
+                    onClick={() => set_open_airtime_modal(true)}>
+                    <span className="svg-cont">
+                        <AirtimeSvg />
+                    </span>
+                    <span className="text">Buy Airtime</span>
+                </div>
+                <div
+                    className="card"
+                    role="button"
+                    onClick={() => set_open_select_biller_modal(true)}>
+                    <span className="svg-cont">
+                        <InternetSvg />
+                    </span>
+                    <span className="text">Buy Data Bundle</span>
+                </div>
+                <div
+                    className="card"
+                    role="button"
+                    onClick={() => set_open_fund_wallet_modal(true)}>
+                    <span className="svg-cont">
+                        <WalletSvg />
+                    </span>
+                    <span className="text">Fund Wallet</span>
+                </div>
+                <div className="card" role="button">
+                    <span className="svg-cont">
+                        <TransferSvg />
+                    </span>
+                    <span className="text">Wallet to Wallet transfer</span>
+                </div>
+            </div>
+            <div className="middle-section">
+                <div className="cards-cont">
+                    <h4 className="title-txt">My Cards</h4>
+                    <div className="cards">
+                        {[].map(
+                            (
+                                {
+                                    bank,
+                                    brand,
+                                    last_four,
+                                    user,
+                                    month,
+                                    year,
+                                    id
+                                },
+                                index
+                            ) => (
+                                <a
+                                    href="#"
+                                    className={`card-cont card-${index}`}
+                                    key={id}>
+                                    <div className="card">
+                                        <div className="card-front">
+                                            <div className="top">
+                                                <span className="card-bank">
+                                                    {bank}
+                                                </span>
+                                                <span className="brand-logo">
+                                                    {brand === "visa" ? (
+                                                        <VisaCard />
+                                                    ) : brand ===
+                                                      "mastercard" ? (
+                                                        <MasterCard />
+                                                    ) : null}
+                                                </span>
+                                            </div>
+                                            <div className="mid">
+                                                <span className="chip">
+                                                    <MicroChip />
+                                                </span>
+                                                <span className="last-four">
+                                                    **** **** **** {last_four}
+                                                </span>
+                                            </div>
+                                            <div className="btm">
+                                                <p className="card-hlder">
+                                                    {_limitText(
+                                                        user.name || "",
+                                                        25
+                                                    )}
+                                                </p>
+                                                <span className="expiry">
+                                                    {month}/{year}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div
+                                            className="card-back"
+                                            role="button"
+                                            // onClick={() =>
+                                            //     toggleConfirmActionModal({
+                                            //         id,
+                                            //         type: "card",
+                                            //         card_number: `**** **** ****${last_four}`,
+                                            //         modalHeaderTitle:
+                                            //             "Confirm deleting this card",
+                                            //         confirmAction: deleteCard
+                                            //     })
+                                            // }
+                                        >
+                                            <span className="delete-btn">
+                                                Delete Card
+                                            </span>
+                                        </div>
+                                    </div>
+                                </a>
+                            )
+                        )}
                     </div>
                 </div>
-                <div className="middle-cont">
+                <div className="analytics-cont">
+                    <h4 className="title-txt">Analytics</h4>
                     <Chart
                         width={"500px"}
                         height={"300px"}
@@ -330,8 +416,8 @@ const Dashboard = () => {
                 </div>
                 <div className="right-cont"></div>
             </div>
-            <h3 className="last-five">Last 5 transactions</h3>
             <div className="table-container">
+                <h3 className="last-five">Last 5 transactions</h3>
                 <table className="table">
                     <thead className="table-header">
                         <tr>

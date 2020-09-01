@@ -4,11 +4,14 @@ import { Link, useHistory } from "react-router-dom";
 import { Menu, Dropdown } from "antd";
 import Avatar from "../assets/images/person.png";
 import PowerOffSvg from "../assets/svgs/PowerOffSvg";
-import { clear } from "../services/localStorageHelper";
+import { clear, decryptAndRead } from "../services/localStorageHelper";
 import ProfileUser from "../assets/svgs/ProfileUser";
 import Logo from "../assets/images/Logo.png";
 import "../scss/header.scss";
+import { ENCRYPT_USER } from "../variables";
 const Header = () => {
+    const { user_info } = decryptAndRead(ENCRYPT_USER);
+    console.log("Header -> user_info", user_info);
     const history = useHistory();
     useEffect(() => {
         const hamburger_cont = document.querySelector(".hamburger-container");
@@ -49,11 +52,12 @@ const Header = () => {
                     <div className="hamburger-container">
                         <span className="hamburger" />
                     </div>
-                    <img
+                    {/* <img
                         src={Logo}
                         alt="quick's credit logo"
                         className="logo"
-                    />
+                    /> */}
+                    <h3 className="comp-name">QuickCredit</h3>
                 </div>
 
                 <Dropdown
@@ -61,7 +65,13 @@ const Header = () => {
                     trigger={["click"]}
                     getPopupContainer={() => document.querySelector(".header")}>
                     <span className="ant-dropdown-link">
-                        <img src={Avatar} alt="user avatar" />
+                        <div className="avatar-cont">
+                            <img src={Avatar} alt="user avatar" />
+                        </div>
+                        <div className="user-info">
+                            <p>{user_info.name}</p>
+                            <span>{`@${user_info.username}`}</span>
+                        </div>
                     </span>
                 </Dropdown>
             </ul>

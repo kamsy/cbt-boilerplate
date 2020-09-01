@@ -18,6 +18,8 @@ const Sidebar = () => {
                     activeClassName="active-route"
                     to={`${url}${path}`}
                     className="sidebar-link">
+                    <span className="sidebar-link-name">{label}</span>
+
                     {path === "dashboard" ? (
                         <DashboardSvg />
                     ) : path === "create-loan" ? (
@@ -31,7 +33,6 @@ const Sidebar = () => {
                     ) : (
                         <TransactionsHistorySvg />
                     )}
-                    <span className="sidebar-link-name">{label}</span>
                 </NavLink>
             </li>
         );

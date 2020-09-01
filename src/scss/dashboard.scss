@@ -5,9 +5,34 @@
     @include DashboardTableStyle;
     overflow: hidden auto;
 
+    .page-title {
+        font-family: Work Sans;
+        font-style: normal;
+        font-weight: 600;
+        @include fluid-type(40px, 24px);
+        line-height: 120%;
+        display: flex;
+        align-items: center;
+        letter-spacing: -0.02em;
+        margin: 0;
+
+        &+p {
+            font-family: Work Sans;
+            font-style: normal;
+            font-weight: normal;
+            @include fluid-type(16px, 12px);
+            line-height: 120%;
+            display: flex;
+            align-items: center;
+            letter-spacing: -0.02em;
+            color: #333333;
+        }
+    }
+
     .last-five {
         font-weight: 900;
         font-size: 20px;
+        padding: 24px 25px 0
     }
 
     .table-container {
@@ -28,102 +53,87 @@
     }
 
     .top-section {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -ms-flex-wrap: wrap;
-        flex-wrap: wrap;
-        margin-bottom: 24px;
+        margin: 32px 0 40px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(253px, 1fr));
+        grid-gap: 34px;
 
-        .left-cont {
+        .card {
+            cursor: pointer;
+            width: 100%;
+            border-radius: 8px;
+            padding: 35px 24px;
+            background: $white;
+            @include shadowMixin;
             display: -webkit-box;
             display: -ms-flexbox;
             display: flex;
-            -ms-flex-wrap: wrap;
-            flex-wrap: wrap;
-            max-width: 391px;
-            margin: 0 24px 24px 0;
+            -webkit-box-orient: vertical;
+            -webkit-box-pack: start;
+            -ms-flex-pack: start;
+            justify-content: flex-start;
+            align-items: center;
 
-            @include screen(768) {
-                max-width: 100%;
+            &:nth-of-type(2n) {
                 margin-right: 0
             }
 
-            .card {
-                cursor: pointer;
-                border-radius: 8px;
-                padding: 24px;
-                background: $white;
-                @include shadowMixin;
-                margin: 0 24px 24px 0;
-                width: calc((100% - 24px) / 2);
-
-                @include screen(768) {
-                    width: calc((100% - 24px) / 2);
-                }
-
-                @include screen(450) {
-                    width: 100%;
-                    margin-right: 0;
-                }
-
-                display: -webkit-box;
-                display: -ms-flexbox;
-                display: flex;
-                -webkit-box-orient: vertical;
-                -webkit-box-direction: normal;
-                -ms-flex-direction: column;
-                flex-direction: column;
-                -webkit-box-pack: start;
-                -ms-flex-pack: start;
-                justify-content: flex-start;
-
-                &:nth-of-type(2n) {
-                    margin-right: 0
-                }
-
+            &:nth-of-type(1) {
                 .svg-cont {
-                    background: $white;
-                    width: 48px;
-                    height: 48px;
-                    border-radius: 50%;
-                    display: -webkit-box;
-                    display: -ms-flexbox;
-                    display: flex;
-                    -webkit-box-align: center;
-                    -ms-flex-align: center;
-                    align-items: center;
-                    -webkit-box-pack: center;
-                    -ms-flex-pack: center;
-                    justify-content: center;
-                }
-
-                span {
-                    display: block;
-
-                    &.text {
-                        font-size: 18px;
-                        font-weight: 900
-                    }
-                }
-
-                &:nth-of-type(1) {
                     background: rgba(#F98C65, 0.1)
                 }
+            }
 
-                &:nth-of-type(2) {
+            &:nth-of-type(2) {
+                .svg-cont {
                     background: rgba($orange, 0.1)
                 }
 
-                &:nth-of-type(3) {
+            }
+
+            &:nth-of-type(3) {
+                .svg-cont {
                     background: rgba($dark-green, 0.1)
                 }
 
-                &:nth-of-type(4) {
+            }
+
+            &:nth-of-type(4) {
+                .svg-cont {
                     background: rgba($blue, 0.1)
                 }
+
             }
+
+            .svg-cont {
+                background: $white;
+                width: 48px;
+                height: 48px;
+                border-radius: 50%;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                justify-content: center;
+                margin-right: 16px;
+            }
+
+            span {
+                display: block;
+
+                &.text {
+                    font-size: 18px;
+                    font-weight: 900
+                }
+            }
+
+
         }
+
 
         .middle-cont {
             border-radius: 8px;
@@ -131,6 +141,74 @@
 
             svg {
                 border-radius: 8px;
+            }
+        }
+    }
+
+    .middle-section {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(538px, 1fr));
+        grid-gap: 34px;
+
+        .title-txt {
+            font-family: Work Sans;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 24px;
+            @include fluid-type(24px, 18px);
+            line-height: 120%;
+            display: flex;
+            align-items: center;
+            letter-spacing: -0.02em;
+
+            color: #444444;
+        }
+
+        .analytics-cont,
+        .cards-cont {
+            padding: 24px 25px;
+            background: $white;
+            border-radius: 8px;
+        }
+
+        .cards-cont {
+            .cards {
+                position: relative;
+                height: 190px;
+            }
+
+            .card {
+                &-cont {
+                    position: relative;
+                    height: 190px;
+                    width: 100%;
+                    border-radius: 10px;
+                    @include shadowMixin;
+
+                    &:focus {
+                        .card {
+
+                            -webkit-transform: rotateY(180deg);
+                            transform: rotateY(180deg)
+                        }
+                    }
+
+                    &.bank-card {
+                        .card-front {
+                            -webkit-box-pack: unset;
+                            -ms-flex-pack: unset;
+                            justify-content: flex-end;
+
+                            .account-num {
+                                margin-top: 24px;
+                            }
+                        }
+                    }
+                }
+
+                @include card-style;
+
+                // position: absolute;
             }
         }
     }
