@@ -1,48 +1,11 @@
 @import 'variables';
 @import 'mixins';
 
-%genericStyles {
-    margin-top: 56px;
-    height: 47px;
-    border: none;
-    color: $white;
-    position: relative;
-    background: $blue;
-    overflow: hidden;
-    z-index: 0;
-    -webkit-transition: all 0.5s ease-in-out;
-    transition: all 0.5s ease-in-out;
-
-    &::after {
-        content: '';
-        position: absolute;
-        z-index: -1;
-        background: $white;
-        opacity: 0.3;
-        border-radius: 50% 50% 0 0;
-        width: 100%;
-        height: 0%;
-        left: 0;
-        bottom: 0;
-        -webkit-transition: all 0.5s ease-in-out;
-        transition: all 0.5s ease-in-out;
-    }
-
-    &:hover,
-    &:active,
-    &:focus {
-        color: $white;
-        background: $blue;
-
-        &::after {
-            height: 200%;
-        }
-    }
-
-}
-
 .submit-btn {
-    @extend %genericStyles;
+    @include generic-btn-style;
+    span {
+        pointer-events: none
+    }
 
     &.full-size {
         width: 100%;
@@ -61,7 +24,8 @@
         color: $red;
         background: rgba($red, 0.3);
 
-        &:active,&:focus,
+        &:active,
+        &:focus,
         &:hover {
             background: $red;
             color: $white
@@ -72,7 +36,8 @@
         color: $blue;
         background: rgba($blue, 0.3);
 
-        &:after,&:focus,
+        &:after,
+        &:focus,
         &:hover {
             background: $blue;
             color: $white
@@ -320,7 +285,7 @@
         height: 100vh;
 
         .link-to-dashboard {
-            @extend %genericStyles;
+            @include generic-btn-style;
             width: 250px;
             display: -webkit-box;
             display: -ms-flexbox;

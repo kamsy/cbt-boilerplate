@@ -75,8 +75,6 @@
             }
 
             .wallet-info {
-                border-radius: 4px;
-                @include shadowMixin;
 
                 .card {
                     padding: 12px 24px;
@@ -133,9 +131,18 @@
                     }
                 }
 
-                .custom-btn {
+                .btns-cont {
                     margin: 18px 0 0;
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(100px,1fr));
+                    grid-gap: 40px;
+                    .custom-btn{
+                        width: 100%;
+                        margin: 0
+                    }
                 }
+
+
             }
 
             .add-card {

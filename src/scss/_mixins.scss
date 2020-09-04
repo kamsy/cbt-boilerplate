@@ -385,3 +385,48 @@
         margin-top: 16px;
     }
 }
+
+
+@mixin generic-btn-style {
+    margin-top: 56px;
+    height: 47px;
+    border: none;
+    color: $white;
+    position: relative;
+    background: $blue;
+    overflow: hidden;
+    z-index: 1;
+    -webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+
+    &::after {
+        content: '';
+        position: absolute;
+        z-index: -1;
+        background: $white;
+        opacity: 0.3;
+        border-radius: 50% 50% 0 0;
+        width: 100%;
+        height: 0%;
+        left: 0;
+        bottom: 0;
+        -webkit-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+        pointer-events: none
+    }
+
+    span {
+        pointer-events: none
+    }
+
+    &:hover,
+    &:active,
+    &:focus {
+        color: $white;
+
+        &::after {
+            height: 200%;
+        }
+    }
+
+}

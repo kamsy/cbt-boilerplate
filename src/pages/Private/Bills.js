@@ -60,7 +60,7 @@ const Bills = () => {
             return set_open_trans_confirm_modal({
                 open_trans_confirm_modal: true,
                 type: "add",
-                closeModalFunc: () => set_open_trans_confirm_modal(false),
+                closeModalFunc: () => closeTransConfirmModal(),
                 openOriginalModalFunc: () => proceedToBuyData(selected_biller)
             });
         }
@@ -189,12 +189,18 @@ const Bills = () => {
         });
     };
 
+    const closeTransConfirmModal = () =>
+        set_open_trans_confirm_modal({
+            open_trans_confirm_modal: false,
+            type: null
+        });
+
     const confirmBuyAirtime = payload => {
         if (!user_info.pin) {
             return set_open_trans_confirm_modal({
                 open_trans_confirm_modal: true,
                 type: "add",
-                closeModalFunc: () => set_open_trans_confirm_modal(false),
+                closeModalFunc: () => closeTransConfirmModal(),
                 openOriginalModalFunc: () => proceedToBuyAirtime(payload)
             });
         }

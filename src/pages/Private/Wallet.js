@@ -25,7 +25,9 @@ import EmptyTable from "../../components/EmptyTable";
 import TableSelectFilters from "../../components/TableSelectFIlters";
 import ConfirmActionModal from "../../components/Modals/ConfirmActionModal";
 import ConfirmTransactionModal from "../../components/Modals/ConfirmTransactionModal";
-
+import TransferModal from "../../components/Modals/TransferModal";
+import useBanks from "../../hooks/useBanks";
+import useCards from "../../hooks/useCards";
 const moment = new MomentAdapter();
 
 const { TabPane } = Tabs;
@@ -42,14 +44,16 @@ const Wallet = () => {
         open_trans_confirm_modal: false
     });
     const [fund_payload, set_fund_payload] = useState({});
+    const [transfer_payload, set_transfer_payload] = useState({});
     const [item_to_delete_info, set_item_to_delete_info] = useState({});
     const [open_modal, set_open_modal] = useState(false);
     const [open_fund_wallet_modal, set_open_fund_wallet_modal] = useState(
         false
     );
-    const [banks_with_logos, set_banks_with_logos] = useState([]);
-    const [banks, set_banks] = useState([]);
-    const [cards, set_cards] = useState([]);
+    const [open_transfer_modal, set_open_transfer_modal] = useState(false);
+
+    const [banks, set_banks, getBanks, banks_with_logos] = useBanks();
+    const [cards, set_cards] = useCards();
     const [wallet, set_wallet] = useState({});
 
     const componentProps = {
@@ -73,22 +77,6 @@ const Wallet = () => {
             );
         },
         onClose: e => console.log(e)
-    };
-
-    const getBanks = async () => {
-        const res = await BankServices.getBanksService();
-        const { status, data } = res;
-        if (status === 200) {
-            set_banks(data?.banks || []);
-        }
-    };
-
-    const getCards = async () => {
-        const res = await CardServices.getCardsService();
-        const { status, data } = res;
-        if (status === 200) {
-            set_cards(data?.cards || []);
-        }
     };
 
     const getWallet = async () => {
@@ -132,8 +120,6 @@ const Wallet = () => {
     };
 
     useEffect(() => {
-        getCards();
-        getBanks();
         getWallet();
         getTransactions({ page: 1 });
     }, []);
@@ -163,16 +149,36 @@ const Wallet = () => {
         set_open_confirm_modal(true);
     };
 
-    const onFundWallet = () => {
+    const walletActionType = type => {
+        switch (type) {
+            case "fund":
+                checkUserHasPin(set_open_fund_wallet_modal);
+                break;
+            case "transfer":
+                checkUserHasPin(set_open_transfer_modal);
+                break;
+            default:
+                return;
+        }
+    };
+
+    const closeTransConfirmModal = () =>
+        set_open_trans_confirm_modal({
+            open_trans_confirm_modal: false,
+            type: null
+        });
+
+    const checkUserHasPin = cb_func => {
         if (!user_info.pin) {
             return set_open_trans_confirm_modal({
                 open_trans_confirm_modal: true,
                 type: "add",
-                closeModalFunc: () => set_open_trans_confirm_modal(false),
-                openOriginalModalFunc: () => set_open_fund_wallet_modal(true)
+                closeModalFunc: () => closeTransConfirmModal(),
+                openOriginalModalFunc: () => cb_func(true)
             });
+        } else {
+            cb_func(true);
         }
-        set_open_fund_wallet_modal(true);
     };
 
     const fundWallet = async () => {
@@ -208,7 +214,7 @@ const Wallet = () => {
             open_trans_confirm_modal: false,
             type: null
         });
-        fundWallet();
+        // fundWallet();
     };
 
     const cancelTransaction = () => {
@@ -260,6 +266,14 @@ const Wallet = () => {
                     set_fund_payload
                 }}
             />
+            <TransferModal
+                {...{
+                    banks: banks_with_logos,
+                    open_transfer_modal,
+                    set_open_transfer_modal,
+                    set_open_trans_confirm_modal
+                }}
+            />
             <h1 className="page-title">Wallet & Transactions</h1>
             <div className="top-section">
                 <div className="bank-card-info-container">
@@ -269,11 +283,22 @@ const Wallet = () => {
                                 <div className="card">
                                     <span className="balance">Balance</span>
                                     <p>{_formatMoney(wallet.amount / 100)}</p>
-                                    <Button
-                                        className="custom-btn"
-                                        onClick={onFundWallet}>
-                                        Fund Wallet
-                                    </Button>
+                                    <div className="btns-cont">
+                                        <Button
+                                            className="custom-btn"
+                                            onClick={() =>
+                                                walletActionType("fund")
+                                            }>
+                                            Fund Wallet
+                                        </Button>
+                                        <Button
+                                            className="custom-btn"
+                                            onClick={() =>
+                                                walletActionType("transfer")
+                                            }>
+                                            Transfer
+                                        </Button>
+                                    </div>
                                 </div>
                             </div>
                         </TabPane>
@@ -282,17 +307,7 @@ const Wallet = () => {
                             <div className="add-card card-cont">
                                 <Button
                                     className="custom-btn"
-                                    onClick={() => {
-                                        BankServices.getBanksWithLogosPaystackService().then(
-                                            ({ status, data }) => {
-                                                if (status === 200) {
-                                                    set_banks_with_logos(data);
-                                                }
-                                            }
-                                        );
-
-                                        return set_open_modal(true);
-                                    }}>
+                                    onClick={() => set_open_modal(true)}>
                                     Add Bank
                                 </Button>
                             </div>

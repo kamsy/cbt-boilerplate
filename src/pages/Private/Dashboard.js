@@ -29,6 +29,7 @@ import MasterCard from "../../assets/svgs/MasterCard";
 import MicroChip from "../../assets/svgs/MicroChip";
 import { decryptAndRead } from "../../services/localStorageHelper";
 import { ENCRYPT_USER } from "../../variables";
+import useCards from "../../hooks/useCards";
 
 const moment = new MomentAdapter();
 
@@ -63,7 +64,6 @@ const Dashboard = () => {
     useEffect(() => {
         getTransactions({ page: 1 });
         getBillers({ page: 1 });
-        getCards();
     }, []);
 
     const [open_fund_wallet_modal, set_open_fund_wallet_modal] = useState(
@@ -77,20 +77,12 @@ const Dashboard = () => {
         false
     );
     const [biller_info, set_biller_info] = useState([]);
-    const [cards, set_cards] = useState([]);
+    const [cards] = useCards();
 
     const handleSelectedBiller = info => {
         set_biller_info(info);
         set_open_select_biller_modal(false);
         set_open_biller_modal(true);
-    };
-
-    const getCards = async () => {
-        const res = await CardServices.getCardsService();
-        const { status, data } = res;
-        if (status === 200) {
-            set_cards(data?.cards || []);
-        }
     };
 
     const buyAirtime = async () => {
