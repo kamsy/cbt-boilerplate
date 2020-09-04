@@ -2,18 +2,12 @@
 @import 'mixins';
 
 .bills {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-
-    @include screen(768) {
-        -ms-flex-wrap: wrap;
-        flex-wrap: wrap
-    }
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 24px;
 
     .left-cont {
-        margin: 0 24px 0 0;
-        width: 348px;
+        width: 100%;
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
@@ -49,11 +43,7 @@
     }
 
     .right-cont {
-        width: calc(100% - 24px - 348px);
-
-        @include screen(768) {
-            width: 100%
-        }
+        width: 100%;
         @include ISPsStyle;
     }
 

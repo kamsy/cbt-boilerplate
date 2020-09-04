@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { fakeAuth, url } from "../App";
 import { Link, useHistory } from "react-router-dom";
 import { Menu, Dropdown } from "antd";
@@ -9,9 +9,13 @@ import ProfileUser from "../assets/svgs/ProfileUser";
 import Logo from "../assets/images/Logo.png";
 import "../scss/header.scss";
 import { ENCRYPT_USER } from "../variables";
+import UpdatePinModal from "./Modals/UpdatePinModal";
 const Header = () => {
     const { user_info } = decryptAndRead(ENCRYPT_USER);
     const history = useHistory();
+    const [open_update_pin_modal, set_open_update_pin_modal] = useState(false);
+    const toggleUpdatePINModal = () =>
+        set_open_update_pin_modal(!open_update_pin_modal);
     useEffect(() => {
         const hamburger_cont = document.querySelector(".hamburger-container");
         const hamburger1 = document.querySelector(".hamburger");
@@ -29,6 +33,9 @@ const Header = () => {
                     Account
                 </Link>
             </Menu.Item>
+            <Menu.Item key="2" onClick={toggleUpdatePINModal}>
+                Change PIN
+            </Menu.Item>
 
             <Menu.Divider />
             <Menu.Item
@@ -44,8 +51,15 @@ const Header = () => {
             </Menu.Item>
         </Menu>
     );
+
     return (
         <div className="header">
+            <UpdatePinModal
+                {...{
+                    closeModal: toggleUpdatePINModal,
+                    open_update_pin_modal
+                }}
+            />
             <ul className="header-list">
                 <div className="logo-cont">
                     <div className="hamburger-container">

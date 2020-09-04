@@ -58,7 +58,6 @@ axios.interceptors.request.use(config => {
             config.headers["Authorization"] = `Bearer ${token}`;
         }
     }
-    // config.headers["Accept"] = "application/json";
     return config;
 });
 
@@ -110,7 +109,7 @@ const postFunc = (path, payload) => {
 const updateFunc = (path, payload) => {
     return new Promise((resolve, reject) => {
         axios
-            .update(path, payload)
+            .put(path, payload)
             .then(response => {
                 console.log("postFunc -> res", response);
                 return resolve(response);

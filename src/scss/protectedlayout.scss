@@ -333,6 +333,7 @@ body {
             @include WS_bld()
         }
 
+        .update-pin-modal,
         .enter-pin-modal {
             width: 360px !important;
 
@@ -370,6 +371,18 @@ body {
             }
         }
 
+        .update-pin-modal {
+
+            .current_pin,
+            .new_pin {
+                display: block;
+                margin-top: 20px;
+                @include fluid-type(14px);
+                @include WS_semi_bld()
+            }
+        }
+
+
         .transfer-modal {
             .transfer-type {
                 display: block;
@@ -387,14 +400,17 @@ body {
                 padding: 24px 32px;
             }
 
-            .anim-form-body{
+            .anim-form-body {
                 position: relative;
                 overflow-x: hidden;
 
-                .aza-input{
-
-                }
+                .aza-input {}
             }
         }
     }
+}
+
+
+.ant-modal-mask {
+    background: rgba(0, 0, 0, 0.8);
 }

@@ -168,11 +168,9 @@
 
     .billers-container {
         margin-top: 16px;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -ms-flex-wrap: wrap;
-        flex-wrap: wrap;
+       display: grid;
+       grid-template-columns: repeat(auto-fit, minmax(210px,1fr));
+       grid-gap: 20px;
 
         .biller {
             @include shadowMixin;
@@ -180,8 +178,7 @@
             background: $white;
             border-radius: 4px;
             padding: 16px 24px;
-            margin: 0 24px 24px 0;
-            width: 210px;
+            width: 100%;
 
             @include screen(425) {
                 width: 100%;
