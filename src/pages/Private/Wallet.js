@@ -32,13 +32,15 @@ const { TabPane } = Tabs;
 
 const Wallet = () => {
     const { user_info } = decryptAndRead(ENCRYPT_USER);
-    const [confirm_transaction_modal, set_confirm_transaction_modal] = useState(
-        false
-    );
+
     const [open_confirm_modal, set_open_confirm_modal] = useState(false);
-    const [open_trans_confirm_modal, set_open_trans_confirm_modal] = useState(
-        false
-    );
+
+    const [
+        open_trans_confirm_modal_obj,
+        set_open_trans_confirm_modal
+    ] = useState({
+        open_trans_confirm_modal: false
+    });
     const [fund_payload, set_fund_payload] = useState({});
     const [item_to_delete_info, set_item_to_delete_info] = useState({});
     const [open_modal, set_open_modal] = useState(false);
@@ -129,8 +131,6 @@ const Wallet = () => {
         }
     };
 
-    const onFundWallet = () => set_open_fund_wallet_modal(true);
-
     useEffect(() => {
         getCards();
         getBanks();
@@ -163,6 +163,18 @@ const Wallet = () => {
         set_open_confirm_modal(true);
     };
 
+    const onFundWallet = () => {
+        if (!user_info.pin) {
+            return set_open_trans_confirm_modal({
+                open_trans_confirm_modal: true,
+                type: "add",
+                closeModalFunc: () => set_open_trans_confirm_modal(false),
+                openOriginalModalFunc: () => set_open_fund_wallet_modal(true)
+            });
+        }
+        set_open_fund_wallet_modal(true);
+    };
+
     const fundWallet = async () => {
         const amount =
             fund_payload.amount
@@ -184,22 +196,27 @@ const Wallet = () => {
             NotifySuccess(data.message);
             getWallet && getWallet();
             getTransactions && getTransactions({ page: 1 });
-            return openConfirmTransactionModal();
+            return set_open_trans_confirm_modal({
+                open_trans_confirm_modal: false,
+                type: null
+            });
         }
     };
 
-    const openConfirmTransactionModal = () => {
-        set_confirm_transaction_modal(!confirm_transaction_modal);
-    };
-
     const confirmTransaction = () => {
-        set_open_trans_confirm_modal(false);
+        set_open_trans_confirm_modal({
+            open_trans_confirm_modal: false,
+            type: null
+        });
         fundWallet();
     };
 
     const cancelTransaction = () => {
         set_fund_payload({});
-        set_open_trans_confirm_modal(false);
+        set_open_trans_confirm_modal({
+            open_trans_confirm_modal: false,
+            type: null
+        });
     };
 
     return (
@@ -213,8 +230,7 @@ const Wallet = () => {
             variants={pageVariants}>
             <ConfirmTransactionModal
                 {...{
-                    question: `Are you sure you want to fund your wallet with ${fund_payload.amount}`,
-                    open_trans_confirm_modal,
+                    ...open_trans_confirm_modal_obj,
                     _confirmAction: confirmTransaction,
                     _cancelAction: cancelTransaction
                 }}
@@ -244,6 +260,7 @@ const Wallet = () => {
                     set_fund_payload
                 }}
             />
+            <h1 className="page-title">Wallet & Transactions</h1>
             <div className="top-section">
                 <div className="bank-card-info-container">
                     <Tabs defaultActiveKey="0">

@@ -276,7 +276,6 @@ const Dashboard = () => {
             variants={pageVariants}>
             <ConfirmTransactionModal
                 {...{
-                    user_info,
                     ...open_trans_confirm_modal_obj,
                     _confirmAction: confirmTransaction,
                     _cancelAction: cancelTransaction

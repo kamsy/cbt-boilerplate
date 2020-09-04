@@ -337,3 +337,51 @@
 
     }
 }
+
+
+@mixin breakdown-style {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    opacity: 0;
+    -webkit-transition: 0.5s all ease-in-out;
+    transition: 0.5s all ease-in-out;
+    -webkit-transform-origin: top;
+    transform-origin: top;
+    -webkit-transform: scaleY(0);
+    transform: scaleY(0);
+    max-height: 0;
+    margin: 0;
+
+    .p-hdr {
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+
+    .month,
+    .amt {
+        display: inline-block;
+        width: 120px;
+        font-size: 14px;
+    }
+
+    .amt {
+        width: unset
+    }
+
+    .brk-dwn-item {
+        margin-bottom: 6px;
+    }
+
+    &.show {
+        -webkit-transform: scaleY(1);
+        transform: scaleY(1);
+        opacity: 1;
+        max-height: 100%;
+        margin-top: 16px;
+    }
+}

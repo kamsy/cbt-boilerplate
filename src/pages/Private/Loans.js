@@ -136,6 +136,7 @@ const Loans = () => {
             exit="out"
             transition={pageTransitions}
             variants={pageVariants}>
+            <h1 className="page-title">Loan History</h1>
             <PartRepaymentModal
                 {...{
                     loan_info,

@@ -33,7 +33,6 @@ function beforeUpload(file) {
 
 const CreateLoan = () => {
     const { user_info } = decryptAndRead(ENCRYPT_USER);
-    console.log("CreateLoan -> user_info", user_info);
     const history = useHistory();
     const [errors, set_errors] = useState({
         amount: false,
@@ -200,6 +199,7 @@ const CreateLoan = () => {
             exit="out"
             transition={pageTransitions}
             variants={pageVariants}>
+            <h1 className="page-title">Request a Loan</h1>
             <div className="">
                 <p>
                     Please fill the form below appropriately to request a loan.

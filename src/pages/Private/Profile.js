@@ -27,6 +27,7 @@ const Profile = () => {
             exit="out"
             transition={pageTransitions}
             variants={pageVariants}>
+            <h1 className="page-title">Profile</h1>
             <Tabs
                 defaultActiveKey="1"
                 onChange={key => set_tab_key(Number(key))}>

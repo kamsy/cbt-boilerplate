@@ -832,6 +832,10 @@ html {
                             }
                         }
                     }
+
+                    .repayment-brkdown {
+                        @include breakdown-style
+                    }
                 }
 
                 .assurance {

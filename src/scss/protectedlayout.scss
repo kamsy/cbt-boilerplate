@@ -48,7 +48,7 @@ body {
     .children-container {
         position: relative;
         padding: 5.5rem 36px;
-        margin-left: auto;
+        margin: 8px 0 0 auto;
         width: calc(100% - 200px);
         min-height: 100vh;
         background-color: rgba($blue, 0.02);
@@ -63,6 +63,31 @@ body {
             margin-left: auto;
             margin-right: auto;
             overflow-y: hidden;
+
+            .page-title {
+                font-family: Work Sans;
+                font-style: normal;
+                font-weight: 600;
+                @include fluid-type(40px, 24px);
+                line-height: 120%;
+                display: flex;
+                align-items: center;
+                letter-spacing: -0.02em;
+                margin: 0 0 20px;
+
+                &+p {
+                    font-family: Work Sans;
+                    font-style: normal;
+                    font-weight: normal;
+                    @include fluid-type(16px, 12px);
+                    line-height: 120%;
+                    display: flex;
+                    align-items: center;
+                    letter-spacing: -0.02em;
+                    color: #333333;
+                    margin: -20px 0 0
+                }
+            }
 
             .table-container {
                 overflow-x: scroll;
@@ -361,13 +386,13 @@ body {
 
                 .pincode-input-text {
 
-                        width: 100% !important;
-                        border-radius: 6px;
-                        height: 56px;
-                        transition: 0.5s all ease-in-out;
-                        background: rgba(0, 0, 0, 0.05) !important;
-                        @include fluid-type(20px);
-                        border: none !important;
+                    width: 100% !important;
+                    border-radius: 6px;
+                    height: 56px;
+                    transition: 0.5s all ease-in-out;
+                    background: rgba(0, 0, 0, 0.05) !important;
+                    @include fluid-type(20px);
+                    border: none !important;
 
                     &:focus {
                         border: none;

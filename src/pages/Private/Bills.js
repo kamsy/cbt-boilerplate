@@ -16,6 +16,8 @@ import { NotifyError, NotifySuccess } from "../../components/Notification";
 import FundWalletModal from "../../components/Modals/FundWalletModal";
 import { message as AntMsg } from "antd";
 import ConfirmTransactionModal from "../../components/Modals/ConfirmTransactionModal";
+import { decryptAndRead } from "../../services/localStorageHelper";
+import { ENCRYPT_USER } from "../../variables";
 
 const schema = yup.object().shape({
     phone: yup
@@ -29,6 +31,7 @@ const schema = yup.object().shape({
 });
 
 const Bills = () => {
+    const { user_info } = decryptAndRead(ENCRYPT_USER);
     const [billers, set_billers] = useState([]);
     const [open_biller_modal, set_open_biller_modal] = useState(false);
     const [biller_info, set_biller_info] = useState([]);
@@ -47,9 +50,21 @@ const Bills = () => {
         });
     };
 
-    const handleSelectedBiller = info => {
-        set_biller_info(info);
+    const proceedToBuyData = selected_biller => {
+        set_biller_info(selected_biller);
         set_open_biller_modal(true);
+    };
+
+    const handleSelectedBiller = selected_biller => {
+        if (!user_info.pin) {
+            return set_open_trans_confirm_modal({
+                open_trans_confirm_modal: true,
+                type: "add",
+                closeModalFunc: () => set_open_trans_confirm_modal(false),
+                openOriginalModalFunc: () => proceedToBuyData(selected_biller)
+            });
+        }
+        proceedToBuyData(selected_biller);
     };
 
     useEffect(() => {
@@ -129,7 +144,7 @@ const Bills = () => {
                 AntMsg.error(msg);
                 set_open_biller_modal(false);
                 setTimeout(() => {
-                    set_open_fund_wallet_modal(true);
+                    // set_open_fund_wallet_modal(true);
                 }, 500);
             }
         }
@@ -137,9 +152,13 @@ const Bills = () => {
     const [open_fund_wallet_modal, set_open_fund_wallet_modal] = useState(
         false
     );
-    const [open_trans_confirm_modal, set_open_trans_confirm_modal] = useState(
-        false
-    );
+
+    const [
+        open_trans_confirm_modal_obj,
+        set_open_trans_confirm_modal
+    ] = useState({
+        open_trans_confirm_modal: false
+    });
 
     const [transaction_payload, set_transaction_payload] = useState({});
 
@@ -162,14 +181,29 @@ const Bills = () => {
         set_open_trans_confirm_modal(false);
     };
 
-    const confirmBuyAirtime = payload => {
+    const proceedToBuyAirtime = payload => {
         set_transaction_payload({ type: "airtime", ...payload });
-        set_open_trans_confirm_modal(true);
+        set_open_trans_confirm_modal({
+            open_trans_confirm_modal: true,
+            type: "verify"
+        });
+    };
+
+    const confirmBuyAirtime = payload => {
+        if (!user_info.pin) {
+            return set_open_trans_confirm_modal({
+                open_trans_confirm_modal: true,
+                type: "add",
+                closeModalFunc: () => set_open_trans_confirm_modal(false),
+                openOriginalModalFunc: () => proceedToBuyAirtime(payload)
+            });
+        }
+        proceedToBuyAirtime(payload);
     };
 
     return (
         <motion.div
-            className="main bills shared-modal-comp"
+            className="main shared-modal-comp"
             id="bills-history"
             initial="initial"
             animate="in"
@@ -178,11 +212,7 @@ const Bills = () => {
             variants={pageVariants}>
             <ConfirmTransactionModal
                 {...{
-                    question:
-                        transaction_payload.type === "airtime"
-                            ? `Are you sure you want to buy airtime of ${transaction_payload.amount}?`
-                            : `Are you sure you want to purchase ${transaction_payload.bundle}?`,
-                    open_trans_confirm_modal,
+                    ...open_trans_confirm_modal_obj,
                     _confirmAction: confirmTransaction,
                     _cancelAction: cancelTransaction
                 }}
@@ -196,81 +226,83 @@ const Bills = () => {
                     set_open_trans_confirm_modal
                 }}
             />
-
-            <div className="left-cont">
-                <h3 className="section-header">Airtime</h3>
-                <span className="desc">
-                    Enter a phone number and an amount to recharge
-                </span>
-                <div className="airtime-container">
-                    <form
-                        className="form-buy-airtime form"
-                        name="buy-airtimer-form"
-                        onSubmit={handleSubmit(confirmBuyAirtime)}>
-                        <CustomInput
-                            {...{
-                                label: "Enter Phone Number",
-                                name: "phone",
-                                register,
-                                placeholder: "Enter phone number",
-                                errors,
-                                control
-                            }}
-                        />
-                        <CustomInput
-                            {...{
-                                label: "Enter Amount",
-                                name: "amount",
-                                register,
-                                placeholder: "Enter amount to recharge",
-                                errors,
-                                control,
-                                type: "money"
-                            }}
-                        />
-                        <CustomButton
-                            {...{
-                                text: "Buy Airtime",
-                                extraClass: "full-size",
-                                onClick: handleSubmit(confirmBuyAirtime)
-                            }}
-                        />
-                    </form>
+            <h1 className="page-title">Bills</h1>
+            <div className="bills">
+                <div className="left-cont">
+                    <h3 className="section-header">Airtime</h3>
+                    <span className="desc">
+                        Enter a phone number and an amount to recharge
+                    </span>
+                    <div className="airtime-container">
+                        <form
+                            className="form-buy-airtime form"
+                            name="buy-airtimer-form"
+                            onSubmit={handleSubmit(confirmBuyAirtime)}>
+                            <CustomInput
+                                {...{
+                                    label: "Enter Phone Number",
+                                    name: "phone",
+                                    register,
+                                    placeholder: "Enter phone number",
+                                    errors,
+                                    control
+                                }}
+                            />
+                            <CustomInput
+                                {...{
+                                    label: "Enter Amount",
+                                    name: "amount",
+                                    register,
+                                    placeholder: "Enter amount to recharge",
+                                    errors,
+                                    control,
+                                    type: "money"
+                                }}
+                            />
+                            <CustomButton
+                                {...{
+                                    text: "Buy Airtime",
+                                    extraClass: "full-size",
+                                    onClick: handleSubmit(confirmBuyAirtime)
+                                }}
+                            />
+                        </form>
+                    </div>
                 </div>
-            </div>
 
-            <div className="right-cont">
-                <h3 className="section-header">
-                    Internet Service Providers (ISP)
-                </h3>
-                <span className="desc">
-                    Select your ISP to purchase a data bundle
-                </span>
-                <div className="billers-container">
-                    {billers.map(({ name, logo, plans }) => {
-                        return (
-                            <div
-                                key={name}
-                                className="biller"
-                                role="button"
-                                onClick={() =>
-                                    handleSelectedBiller({
-                                        plans,
-                                        logo,
-                                        biller_name: name
-                                    })
-                                }>
-                                <img
-                                    src={logo}
-                                    alt={`${name} logo`}
-                                    className="biller-img"
-                                />
-                                <span className="biller-name">{name}</span>
-                            </div>
-                        );
-                    })}
+                <div className="right-cont">
+                    <h3 className="section-header">
+                        Internet Service Providers (ISP)
+                    </h3>
+                    <span className="desc">
+                        Select your ISP to purchase a data bundle
+                    </span>
+                    <div className="billers-container">
+                        {billers.map(({ name, logo, plans }) => {
+                            return (
+                                <div
+                                    key={name}
+                                    className="biller"
+                                    role="button"
+                                    onClick={() =>
+                                        handleSelectedBiller({
+                                            plans,
+                                            logo,
+                                            biller_name: name
+                                        })
+                                    }>
+                                    <img
+                                        src={logo}
+                                        alt={`${name} logo`}
+                                        className="biller-img"
+                                    />
+                                    <span className="biller-name">{name}</span>
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
-            </div>
+            </div>{" "}
         </motion.div>
     );
 };

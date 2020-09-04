@@ -4,31 +4,6 @@
 .dashboard {
     @include DashboardTableStyle;
     overflow: hidden auto;
-
-    .page-title {
-        font-family: Work Sans;
-        font-style: normal;
-        font-weight: 600;
-        @include fluid-type(40px, 24px);
-        line-height: 120%;
-        display: flex;
-        align-items: center;
-        letter-spacing: -0.02em;
-        margin: 0;
-
-        &+p {
-            font-family: Work Sans;
-            font-style: normal;
-            font-weight: normal;
-            @include fluid-type(16px, 12px);
-            line-height: 120%;
-            display: flex;
-            align-items: center;
-            letter-spacing: -0.02em;
-            color: #333333;
-        }
-    }
-
     .last-five {
         font-weight: 900;
         font-size: 20px;
