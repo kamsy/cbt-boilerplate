@@ -4,9 +4,10 @@
 .dashboard {
     @include DashboardTableStyle;
     overflow: hidden auto;
+
     .last-five {
         font-weight: 900;
-        font-size: 20px;
+        @include fluid-type(20px);
         padding: 24px 25px 0
     }
 
@@ -122,70 +123,69 @@
 
     .middle-section {
         display: grid;
-        grid-template-columns: repeat(2, minmax(538px, 1fr));
+        grid-template-columns: repeat(3, minmax(438px, 1fr));
         grid-gap: 34px;
 
         .title-txt {
             font-family: Work Sans;
             font-style: normal;
             font-weight: 600;
-            font-size: 24px;
             @include fluid-type(24px, 18px);
             line-height: 120%;
             display: flex;
             align-items: center;
             letter-spacing: -0.02em;
-
             color: #444444;
         }
 
         .analytics-cont,
-        .cards-cont {
+        .cards-cont,
+        .wallet-cont {
             padding: 24px 25px;
             background: $white;
             border-radius: 8px;
         }
 
-        .cards-cont {
-            .cards {
+        .wallet-info {
+            @include wallet-info-style;
+        }
+
+        .cards{
+            display: flex;
+        }
+
+        .card {
+            &-cont {
                 position: relative;
                 height: 190px;
-            }
+                width: 100%;
+                border-radius: 10px;
+                @include shadowMixin;
 
-            .card {
-                &-cont {
-                    position: relative;
-                    height: 190px;
-                    width: 100%;
-                    border-radius: 10px;
-                    @include shadowMixin;
+                &:focus {
+                    .card {
 
-                    &:focus {
-                        .card {
-
-                            -webkit-transform: rotateY(180deg);
-                            transform: rotateY(180deg)
-                        }
-                    }
-
-                    &.bank-card {
-                        .card-front {
-                            -webkit-box-pack: unset;
-                            -ms-flex-pack: unset;
-                            justify-content: flex-end;
-
-                            .account-num {
-                                margin-top: 24px;
-                            }
-                        }
+                        -webkit-transform: rotateY(180deg);
+                        transform: rotateY(180deg)
                     }
                 }
 
-                @include card-style;
+                &.bank-card {
+                    .card-front {
+                        -webkit-box-pack: unset;
+                        -ms-flex-pack: unset;
+                        justify-content: flex-end;
 
-                // position: absolute;
+                        .account-num {
+                            margin-top: 24px;
+                        }
+                    }
+                }
             }
+
+            @include card-style;
         }
+
     }
 
     .select-isp-modal {

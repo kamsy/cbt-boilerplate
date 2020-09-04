@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { motion } from "framer";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer";
 import {
     pageVariants,
     pageTransitions
 } from "../../components/ProtectedLayout";
 import "../../scss/dashboard.scss";
-import TransactionsServices from "../../services/transactionsServices";
 import EmptyTable from "../../components/EmptyTable";
 import { _formatMoney, _limitText } from "../../services/utils";
 import MomentAdapter from "@date-io/moment";
@@ -23,61 +22,43 @@ import { message as AntMsg } from "antd";
 import ConfirmTransactionModal from "../../components/Modals/ConfirmTransactionModal";
 import { NotifySuccess, NotifyError } from "../../components/Notification";
 import WalletServices from "../../services/walletServices";
-import CardServices from "../../services/cardServices";
 import VisaCard from "../../assets/svgs/VisaCard";
 import MasterCard from "../../assets/svgs/MasterCard";
 import MicroChip from "../../assets/svgs/MicroChip";
 import { decryptAndRead } from "../../services/localStorageHelper";
 import { ENCRYPT_USER } from "../../variables";
 import useCards from "../../hooks/useCards";
+import TransferModal from "../../components/Modals/TransferModal";
+import useBillers from "../../hooks/useBillers";
+import useBanks from "../../hooks/useBanks";
+import useTransactions from "../../hooks/useTransactions";
+import useWallet from "../../hooks/useWallet";
 
 const moment = new MomentAdapter();
 
 const Dashboard = () => {
     const { user_info } = decryptAndRead(ENCRYPT_USER);
-    const [transactions, set_transactions] = useState([]);
-    const [billers, set_billers] = useState([]);
 
-    const getTransactions = ({ page }) => {
-        setTimeout(() => {
-            window._toggleLoader();
-        }, 100);
-        TransactionsServices.getTransactionsService({ page }).then(
-            ({ status, data }) => {
-                setTimeout(() => {
-                    window._toggleLoader();
-                }, 500);
-                if (status === 200) {
-                    set_transactions(data.transactions || []);
-                }
-            }
-        );
-    };
-    const getBillers = ({ page }) => {
-        BillServices.getBillersService({ page }).then(({ status, data }) => {
-            if (status === 200) {
-                set_billers(data || []);
-            }
-        });
-    };
+    // custom hooks
+    const [{ transactions, getTransactions }] = useTransactions();
+    const [{ billers }] = useBillers();
+    const [{ cards }] = useCards();
+    const [{ banks_with_logos }] = useBanks();
+    const [{ wallet }] = useWallet();
 
-    useEffect(() => {
-        getTransactions({ page: 1 });
-        getBillers({ page: 1 });
-    }, []);
-
+    // modals
     const [open_fund_wallet_modal, set_open_fund_wallet_modal] = useState(
         false
     );
-
     const [open_airtime_modal, set_open_airtime_modal] = useState(false);
-
     const [open_biller_modal, set_open_biller_modal] = useState(false);
     const [open_select_biller_modal, set_open_select_biller_modal] = useState(
         false
     );
+    const [open_transfer_modal, set_open_transfer_modal] = useState(false);
+
+    //
     const [biller_info, set_biller_info] = useState([]);
-    const [cards] = useCards();
 
     const handleSelectedBiller = info => {
         set_biller_info(info);
@@ -239,7 +220,7 @@ const Dashboard = () => {
                 set_open_airtime_modal(true);
                 break;
             case "transfer":
-                // set_open_select_biller_modal(true)
+                set_open_transfer_modal(true);
                 break;
             default:
                 return;
@@ -271,6 +252,15 @@ const Dashboard = () => {
                     ...open_trans_confirm_modal_obj,
                     _confirmAction: confirmTransaction,
                     _cancelAction: cancelTransaction
+                }}
+            />
+            <TransferModal
+                {...{
+                    banks: banks_with_logos,
+                    open_transfer_modal,
+                    set_open_transfer_modal,
+                    set_open_trans_confirm_modal,
+                    set_transaction_payload
                 }}
             />
             <SelectISPModal
@@ -347,87 +337,103 @@ const Dashboard = () => {
                     <span className="svg-cont">
                         <TransferSvg />
                     </span>
-                    <span className="text">Wallet to Wallet transfer</span>
+                    <span className="text">Transfer</span>
                 </div>
             </div>
             <div className="middle-section">
+                <div className="wallet-cont">
+                    <h4 className="title-txt">My Wallet</h4>
+                    <div className="wallet-info">
+                        <div className="card">
+                            <span className="balance">Balance</span>
+                            <p>{_formatMoney(wallet.amount / 100)}</p>
+                        </div>
+                    </div>
+                </div>
                 <div className="cards-cont">
                     <h4 className="title-txt">My Cards</h4>
                     <div className="cards">
-                        {[].map(
-                            (
-                                {
-                                    bank,
-                                    brand,
-                                    last_four,
-                                    user,
-                                    month,
-                                    year,
-                                    id
-                                },
-                                index
-                            ) => (
-                                <a
-                                    href="#"
-                                    className={`card-cont card-${index}`}
-                                    key={id}>
-                                    <div className="card">
-                                        <div className="card-front">
-                                            <div className="top">
-                                                <span className="card-bank">
-                                                    {bank}
-                                                </span>
-                                                <span className="brand-logo">
-                                                    {brand === "visa" ? (
-                                                        <VisaCard />
-                                                    ) : brand ===
-                                                      "mastercard" ? (
-                                                        <MasterCard />
-                                                    ) : null}
-                                                </span>
+                        <AnimatePresence>
+                            {cards.map(
+                                (
+                                    {
+                                        bank,
+                                        brand,
+                                        last_four,
+                                        user,
+                                        month,
+                                        year,
+                                        id
+                                    },
+                                    index
+                                ) => (
+                                    <motion.a
+                                        //   src={image.src}
+                                        initial={{ x: 300, opacity: 0 }}
+                                        animate={{ x: 0, opacity: 1 }}
+                                        exit={{ x: -300, opacity: 0 }}
+                                        href="#"
+                                        className={`card-cont card-${index}`}
+                                        key={id}>
+                                        <div className="card">
+                                            <div className="card-front">
+                                                <div className="top">
+                                                    <span className="card-bank">
+                                                        {bank}
+                                                    </span>
+                                                    <span className="brand-logo">
+                                                        {brand === "visa" ? (
+                                                            <VisaCard />
+                                                        ) : brand ===
+                                                          "mastercard" ? (
+                                                            <MasterCard />
+                                                        ) : null}
+                                                    </span>
+                                                </div>
+                                                <div className="mid">
+                                                    <span className="chip">
+                                                        <MicroChip />
+                                                    </span>
+                                                    <span className="last-four">
+                                                        **** **** ****{" "}
+                                                        {last_four}
+                                                    </span>
+                                                </div>
+                                                <div className="btm">
+                                                    <p className="card-hlder">
+                                                        {_limitText(
+                                                            user.name || "",
+                                                            25
+                                                        )}
+                                                    </p>
+                                                    <span className="expiry">
+                                                        {month}/{year}
+                                                    </span>
+                                                </div>
                                             </div>
-                                            <div className="mid">
-                                                <span className="chip">
-                                                    <MicroChip />
-                                                </span>
-                                                <span className="last-four">
-                                                    **** **** **** {last_four}
-                                                </span>
-                                            </div>
-                                            <div className="btm">
-                                                <p className="card-hlder">
-                                                    {_limitText(
-                                                        user.name || "",
-                                                        25
-                                                    )}
-                                                </p>
-                                                <span className="expiry">
-                                                    {month}/{year}
+                                            <div
+                                                className="card-back"
+                                                role="button"
+                                                // onClick={() =>
+                                                //     toggleConfirmActionModal({
+                                                //         id,
+                                                //         type: "card",
+                                                //         card_number: `**** **** ****${last_four}`,
+                                                //         modalHeaderTitle:
+                                                //             "Confirm deleting this card",
+                                                //         confirmAction: deleteCard
+                                                //     })
+                                                // }
+                                            >
+                                                <span className="delete-btn">
+                                                    Delete Card
                                                 </span>
                                             </div>
                                         </div>
-                                        <div
-                                            className="card-back"
-                                            role="button"
-                                            // onClick={() =>
-                                            //     toggleConfirmActionModal({
-                                            //         id,
-                                            //         type: "card",
-                                            //         card_number: `**** **** ****${last_four}`,
-                                            //         modalHeaderTitle:
-                                            //             "Confirm deleting this card",
-                                            //         confirmAction: deleteCard
-                                            //     })
-                                            // }
-                                        >
-                                            <span className="delete-btn">
-                                                Delete Card
-                                            </span>
-                                        </div>
-                                    </div>
-                                </a>
-                            )
-                        )}
+                                    </motion.a>
+                                )
+                            )}
+                        </AnimatePresence>
                     </div>
                 </div>
                 <div className="analytics-cont">
@@ -449,7 +455,6 @@ const Dashboard = () => {
                         rootProps={{ "data-testid": "1" }}
                     />
                 </div>
-                <div className="right-cont"></div>
             </div>
             <div className="table-container">
                 <h3 className="last-five">Last 5 transactions</h3>

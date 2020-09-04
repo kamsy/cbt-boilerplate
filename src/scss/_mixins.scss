@@ -168,9 +168,9 @@
 
     .billers-container {
         margin-top: 16px;
-       display: grid;
-       grid-template-columns: repeat(auto-fit, minmax(210px,1fr));
-       grid-gap: 20px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+        grid-gap: 20px;
 
         .biller {
             @include shadowMixin;
@@ -427,4 +427,61 @@
         }
     }
 
+}
+
+@mixin wallet-info-style {
+    .card {
+        padding: 12px 24px;
+        height: 190px;
+        background: rgba($blue, 0.05);
+        @include shadowMixin;
+        border-radius: 10px;
+        position: relative;
+        overflow: hidden;
+
+        &::after,
+        &::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            background: rgba($blue, 0.05);
+            left: 0;
+            height: 50px;
+            -webkit-transform: rotate(45deg);
+            transform: rotate(45deg)
+        }
+
+        &::after {
+            left: -150px;
+            bottom: 90px
+        }
+
+        &::before {
+            height: 80px;
+            top: 0;
+            left: 100px
+        }
+    }
+
+    .balance {
+        font-size: 20px;
+
+        @include screen(768) {
+            font-size: 18px
+        }
+
+        color: $blue
+    }
+
+    p {
+        font-weight: bold;
+        font-size: 36px;
+        word-break: break-all;
+        margin: 0;
+        min-height: 56px;
+
+        @include screen(768) {
+            font-size: 28px
+        }
+    }
 }

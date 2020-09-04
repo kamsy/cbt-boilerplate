@@ -18,6 +18,7 @@ import { message as AntMsg } from "antd";
 import ConfirmTransactionModal from "../../components/Modals/ConfirmTransactionModal";
 import { decryptAndRead } from "../../services/localStorageHelper";
 import { ENCRYPT_USER } from "../../variables";
+import useBillers from "../../hooks/useBillers";
 
 const schema = yup.object().shape({
     phone: yup
@@ -32,23 +33,9 @@ const schema = yup.object().shape({
 
 const Bills = () => {
     const { user_info } = decryptAndRead(ENCRYPT_USER);
-    const [billers, set_billers] = useState([]);
+    const [billers] = useBillers();
     const [open_biller_modal, set_open_biller_modal] = useState(false);
     const [biller_info, set_biller_info] = useState([]);
-
-    const getBillers = ({ page }) => {
-        setTimeout(() => {
-            window._toggleLoader();
-        }, 100);
-        BillServices.getBillersService({ page }).then(({ status, data }) => {
-            setTimeout(() => {
-                window._toggleLoader();
-            }, 500);
-            if (status === 200) {
-                set_billers(data || []);
-            }
-        });
-    };
 
     const proceedToBuyData = selected_biller => {
         set_biller_info(selected_biller);
@@ -66,10 +53,6 @@ const Bills = () => {
         }
         proceedToBuyData(selected_biller);
     };
-
-    useEffect(() => {
-        getBillers({ page: 1 });
-    }, []);
 
     const methods = useForm({
         resolver: yupResolver(schema)

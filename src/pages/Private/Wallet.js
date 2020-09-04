@@ -20,7 +20,6 @@ import MicroChip from "../../assets/svgs/MicroChip";
 import WalletServices from "../../services/walletServices";
 import FundWalletModal from "../../components/Modals/FundWalletModal";
 import MomentAdapter from "@date-io/moment";
-import TransactionsServices from "../../services/transactionsServices";
 import EmptyTable from "../../components/EmptyTable";
 import TableSelectFilters from "../../components/TableSelectFIlters";
 import ConfirmActionModal from "../../components/Modals/ConfirmActionModal";
@@ -29,6 +28,8 @@ import TransferModal from "../../components/Modals/TransferModal";
 import useBanks from "../../hooks/useBanks";
 import useCards from "../../hooks/useCards";
 import TransferServices from "../../services/transferServices";
+import useTransactions from "../../hooks/useTransactions";
+import useWallet from "../../hooks/useWallet";
 const moment = new MomentAdapter();
 
 const { TabPane } = Tabs;
@@ -36,26 +37,34 @@ const { TabPane } = Tabs;
 const Wallet = () => {
     const { user_info } = decryptAndRead(ENCRYPT_USER);
 
-    const [open_confirm_modal, set_open_confirm_modal] = useState(false);
+    // hooks
 
+    const [{ banks, set_banks, getBanks, banks_with_logos }] = useBanks();
+    const [{ cards, set_cards }] = useCards();
+    const [{ wallet, getWallet }] = useWallet();
+    const [
+        { transactions, set_transactions, getTransactions }
+    ] = useTransactions();
+
+    // modals
+    const [open_confirm_modal, set_open_confirm_modal] = useState(false);
     const [
         open_trans_confirm_modal_obj,
         set_open_trans_confirm_modal
     ] = useState({
         open_trans_confirm_modal: false
     });
-    const [transaction_payload, set_transaction_payload] = useState({});
-    const [item_to_delete_info, set_item_to_delete_info] = useState({});
     const [open_modal, set_open_modal] = useState(false);
     const [open_fund_wallet_modal, set_open_fund_wallet_modal] = useState(
         false
     );
     const [open_transfer_modal, set_open_transfer_modal] = useState(false);
 
-    const [banks, set_banks, getBanks, banks_with_logos] = useBanks();
-    const [cards, set_cards] = useCards();
-    const [wallet, set_wallet] = useState({});
+    //
+    const [transaction_payload, set_transaction_payload] = useState({});
+    const [item_to_delete_info, set_item_to_delete_info] = useState({});
 
+    //
     const componentProps = {
         reference: `q_c_ng_card_ref_${new Date().getTime()}`,
         email: user_info.email,
@@ -77,14 +86,6 @@ const Wallet = () => {
             );
         },
         onClose: e => console.log(e)
-    };
-
-    const getWallet = async () => {
-        const res = await WalletServices.getWalletService();
-        const { status, data } = res;
-        if (status === 200) {
-            set_wallet(data?.wallet || {});
-        }
     };
 
     const deleteBank = async id => {
@@ -117,29 +118,6 @@ const Wallet = () => {
             cards_arr.splice(index_of_bank, 1);
             set_cards(cards_arr);
         }
-    };
-
-    useEffect(() => {
-        getWallet();
-        getTransactions({ page: 1 });
-    }, []);
-
-    const [transactions, set_transactions] = useState([]);
-
-    const getTransactions = ({ page }) => {
-        setTimeout(() => {
-            window._toggleLoader();
-        }, 100);
-        TransactionsServices.getTransactionsService({ page }).then(
-            ({ status, data }) => {
-                setTimeout(() => {
-                    window._toggleLoader();
-                }, 500);
-                if (status === 200) {
-                    set_transactions(data.transactions || []);
-                }
-            }
-        );
     };
 
     const onPaginationChange = page => getTransactions({ page });

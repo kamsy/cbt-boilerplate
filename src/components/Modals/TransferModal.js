@@ -70,7 +70,6 @@ const TransferModal = ({
         getValues: getValues2,
         reset: reset2
     } = method2;
-    console.log("errors2", errors2);
 
     const _toggleDisplay = ({ opacity, func }) => {
         opacity === 0
@@ -132,7 +131,6 @@ const TransferModal = ({
             bank_code,
             account_number
         });
-        console.log("verifyAccountDetails -> res", { res });
         const { status, data, response } = res;
         if (response.status === 406) {
             setValue2("account_name", response.data.name);
@@ -142,7 +140,6 @@ const TransferModal = ({
     };
 
     const confirmTransfer = payload => {
-        console.log("confirmTransfer -> payload", payload);
         closeModal();
         set_transaction_payload({
             type: `${type}-transfer`,
@@ -155,6 +152,7 @@ const TransferModal = ({
         });
     };
 
+    console.log("banks", banks);
     const options = banks?.map(({ code, name, logo }) => {
         return (
             <Option key={code} value={code}>
@@ -259,10 +257,6 @@ const TransferModal = ({
                                                     input,
                                                     option
                                                 ) => {
-                                                    console.log("return", {
-                                                        input,
-                                                        option
-                                                    });
                                                     return banks
                                                         .filter(
                                                             bank =>
@@ -275,7 +269,6 @@ const TransferModal = ({
                                                         );
                                                 }}
                                                 onChange={val => {
-                                                    console.log("val", val);
                                                     setError2(
                                                         "bank_name",
                                                         null

@@ -14,7 +14,7 @@ const useCards = () => {
         getCards();
     }, []);
 
-    return [cards, set_cards];
+    return [{ cards, set_cards }];
 };
 
 export default useCards;
