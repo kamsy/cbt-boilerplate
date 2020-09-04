@@ -206,7 +206,7 @@ const Dashboard = () => {
             case "data":
                 buyDataBundle();
                 break;
-            case "wallet":
+            case "fund-wallet":
                 fundWallet();
                 break;
             default:
@@ -287,7 +287,7 @@ const Dashboard = () => {
                     cards,
                     set_open_fund_wallet_modal,
                     set_open_trans_confirm_modal,
-                    set_fund_payload: set_transaction_payload
+                    set_transaction_payload
                 }}
             />
             <BuyAirtimeModal

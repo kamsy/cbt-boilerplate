@@ -19,7 +19,7 @@ const FundWalletModal = ({
     set_open_fund_wallet_modal,
     cards,
     set_open_trans_confirm_modal,
-    set_fund_payload
+    set_transaction_payload
 }) => {
     const methods = useForm({
         resolver: yupResolver(schema)
@@ -38,7 +38,7 @@ const FundWalletModal = ({
             open_trans_confirm_modal: true,
             type: "verify"
         });
-        set_fund_payload({ type: "wallet", ...payload });
+        set_transaction_payload({ type: "fund-wallet", ...payload });
         return set_open_fund_wallet_modal(false);
     };
     const closeModal = () => {

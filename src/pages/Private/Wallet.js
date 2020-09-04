@@ -28,6 +28,7 @@ import ConfirmTransactionModal from "../../components/Modals/ConfirmTransactionM
 import TransferModal from "../../components/Modals/TransferModal";
 import useBanks from "../../hooks/useBanks";
 import useCards from "../../hooks/useCards";
+import TransferServices from "../../services/transferServices";
 const moment = new MomentAdapter();
 
 const { TabPane } = Tabs;
@@ -43,8 +44,7 @@ const Wallet = () => {
     ] = useState({
         open_trans_confirm_modal: false
     });
-    const [fund_payload, set_fund_payload] = useState({});
-    const [transfer_payload, set_transfer_payload] = useState({});
+    const [transaction_payload, set_transaction_payload] = useState({});
     const [item_to_delete_info, set_item_to_delete_info] = useState({});
     const [open_modal, set_open_modal] = useState(false);
     const [open_fund_wallet_modal, set_open_fund_wallet_modal] = useState(
@@ -151,7 +151,7 @@ const Wallet = () => {
 
     const walletActionType = type => {
         switch (type) {
-            case "fund":
+            case "fund-wallet":
                 checkUserHasPin(set_open_fund_wallet_modal);
                 break;
             case "transfer":
@@ -183,7 +183,7 @@ const Wallet = () => {
 
     const fundWallet = async () => {
         const amount =
-            fund_payload.amount
+            transaction_payload.amount
                 .split(",")
                 .join("")
                 .split("₦")
@@ -191,7 +191,70 @@ const Wallet = () => {
 
         window._toggleLoader();
         const res = await WalletServices.fundWalletService({
-            ...fund_payload,
+            ...transaction_payload,
+            amount
+        });
+        setTimeout(() => {
+            window._toggleLoader();
+        }, 100);
+        const { status, data } = res;
+        if (status === 200) {
+            NotifySuccess(data.message);
+            getWallet && getWallet();
+            getTransactions && getTransactions({ page: 1 });
+            return set_open_trans_confirm_modal({
+                open_trans_confirm_modal: false,
+                type: null
+            });
+        }
+    };
+
+    const walletTransfer = async () => {
+        const amount =
+            transaction_payload.amount
+                .split(",")
+                .join("")
+                .split("₦")
+                .join("") * 100;
+        return console.log(
+            "bankTransfer -> transaction_payload",
+            transaction_payload
+        );
+        window._toggleLoader();
+        const res = await TransferServices.transferToWalletService({
+            ...transaction_payload,
+            amount
+        });
+        setTimeout(() => {
+            window._toggleLoader();
+        }, 100);
+        const { status, data } = res;
+        if (status === 200) {
+            NotifySuccess(data.message);
+            getWallet && getWallet();
+            getTransactions && getTransactions({ page: 1 });
+            return set_open_trans_confirm_modal({
+                open_trans_confirm_modal: false,
+                type: null
+            });
+        }
+    };
+
+    const bankTransfer = async () => {
+        const amount =
+            transaction_payload.amount
+                .split(",")
+                .join("")
+                .split("₦")
+                .join("") * 100;
+
+        return console.log(
+            "bankTransfer -> transaction_payload",
+            transaction_payload
+        );
+        window._toggleLoader();
+        const res = await TransferServices.transferToBankService({
+            ...transaction_payload,
             amount
         });
         setTimeout(() => {
@@ -210,15 +273,27 @@ const Wallet = () => {
     };
 
     const confirmTransaction = () => {
+        switch (transaction_payload.type) {
+            case "fund-wallet":
+                fundWallet();
+                break;
+            case "wallet-transfer":
+                walletTransfer();
+                break;
+            case "bank-transfer":
+                bankTransfer();
+                break;
+            default:
+                return;
+        }
         set_open_trans_confirm_modal({
             open_trans_confirm_modal: false,
             type: null
         });
-        // fundWallet();
     };
 
     const cancelTransaction = () => {
-        set_fund_payload({});
+        set_transaction_payload({});
         set_open_trans_confirm_modal({
             open_trans_confirm_modal: false,
             type: null
@@ -263,7 +338,7 @@ const Wallet = () => {
                     open_fund_wallet_modal,
                     set_open_fund_wallet_modal,
                     set_open_trans_confirm_modal,
-                    set_fund_payload
+                    set_transaction_payload
                 }}
             />
             <TransferModal
@@ -271,7 +346,8 @@ const Wallet = () => {
                     banks: banks_with_logos,
                     open_transfer_modal,
                     set_open_transfer_modal,
-                    set_open_trans_confirm_modal
+                    set_open_trans_confirm_modal,
+                    set_transaction_payload
                 }}
             />
             <h1 className="page-title">Wallet & Transactions</h1>
@@ -287,7 +363,7 @@ const Wallet = () => {
                                         <Button
                                             className="custom-btn"
                                             onClick={() =>
-                                                walletActionType("fund")
+                                                walletActionType("fund-wallet")
                                             }>
                                             Fund Wallet
                                         </Button>
