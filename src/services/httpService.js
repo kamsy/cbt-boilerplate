@@ -107,4 +107,19 @@ const postFunc = (path, payload) => {
     });
 };
 
-export { getFunc, delFunc, postFunc, axios };
+const updateFunc = (path, payload) => {
+    return new Promise((resolve, reject) => {
+        axios
+            .update(path, payload)
+            .then(response => {
+                console.log("postFunc -> res", response);
+                return resolve(response);
+            })
+            .catch(({ response }) => {
+                console.log("postFunc -> response", response);
+                return reject(response);
+            });
+    });
+};
+
+export { getFunc, delFunc, postFunc, updateFunc, axios };

@@ -41,7 +41,10 @@ const BillerModal = ({
     } = methods;
     const onSubmit = payload => {
         set_transaction_payload({ type: "data", ...payload });
-        set_open_trans_confirm_modal(true);
+        set_open_trans_confirm_modal({
+            open_trans_confirm_modal: true,
+            type: "verify"
+        });
         return set_open_biller_modal(false);
     };
     const closeModal = () => {

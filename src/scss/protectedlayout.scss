@@ -334,5 +334,47 @@ body {
             -ms-flex-pack: end;
             justify-content: flex-end;
         }
+
+        .ant-modal-title {
+            @include fluid-type(18px);
+            @include WS_bld()
+        }
+
+        .enter-pin-modal {
+            width: 360px !important;
+
+            .pin {
+                @include fluid-type(16px);
+                @include WS_semi_bld()
+            }
+
+            .submit-btn {
+                width: 100%
+            }
+
+            .pincode-input-container {
+                width: 100%;
+                display: grid !important;
+                grid-template-columns: repeat(4, 1fr);
+                grid-gap: 20px;
+                margin-top: 20px;
+
+                .pincode-input-text {
+
+                        width: 100% !important;
+                        border-radius: 6px;
+                        height: 56px;
+                        transition: 0.5s all ease-in-out;
+                        background: rgba(0, 0, 0, 0.05) !important;
+                        @include fluid-type(20px);
+                        border: none !important;
+
+                    &:focus {
+                        border: none;
+                        box-shadow: 15px 15px 20px rgba($blue, 0.02);
+                    }
+                }
+            }
+        }
     }
 }

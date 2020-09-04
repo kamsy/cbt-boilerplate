@@ -11,7 +11,6 @@ import "../scss/header.scss";
 import { ENCRYPT_USER } from "../variables";
 const Header = () => {
     const { user_info } = decryptAndRead(ENCRYPT_USER);
-    console.log("Header -> user_info", user_info);
     const history = useHistory();
     useEffect(() => {
         const hamburger_cont = document.querySelector(".hamburger-container");

@@ -17,7 +17,7 @@
         content: '';
         position: absolute;
         z-index: -1;
-        background: $dark-blue;
+        background: $white;
         opacity: 0.3;
         border-radius: 50% 50% 0 0;
         width: 100%;
@@ -28,14 +28,14 @@
         transition: all 0.5s ease-in-out;
     }
 
-
-    &:hover,&:active,&:focus {
+    &:hover,
+    &:active,
+    &:focus {
         color: $white;
-        background: $dark-blue;
+        background: $blue;
 
         &::after {
             height: 200%;
-            z-index: -1;
         }
     }
 
@@ -61,7 +61,7 @@
         color: $red;
         background: rgba($red, 0.3);
 
-        &::after,
+        &:active,&:focus,
         &:hover {
             background: $red;
             color: $white
@@ -72,7 +72,7 @@
         color: $blue;
         background: rgba($blue, 0.3);
 
-        &::after,
+        &:after,&:focus,
         &:hover {
             background: $blue;
             color: $white

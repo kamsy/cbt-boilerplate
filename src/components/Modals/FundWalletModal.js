@@ -34,7 +34,10 @@ const FundWalletModal = ({
         clearErrors
     } = methods;
     const onSubmit = payload => {
-        set_open_trans_confirm_modal(true);
+        set_open_trans_confirm_modal({
+            open_trans_confirm_modal: true,
+            type: "verify"
+        });
         set_fund_payload({ type: "wallet", ...payload });
         return set_open_fund_wallet_modal(false);
     };

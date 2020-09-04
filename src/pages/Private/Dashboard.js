@@ -189,15 +189,21 @@ const Dashboard = () => {
         }
     };
 
-    const [open_trans_confirm_modal, set_open_trans_confirm_modal] = useState(
-        false
-    );
+    const [
+        open_trans_confirm_modal_obj,
+        set_open_trans_confirm_modal
+    ] = useState({
+        open_trans_confirm_modal: false
+    });
 
     const [transaction_payload, set_transaction_payload] = useState({});
 
     const cancelTransaction = () => {
         set_transaction_payload({});
-        set_open_trans_confirm_modal(false);
+        set_open_trans_confirm_modal({
+            open_trans_confirm_modal: false,
+            type: null
+        });
     };
 
     const confirmTransaction = () => {
@@ -214,13 +220,50 @@ const Dashboard = () => {
             default:
                 return;
         }
-        set_open_trans_confirm_modal(false);
+        set_open_trans_confirm_modal({
+            open_trans_confirm_modal: false,
+            type: null
+        });
     };
 
     const confirmBuyAirtime = payload => {
         set_transaction_payload({ type: "airtime", ...payload });
         set_open_airtime_modal(false);
-        set_open_trans_confirm_modal(true);
+        set_open_trans_confirm_modal({
+            open_trans_confirm_modal: true,
+            type: "verify"
+        });
+    };
+
+    const toggleSpecificCardModal = type => {
+        switch (type) {
+            case "data":
+                set_open_select_biller_modal(true);
+                break;
+            case "wallet":
+                set_open_fund_wallet_modal(true);
+                break;
+            case "airtime":
+                set_open_airtime_modal(true);
+                break;
+            case "transfer":
+                // set_open_select_biller_modal(true)
+                break;
+            default:
+                return;
+        }
+    };
+
+    const handleCardClick = type => {
+        if (!user_info.pin) {
+            return set_open_trans_confirm_modal({
+                open_trans_confirm_modal: true,
+                type: "add",
+                closeModalFunc: () => set_open_trans_confirm_modal(false),
+                openOriginalModalFunc: () => toggleSpecificCardModal(type)
+            });
+        }
+        toggleSpecificCardModal(type);
     };
 
     return (
@@ -233,13 +276,8 @@ const Dashboard = () => {
             variants={pageVariants}>
             <ConfirmTransactionModal
                 {...{
-                    question:
-                        transaction_payload.type === "wallet"
-                            ? `Are you sure you want to fund your wallet with ${transaction_payload.amount}?`
-                            : transaction_payload.type === "airtime"
-                            ? `Are you sure you want to buy airtime of ${transaction_payload.amount}?`
-                            : `Are you sure you want to purchase ${transaction_payload.bundle}?`,
-                    open_trans_confirm_modal,
+                    user_info,
+                    ...open_trans_confirm_modal_obj,
                     _confirmAction: confirmTransaction,
                     _cancelAction: cancelTransaction
                 }}
@@ -287,7 +325,7 @@ const Dashboard = () => {
                 <div
                     className="card"
                     role="button"
-                    onClick={() => set_open_airtime_modal(true)}>
+                    onClick={() => handleCardClick("airtime")}>
                     <span className="svg-cont">
                         <AirtimeSvg />
                     </span>
@@ -296,7 +334,7 @@ const Dashboard = () => {
                 <div
                     className="card"
                     role="button"
-                    onClick={() => set_open_select_biller_modal(true)}>
+                    onClick={() => handleCardClick("data")}>
                     <span className="svg-cont">
                         <InternetSvg />
                     </span>
@@ -305,13 +343,16 @@ const Dashboard = () => {
                 <div
                     className="card"
                     role="button"
-                    onClick={() => set_open_fund_wallet_modal(true)}>
+                    onClick={() => handleCardClick("wallet")}>
                     <span className="svg-cont">
                         <WalletSvg />
                     </span>
                     <span className="text">Fund Wallet</span>
                 </div>
-                <div className="card" role="button">
+                <div
+                    className="card"
+                    role="button"
+                    onClick={() => handleCardClick("transfer")}>
                     <span className="svg-cont">
                         <TransferSvg />
                     </span>

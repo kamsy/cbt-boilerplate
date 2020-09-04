@@ -1,12 +1,10 @@
-import React, { useState } from "react";
-import { Modal, message as AntMsg } from "antd";
+import React from "react";
+import { Modal } from "antd";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 import CustomInput from "../CustomInput";
 import CustomButton from "../CustomButton";
-import { NotifySuccess, NotifyError } from "../Notification";
-import BillServices from "../../services/billsServices";
 
 const schema = yup.object().shape({
     phone: yup
