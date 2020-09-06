@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion } from "framer";
 import {
     pageVariants,
@@ -13,7 +13,6 @@ import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 import CustomButton from "../../components/CustomButton";
 import { NotifyError, NotifySuccess } from "../../components/Notification";
-import FundWalletModal from "../../components/Modals/FundWalletModal";
 import { message as AntMsg } from "antd";
 import ConfirmTransactionModal from "../../components/Modals/ConfirmTransactionModal";
 import { decryptAndRead } from "../../services/localStorageHelper";
@@ -132,9 +131,6 @@ const Bills = () => {
             }
         }
     };
-    const [open_fund_wallet_modal, set_open_fund_wallet_modal] = useState(
-        false
-    );
 
     const [
         open_trans_confirm_modal_obj,

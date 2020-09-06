@@ -6,7 +6,6 @@ import Avatar from "../assets/images/person.png";
 import PowerOffSvg from "../assets/svgs/PowerOffSvg";
 import { clear, decryptAndRead } from "../services/localStorageHelper";
 import ProfileUser from "../assets/svgs/ProfileUser";
-import Logo from "../assets/images/Logo.png";
 import "../scss/header.scss";
 import { ENCRYPT_USER } from "../variables";
 import UpdatePinModal from "./Modals/UpdatePinModal";

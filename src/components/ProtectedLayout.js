@@ -53,10 +53,10 @@ export {
 };
 
 const ProtectedLayout = ({ children }) => {
-    useEffect(() => {
-        window._toggleLoader = () =>
-            document.querySelector(".window-loader").classList.toggle("show");
-    }, []);
+    // useEffect(() => {
+    //     window._toggleLoader = () =>
+    //         document.querySelector(".window-loader").classList.toggle("show");
+    // }, []);
     return (
         <div className="protected-layout layout">
             <Header />

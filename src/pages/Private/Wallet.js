@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion } from "framer";
 import {
     pageVariants,
@@ -42,9 +42,7 @@ const Wallet = () => {
     const [{ banks, set_banks, getBanks, banks_with_logos }] = useBanks();
     const [{ cards, set_cards }] = useCards();
     const [{ wallet, getWallet }] = useWallet();
-    const [
-        { transactions, set_transactions, getTransactions }
-    ] = useTransactions();
+    const [{ transactions, getTransactions }] = useTransactions();
 
     // modals
     const [open_confirm_modal, set_open_confirm_modal] = useState(false);

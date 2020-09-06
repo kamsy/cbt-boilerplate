@@ -1,4 +1,10 @@
-import React, { Suspense, useEffect, useState, PureComponent } from "react";
+import React, {
+    Suspense,
+    useEffect,
+    useState,
+    PureComponent,
+    useRef
+} from "react";
 import { clear, decryptAndRead } from "./services/localStorageHelper";
 import "antd/dist/antd.css";
 import "./scss/global.scss";
@@ -7,7 +13,7 @@ import ProtectedLayout from "./components/ProtectedLayout";
 import AuthLayout from "./components/AuthLayout";
 import { Loader } from "./components/Loader";
 import { message } from "antd";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect, useHistory } from "react-router-dom";
 import IdleTimer from "react-idle-timer";
 import Landing from "./pages/Landing";
 import Login from "./pages/Auth/Login";
@@ -68,21 +74,6 @@ const AuthRoute = ({ component: Component, ...rest }) => {
 };
 
 class IdleTimerComponent extends PureComponent {
-    idleTimer = null;
-    _onAction = e => {
-        this.idleTimer.reset();
-    };
-
-    _onActive = e => {
-        this.idleTimer.reset();
-    };
-
-    _onIdle = e => {
-        if (this.idleTimer.isIdle() && loggedIn) {
-            clear();
-        }
-    };
-
     render() {
         return (
             <IdleTimer
@@ -91,13 +82,14 @@ class IdleTimerComponent extends PureComponent {
                 onIdle={this._onIdle}
                 onAction={this._onAction}
                 debounce={10}
-                timeout={1000 * 60 * 10}
+                timeout={1000 * 1}
             />
         );
     }
 }
 
 const App = () => {
+    const history = useHistory();
     const [loaded, set_loaded] = useState(false);
 
     useEffect(() => {
@@ -107,6 +99,8 @@ const App = () => {
         window.addEventListener("online", () =>
             message.success("Connection re-established!.👍🏻")
         );
+        window._toggleLoader = () =>
+            document.querySelector(".window-loader").classList.toggle("show");
     }, []);
 
     useEffect(() => {
@@ -127,11 +121,35 @@ const App = () => {
             return set_loaded(true);
         }
     }, []);
+    const idleTimer = useRef(null);
+    const _onAction = e => {
+        idleTimer.current.reset();
+    };
+
+    const _onActive = e => {
+        idleTimer.current.reset();
+    };
+
+    const _onIdle = e => {
+        if (idleTimer.current.isIdle() && fakeAuth.isAuthenticated) {
+            clear();
+            fakeAuth.signout();
+            return history.push({ pathname: `${url}login` });
+        }
+    };
 
     if (loaded) {
         return (
             <Suspense fallback={<Loader loading />}>
-                {/* <IdleTimerComponent /> */}
+                <IdleTimer
+                    ref={idleTimer}
+                    onActive={_onActive}
+                    onIdle={_onIdle}
+                    onAction={_onAction}
+                    debounce={10}
+                    // ms * sec * min
+                    timeout={1000 * 60 * 10}
+                />
                 <AnimatePresence exitBeforeEnter>
                     <Switch>
                         <Route exact path="/">
