@@ -153,36 +153,51 @@
         .cards {
             display: flex;
             overflow: hidden;
-            position: relative;
             height: 190px;
+            position: relative;
 
+            &-cont {
+                position: relative;
 
-            .next,
-            .prev {
-                top: calc(50% - 20px);
-                position: absolute;
-                background: red;
-                border-radius: 30px;
-                width: 40px;
-                height: 40px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                user-select: none;
-                cursor: pointer;
-                font-weight: bold;
-                font-size: 18px;
-                z-index: 2;
+                .next,
+                .prev {
+                    bottom: 24px;
+                    position: absolute;
+                    background: rgba($blue, 0.1);
+                    border-radius: 30px;
+                    width: 40px;
+                    height: 40px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    user-select: none;
+                    cursor: pointer;
+                    font-weight: bold;
+                    font-size: 18px;
+                    z-index: 2;
+                    transition: 0.5s ease-in-out all;
+                    svg{
+                        width: 14px
+                    }
+                    &.hide{
+                        opacity: 0;
+                        transform-origin: bottom;
+                        transform: scaleY(0)
+                    }
+                }
+
+                .next {
+                    right: 40%;
+                    transform: rotate(180deg)
+                }
+
+                .prev {
+                    left: 40%;
+                }
+
             }
 
-            .next {
-                right: 10px;
-            }
 
-            .prev {
-                left: 10px;
-                transform: scale(-1);
-            }
 
         }
 

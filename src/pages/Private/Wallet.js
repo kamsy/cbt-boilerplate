@@ -112,11 +112,6 @@ const Wallet = () => {
 
     const onPaginationChange = page => getTransactions({ page });
 
-    // const toggleConfirmActionModal = data => {
-    //     set_item_to_delete_info(data);
-    //     set_open_confirm_modal(true);
-    // };
-
     const walletActionType = type => {
         switch (type) {
             case "fund-wallet":
@@ -213,7 +208,6 @@ const Wallet = () => {
                 .split("₦")
                 .join("") * 100;
 
-        console.log("bankTransfer -> transaction_payload", transaction_payload);
         window._toggleLoader();
         const res = await TransferServices.transferToBankService({
             bank_code: transaction_payload.bank_code,
@@ -224,7 +218,6 @@ const Wallet = () => {
             window._toggleLoader();
         }, 100);
         const { status, data } = res;
-        console.log("bankTransfer -> res", { res });
         if (status === 200) {
             NotifySuccess(data.message);
             getWallet && getWallet();
@@ -264,6 +257,8 @@ const Wallet = () => {
         });
     };
 
+    const ATMCardWrapper = cards.length > 1 ? motion.a : motion.div;
+    const BankCardWrapper = banks.length > 1 ? motion.a : motion.div;
     return (
         <motion.div
             className="main wallet shared-modal-comp"
@@ -353,8 +348,10 @@ const Wallet = () => {
                             </div>
 
                             {banks.map(({ bank_name, account_number, id }) => (
-                                <a
-                                    href="#"
+                                <BankCardWrapper
+                                    {...(banks.length > 1
+                                        ? { href: "#" }
+                                        : null)}
                                     className="card-cont bank-card"
                                     key={id}>
                                     <div className="card">
@@ -385,7 +382,7 @@ const Wallet = () => {
                                             </span>
                                         </div>
                                     </div>
-                                </a>
+                                </BankCardWrapper>
                             ))}
                         </TabPane>
                         <TabPane tab="Card" key="2">
@@ -411,7 +408,12 @@ const Wallet = () => {
                                     year,
                                     id
                                 }) => (
-                                    <a href="#" className="card-cont" key={id}>
+                                    <ATMCardWrapper
+                                        {...(cards.length > 1
+                                            ? { href: "#" }
+                                            : null)}
+                                        className="card-cont"
+                                        key={id}>
                                         <div className="card">
                                             <div className="card-front">
                                                 <div className="top">
@@ -466,7 +468,7 @@ const Wallet = () => {
                                                 </span>
                                             </div>
                                         </div>
-                                    </a>
+                                    </ATMCardWrapper>
                                 )
                             )}
                         </TabPane>

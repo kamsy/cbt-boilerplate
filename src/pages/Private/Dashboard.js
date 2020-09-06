@@ -37,6 +37,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { wrap } from "@popmotion/popcorn";
 import useDeleteCard from "../../hooks/useDeleteCard";
 import ConfirmActionModal from "../../components/Modals/ConfirmActionModal";
+import { ArrowLeftSvg } from "../../assets/svgs/ArrowLeftSvg";
 
 const moment = new MomentAdapter();
 
@@ -281,14 +282,14 @@ const Dashboard = () => {
     // absolute page index as the `motion` component's `key` prop, `AnimatePresence` will
     // detect it as an entirely new image. So you can infinitely paginate as few as 1 images.
     const cardIndex = wrap(0, cards.length, page);
-    console.log("cardIndex", cardIndex);
 
     const paginate = newDirection => {
         setPage([page + newDirection, newDirection]);
     };
 
     const active_card = cards[cardIndex];
-    console.log("active_card", active_card);
+
+    const ATMCardWrapper = cards.length > 1 ? motion.a : motion.div;
 
     return (
         <motion.div
@@ -411,17 +412,20 @@ const Dashboard = () => {
                 </div>
                 <div className="cards-cont">
                     <h4 className="title-txt">My Cards ({cards.length})</h4>
+                    <div
+                        className={`next ${cards.length > 1 ? "show" : "hide"}`}
+                        onClick={() => paginate(1)}>
+                        <ArrowLeftSvg />
+                    </div>
+                    <div
+                        className={`prev ${cards.length > 1 ? "show" : "hide"}`}
+                        onClick={() => paginate(-1)}>
+                        <ArrowLeftSvg />
+                    </div>
 
                     <div className="cards">
-                        <div className="next" onClick={() => paginate(1)}>
-                            {"‣"}
-                        </div>
-                        <div className="prev" onClick={() => paginate(-1)}>
-                            {"‣"}
-                        </div>
-
                         <AnimatePresence>
-                            <motion.a
+                            <ATMCardWrapper
                                 key={page}
                                 custom={direction}
                                 variants={variants}
@@ -495,7 +499,7 @@ const Dashboard = () => {
                                         </span>
                                     </div>
                                 </div>
-                            </motion.a>
+                            </ATMCardWrapper>
                         </AnimatePresence>
                     </div>
                 </div>
