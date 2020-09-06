@@ -194,7 +194,7 @@ const TransferModal = ({
                                     label: "Enter Amount",
                                     name: "amount",
                                     register,
-                                    placeholder: "Enter amount to recharge",
+                                    placeholder: "Enter amount to send",
                                     errors,
                                     control,
                                     type: "money"
@@ -370,7 +370,7 @@ const TransferModal = ({
                                     register: register2,
                                     errors: errors2,
                                     control: control2,
-                                    placeholder: "Enter amount to recharge",
+                                    placeholder: "Enter amount to send",
                                     type: "money"
                                 }}
                             />
