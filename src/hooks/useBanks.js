@@ -8,7 +8,6 @@ const useBanks = () => {
         const res = await BankServices.getBanksService();
         BankServices.getBanksWithLogosPaystackService().then(
             ({ status, data }) => {
-                console.log("getBanks -> data", data);
                 if (status === 200) {
                     set_banks_with_logos(data);
                 }

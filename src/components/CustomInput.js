@@ -13,7 +13,8 @@ const CustomInput = ({
     register,
     defaultValue = "",
     type,
-    disabled = false
+    disabled = false,
+    prefix
 }) => {
     const InputComponent =
         type === "password"
@@ -37,7 +38,8 @@ const CustomInput = ({
                                 defaultValue,
                                 disabled,
                                 type,
-                                name
+                                name,
+                                prefix
                             }}
                             className={`form-input ${
                                 type === "date" || type === "money"
@@ -75,6 +77,7 @@ const CustomInput = ({
 CustomInput.propTypes = {
     name: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
+    prefix: PropTypes.string,
     placeholder: PropTypes.string.isRequired,
     errors: PropTypes.object,
     control: PropTypes.object,

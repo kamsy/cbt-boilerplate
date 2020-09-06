@@ -13,8 +13,6 @@ import LoanServices from "../../services/loanServices";
 import { NotifySuccess } from "../../components/Notification";
 import { useHistory } from "react-router-dom";
 import { url } from "../../App";
-import { decryptAndRead } from "../../services/localStorageHelper";
-import { ENCRYPT_USER } from "../../variables";
 import MomentAdapter from "@date-io/moment";
 
 const moment = new MomentAdapter();
@@ -32,7 +30,6 @@ function beforeUpload(file) {
 }
 
 const CreateLoan = () => {
-    const { user_info } = decryptAndRead(ENCRYPT_USER);
     const history = useHistory();
     const [errors, set_errors] = useState({
         amount: false,

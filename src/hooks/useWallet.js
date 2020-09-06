@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import TransactionsServices from "../services/transactionsServices";
 import WalletServices from "../services/walletServices";
 
 const useWallet = () => {

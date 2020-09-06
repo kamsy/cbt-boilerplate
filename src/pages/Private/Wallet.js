@@ -194,13 +194,10 @@ const Wallet = () => {
                 .join("")
                 .split("₦")
                 .join("") * 100;
-        return console.log(
-            "bankTransfer -> transaction_payload",
-            transaction_payload
-        );
+
         window._toggleLoader();
         const res = await TransferServices.transferToWalletService({
-            ...transaction_payload,
+            username: transaction_payload.username,
             amount
         });
         setTimeout(() => {
@@ -226,19 +223,18 @@ const Wallet = () => {
                 .split("₦")
                 .join("") * 100;
 
-        return console.log(
-            "bankTransfer -> transaction_payload",
-            transaction_payload
-        );
+        console.log("bankTransfer -> transaction_payload", transaction_payload);
         window._toggleLoader();
         const res = await TransferServices.transferToBankService({
-            ...transaction_payload,
+            bank_code: transaction_payload.bank_code,
+            account_number: transaction_payload.account_number,
             amount
         });
         setTimeout(() => {
             window._toggleLoader();
         }, 100);
         const { status, data } = res;
+        console.log("bankTransfer -> res", { res });
         if (status === 200) {
             NotifySuccess(data.message);
             getWallet && getWallet();

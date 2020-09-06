@@ -7,7 +7,7 @@ const TransferServices = {
     transferToBankService: payload =>
         postFunc(`${base_url}user/bank/transfer`, payload),
     transferToWalletService: payload =>
-        postFunc(`${base_url}user/transactions`, payload)
+        postFunc(`${base_url}user/wallet/send`, payload)
 };
 
 export default TransferServices;

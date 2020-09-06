@@ -10185,6 +10185,11 @@ react-paystack@^3.0.1:
   resolved "https://registry.yarnpkg.com/react-paystack/-/react-paystack-3.0.1.tgz#520d3011a3f73923fa01e40733f35aac9cb9a2cc"
   integrity sha512-b9Cnw/oNTWSunlCFjSMCz4RYV1/yzQgt4PZ5u+nQyu/+2F9cIFFoxJVnmk96awc0cyfYr33rdjaaK1t2dYiW7g==
 
+react-pin-input@^0.9.5:
+  version "0.9.5"
+  resolved "https://registry.yarnpkg.com/react-pin-input/-/react-pin-input-0.9.5.tgz#fda60a2f6f8935f87f9064d8a1d39b694355e3eb"
+  integrity sha512-TaYxgdzIS/RZvVklbblEn14SxsSMTbn3ehoDg3y+/g1i8A2kbwW2Mf58LK1YiHbv7zEo9f9eyXu6K1SssRgikA==
+
 react-router-dom@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-5.2.0.tgz#9e65a4d0c45e13289e66c7b17c7e175d0ea15662"

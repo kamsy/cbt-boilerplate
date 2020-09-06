@@ -17,7 +17,7 @@ const schema_wallet = yup.object().shape({
     amount: yup.string().required("Enter an amount!")
 });
 const schema_bank = yup.object().shape({
-    bank_name: yup.string().required("Please select a bank!"),
+    bank: yup.string().required("Please select a bank!"),
     amount: yup.string().required("Enter an amount!")
 });
 
@@ -41,6 +41,7 @@ const TransferModal = ({
     //
 
     const closeModal = () => {
+        setType("wallet");
         return set_open_transfer_modal(false);
     };
 
@@ -71,27 +72,16 @@ const TransferModal = ({
         reset: reset2
     } = method2;
 
-    const _toggleDisplay = ({ opacity, func }) => {
-        opacity === 0
-            ? func.start({
-                  display: "none",
-                  transition: { duration: 0.8 }
-              })
-            : func.start({
-                  display: "block"
-              });
-    };
-
     useEffect(() => {
         reset2();
         reset();
         clearErrors2();
         clearErrors();
+        setValue2("bank_name", "test");
         set_paystack_bank_code(null);
         set_error(null);
         set_account_no("");
         if (type === "wallet") {
-            // _toggleDisplay({ opacity: 1, func: wallet_control });
             wallet_control.start({
                 x: 0,
                 position: "relative",
@@ -113,7 +103,6 @@ const TransferModal = ({
                 opacity: 0,
                 transition: { duration: 0.5 }
             });
-            // _toggleDisplay({ opacity: 1, func: bank_control });
             bank_control.start({
                 x: 0,
                 position: "relative",
@@ -144,6 +133,7 @@ const TransferModal = ({
         set_transaction_payload({
             type: `${type}-transfer`,
             ...payload,
+            account_number,
             bank_code: paystack_bank_code
         });
         set_open_trans_confirm_modal({
@@ -152,7 +142,6 @@ const TransferModal = ({
         });
     };
 
-    console.log("banks", banks);
     const options = banks?.map(({ code, name, logo }) => {
         return (
             <Option key={code} value={code}>
@@ -196,7 +185,8 @@ const TransferModal = ({
                                     placeholder: "Username",
                                     errors,
                                     control,
-                                    register
+                                    register,
+                                    prefix: "@"
                                 }}
                             />
                             <CustomInput
@@ -227,7 +217,6 @@ const TransferModal = ({
                             top: 0,
                             x: "+100vw",
                             position: "absolute"
-                            // display: "none"
                         }}>
                         <form
                             className="form-buy-airtime form"
@@ -235,74 +224,100 @@ const TransferModal = ({
                             onSubmit={handleSubmit2(confirmTransfer)}>
                             <div className="input-unit custom-select">
                                 <Controller
-                                    as={
-                                        <label>
-                                            Bank Name
-                                            <Select
-                                                getPopupContainer={() =>
-                                                    document.querySelector(
-                                                        ".layout"
-                                                    )
-                                                }
-                                                {...{
-                                                    placeholder: "Select a Bank"
-                                                }}
-                                                className={`form-select ${
-                                                    errors2.bank_name?.message
-                                                        ? "show-error"
-                                                        : "hide-error"
-                                                }`}
-                                                showSearch
-                                                filterOption={(
-                                                    input,
-                                                    option
-                                                ) => {
-                                                    return banks
-                                                        .filter(
-                                                            bank =>
-                                                                bank.code ===
-                                                                option.key
-                                                        )[0]
-                                                        .name.toLowerCase()
-                                                        .includes(
-                                                            input.toLowerCase()
+                                    render={({ value }) => {
+                                        return (
+                                            <label>
+                                                Bank Name
+                                                <Select
+                                                    getPopupContainer={() =>
+                                                        document.querySelector(
+                                                            ".layout"
+                                                        )
+                                                    }
+                                                    value={
+                                                        value ? (
+                                                            <>
+                                                                <span className="bank-logo">
+                                                                    <img
+                                                                        alt={`${value.bank_name}'s logo`}
+                                                                        src={
+                                                                            value.logo
+                                                                        }
+                                                                    />
+                                                                </span>
+                                                                {
+                                                                    value.bank_name
+                                                                }
+                                                            </>
+                                                        ) : (
+                                                            undefined
+                                                        )
+                                                    }
+                                                    {...{
+                                                        placeholder:
+                                                            "Select a Bank"
+                                                    }}
+                                                    className={`form-select ${
+                                                        errors2.bank_name
+                                                            ?.message
+                                                            ? "show-error"
+                                                            : "hide-error"
+                                                    }`}
+                                                    showSearch
+                                                    filterOption={(
+                                                        input,
+                                                        option
+                                                    ) => {
+                                                        return banks
+                                                            .filter(
+                                                                bank =>
+                                                                    bank.code ===
+                                                                    option.key
+                                                            )[0]
+                                                            .name.toLowerCase()
+                                                            .includes(
+                                                                input.toLowerCase()
+                                                            );
+                                                    }}
+                                                    onChange={bank_code => {
+                                                        setError2("bank", null);
+                                                        setValue2("bank", {
+                                                            bank_name: banks.filter(
+                                                                bank =>
+                                                                    bank.code ===
+                                                                    bank_code
+                                                            )[0].name,
+                                                            logo: banks.filter(
+                                                                bank =>
+                                                                    bank.code ===
+                                                                    bank_code
+                                                            )[0].logo,
+                                                            bank_code
+                                                        });
+                                                        verifyAccountDetails({
+                                                            bank_code,
+                                                            account_number
+                                                        });
+                                                        set_paystack_bank_code(
+                                                            bank_code
                                                         );
-                                                }}
-                                                onChange={val => {
-                                                    setError2(
-                                                        "bank_name",
-                                                        null
-                                                    );
-                                                    setValue2(
-                                                        "bank_name",
-                                                        banks.filter(
-                                                            bank =>
-                                                                bank.code ===
-                                                                val
-                                                        )[0].name
-                                                    );
-                                                    verifyAccountDetails({
-                                                        bank_code: val,
-                                                        account_number
-                                                    });
-                                                    set_paystack_bank_code(val);
-                                                }}>
-                                                {options}
-                                            </Select>
-                                        </label>
-                                    }
+                                                    }}>
+                                                    {options}
+                                                </Select>
+                                            </label>
+                                        );
+                                    }}
+                                    // as={}
                                     {...{
-                                        name: "bank_name",
+                                        name: "bank",
                                         control: control2
                                     }}
                                 />
                                 <p
                                     className={`form-error-text ${
-                                        errors2.bank_name?.message
-                                            ? "show"
-                                            : "hide"
+                                        errors2.bank?.message ? "show" : "hide"
                                     }`}>
-                                    {errors2.bank_name?.message}
+                                    {errors2.bank?.message}
                                 </p>
                             </div>
                             <div className="input-unit">
