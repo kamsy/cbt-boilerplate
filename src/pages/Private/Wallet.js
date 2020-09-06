@@ -30,39 +30,14 @@ import useCards from "../../hooks/useCards";
 import TransferServices from "../../services/transferServices";
 import useTransactions from "../../hooks/useTransactions";
 import useWallet from "../../hooks/useWallet";
+import useDeleteCard from "../../hooks/useDeleteCard";
 const moment = new MomentAdapter();
 
 const { TabPane } = Tabs;
 
 const Wallet = () => {
     const { user_info } = decryptAndRead(ENCRYPT_USER);
-
-    // hooks
-
-    const [{ banks, set_banks, getBanks, banks_with_logos }] = useBanks();
-    const [{ cards, set_cards }] = useCards();
-    const [{ wallet, getWallet }] = useWallet();
-    const [{ transactions, getTransactions }] = useTransactions();
-
-    // modals
-    const [open_confirm_modal, set_open_confirm_modal] = useState(false);
-    const [
-        open_trans_confirm_modal_obj,
-        set_open_trans_confirm_modal
-    ] = useState({
-        open_trans_confirm_modal: false
-    });
-    const [open_modal, set_open_modal] = useState(false);
-    const [open_fund_wallet_modal, set_open_fund_wallet_modal] = useState(
-        false
-    );
-    const [open_transfer_modal, set_open_transfer_modal] = useState(false);
-
-    //
-    const [transaction_payload, set_transaction_payload] = useState({});
-    const [item_to_delete_info, set_item_to_delete_info] = useState({});
-
-    //
+    // paystack
     const componentProps = {
         reference: `q_c_ng_card_ref_${new Date().getTime()}`,
         email: user_info.email,
@@ -86,6 +61,39 @@ const Wallet = () => {
         onClose: e => console.log(e)
     };
 
+    // hooks
+
+    const [{ banks, set_banks, getBanks, banks_with_logos }] = useBanks();
+    const [{ cards, set_cards }] = useCards();
+    const [
+        {
+            deleteCard,
+            toggleConfirmActionModal,
+            item_to_delete_info,
+            open_confirm_modal,
+            set_open_confirm_modal,
+            set_item_to_delete_info
+        }
+    ] = useDeleteCard({ set_cards });
+    const [{ wallet, getWallet }] = useWallet();
+    const [{ transactions, getTransactions }] = useTransactions();
+
+    // modals
+    const [
+        open_trans_confirm_modal_obj,
+        set_open_trans_confirm_modal
+    ] = useState({
+        open_trans_confirm_modal: false
+    });
+    const [open_modal, set_open_modal] = useState(false);
+    const [open_fund_wallet_modal, set_open_fund_wallet_modal] = useState(
+        false
+    );
+    const [open_transfer_modal, set_open_transfer_modal] = useState(false);
+
+    //
+    const [transaction_payload, set_transaction_payload] = useState({});
+
     const deleteBank = async id => {
         window._toggleLoader();
         const res = await BankServices.deleteBankService(id);
@@ -102,28 +110,12 @@ const Wallet = () => {
         }
     };
 
-    const deleteCard = async id => {
-        window._toggleLoader();
-        const res = await CardServices.deleteCardService(id);
-        setTimeout(() => {
-            window._toggleLoader();
-        }, 500);
-        const { status, data } = res;
-        if (status === 200) {
-            NotifySuccess(data.message);
-            const cards_arr = [...cards];
-            const index_of_bank = cards_arr.findIndex(card => card.id === id);
-            cards_arr.splice(index_of_bank, 1);
-            set_cards(cards_arr);
-        }
-    };
-
     const onPaginationChange = page => getTransactions({ page });
 
-    const toggleConfirmActionModal = data => {
-        set_item_to_delete_info(data);
-        set_open_confirm_modal(true);
-    };
+    // const toggleConfirmActionModal = data => {
+    //     set_item_to_delete_info(data);
+    //     set_open_confirm_modal(true);
+    // };
 
     const walletActionType = type => {
         switch (type) {

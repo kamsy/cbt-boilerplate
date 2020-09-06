@@ -99,8 +99,8 @@ const App = () => {
         window.addEventListener("online", () =>
             message.success("Connection re-established!.👍🏻")
         );
-        window._toggleLoader = () =>
-            document.querySelector(".window-loader").classList.toggle("show");
+        // window._toggleLoader = () =>
+        //     document.querySelector(".window-loader").classList.toggle("show");
     }, []);
 
     useEffect(() => {

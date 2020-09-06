@@ -150,15 +150,47 @@
             @include wallet-info-style;
         }
 
-        .cards{
+        .cards {
             display: flex;
+            overflow: hidden;
+            position: relative;
+            height: 190px;
+
+
+            .next,
+            .prev {
+                top: calc(50% - 20px);
+                position: absolute;
+                background: red;
+                border-radius: 30px;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                user-select: none;
+                cursor: pointer;
+                font-weight: bold;
+                font-size: 18px;
+                z-index: 2;
+            }
+
+            .next {
+                right: 10px;
+            }
+
+            .prev {
+                left: 10px;
+                transform: scale(-1);
+            }
+
         }
 
         .card {
             &-cont {
-                position: relative;
+                position: absolute;
                 height: 190px;
-                width: 100%;
+                min-width: 100%;
                 border-radius: 10px;
                 @include shadowMixin;
 

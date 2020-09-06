@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer";
 import {
     pageVariants,
     pageTransitions
@@ -34,7 +33,33 @@ import useBanks from "../../hooks/useBanks";
 import useTransactions from "../../hooks/useTransactions";
 import useWallet from "../../hooks/useWallet";
 
+import { motion, AnimatePresence } from "framer-motion";
+import { wrap } from "@popmotion/popcorn";
+import useDeleteCard from "../../hooks/useDeleteCard";
+import ConfirmActionModal from "../../components/Modals/ConfirmActionModal";
+
 const moment = new MomentAdapter();
+
+const variants = {
+    enter: direction => {
+        return {
+            x: direction > 0 ? 1000 : -1000,
+            opacity: 0
+        };
+    },
+    center: {
+        zIndex: 1,
+        x: 0,
+        opacity: 1
+    },
+    exit: direction => {
+        return {
+            zIndex: 0,
+            x: direction < 0 ? 1000 : -1000,
+            opacity: 0
+        };
+    }
+};
 
 const Dashboard = () => {
     const { user_info } = decryptAndRead(ENCRYPT_USER);
@@ -42,9 +67,19 @@ const Dashboard = () => {
     // custom hooks
     const [{ transactions, getTransactions }] = useTransactions();
     const [{ billers }] = useBillers();
-    const [{ cards }] = useCards();
+    const [{ cards, set_cards }] = useCards();
     const [{ banks_with_logos }] = useBanks();
     const [{ wallet }] = useWallet();
+    const [
+        {
+            deleteCard,
+            toggleConfirmActionModal,
+            item_to_delete_info,
+            open_confirm_modal,
+            set_open_confirm_modal,
+            set_item_to_delete_info
+        }
+    ] = useDeleteCard({ set_cards });
 
     // modals
     const [open_fund_wallet_modal, set_open_fund_wallet_modal] = useState(
@@ -239,6 +274,22 @@ const Dashboard = () => {
         toggleSpecificCardModal(type);
     };
 
+    const [[page, direction], setPage] = useState([0, 0]);
+
+    // We only have 3 images, but we paginate them absolutely (ie 1, 2, 3, 4, 5...) and
+    // then wrap that within 0-2 to find our image ID in the array below. By passing an
+    // absolute page index as the `motion` component's `key` prop, `AnimatePresence` will
+    // detect it as an entirely new image. So you can infinitely paginate as few as 1 images.
+    const cardIndex = wrap(0, cards.length, page);
+    console.log("cardIndex", cardIndex);
+
+    const paginate = newDirection => {
+        setPage([page + newDirection, newDirection]);
+    };
+
+    const active_card = cards[cardIndex];
+    console.log("active_card", active_card);
+
     return (
         <motion.div
             className="main dashboard shared-modal-comp"
@@ -247,6 +298,14 @@ const Dashboard = () => {
             exit="out"
             transition={pageTransitions}
             variants={pageVariants}>
+            <ConfirmActionModal
+                {...{
+                    open_confirm_modal,
+                    set_open_confirm_modal,
+                    item_to_delete_info,
+                    set_item_to_delete_info
+                }}
+            />
             <ConfirmTransactionModal
                 {...{
                     ...open_trans_confirm_modal_obj,
@@ -351,88 +410,92 @@ const Dashboard = () => {
                     </div>
                 </div>
                 <div className="cards-cont">
-                    <h4 className="title-txt">My Cards</h4>
+                    <h4 className="title-txt">My Cards ({cards.length})</h4>
+
                     <div className="cards">
+                        <div className="next" onClick={() => paginate(1)}>
+                            {"‣"}
+                        </div>
+                        <div className="prev" onClick={() => paginate(-1)}>
+                            {"‣"}
+                        </div>
+
                         <AnimatePresence>
-                            {cards.map(
-                                (
-                                    {
-                                        bank,
-                                        brand,
-                                        last_four,
-                                        user,
-                                        month,
-                                        year,
-                                        id
+                            <motion.a
+                                key={page}
+                                custom={direction}
+                                variants={variants}
+                                initial="enter"
+                                animate="center"
+                                exit="exit"
+                                transition={{
+                                    x: {
+                                        type: "spring",
+                                        stiffness: 300,
+                                        damping: 200
                                     },
-                                    index
-                                ) => (
-                                    <motion.a
-                                        //   src={image.src}
-                                        initial={{ x: 300, opacity: 0 }}
-                                        animate={{ x: 0, opacity: 1 }}
-                                        exit={{ x: -300, opacity: 0 }}
-                                        href="#"
-                                        className={`card-cont card-${index}`}
-                                        key={id}>
-                                        <div className="card">
-                                            <div className="card-front">
-                                                <div className="top">
-                                                    <span className="card-bank">
-                                                        {bank}
-                                                    </span>
-                                                    <span className="brand-logo">
-                                                        {brand === "visa" ? (
-                                                            <VisaCard />
-                                                        ) : brand ===
-                                                          "mastercard" ? (
-                                                            <MasterCard />
-                                                        ) : null}
-                                                    </span>
-                                                </div>
-                                                <div className="mid">
-                                                    <span className="chip">
-                                                        <MicroChip />
-                                                    </span>
-                                                    <span className="last-four">
-                                                        **** **** ****{" "}
-                                                        {last_four}
-                                                    </span>
-                                                </div>
-                                                <div className="btm">
-                                                    <p className="card-hlder">
-                                                        {_limitText(
-                                                            user.name || "",
-                                                            25
-                                                        )}
-                                                    </p>
-                                                    <span className="expiry">
-                                                        {month}/{year}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div
-                                                className="card-back"
-                                                role="button"
-                                                // onClick={() =>
-                                                //     toggleConfirmActionModal({
-                                                //         id,
-                                                //         type: "card",
-                                                //         card_number: `**** **** ****${last_four}`,
-                                                //         modalHeaderTitle:
-                                                //             "Confirm deleting this card",
-                                                //         confirmAction: deleteCard
-                                                //     })
-                                                // }
-                                            >
-                                                <span className="delete-btn">
-                                                    Delete Card
-                                                </span>
-                                            </div>
+                                    opacity: { duration: 0.2 }
+                                }}
+                                href="#"
+                                className="card-cont">
+                                <div className="card">
+                                    <div className="card-front">
+                                        <div className="top">
+                                            <span className="card-bank">
+                                                {active_card?.bank}
+                                            </span>
+                                            <span className="brand-logo">
+                                                {active_card?.brand ===
+                                                "visa" ? (
+                                                    <VisaCard />
+                                                ) : active_card?.brand ===
+                                                  "mastercard" ? (
+                                                    <MasterCard />
+                                                ) : null}
+                                            </span>
                                         </div>
-                                    </motion.a>
-                                )
-                            )}
+                                        <div className="mid">
+                                            <span className="chip">
+                                                <MicroChip />
+                                            </span>
+                                            <span className="last-four">
+                                                **** **** ****{" "}
+                                                {active_card?.last_four}
+                                            </span>
+                                        </div>
+                                        <div className="btm">
+                                            <p className="card-hlder">
+                                                {_limitText(
+                                                    active_card?.user.name ||
+                                                        "",
+                                                    25
+                                                )}
+                                            </p>
+                                            <span className="expiry">
+                                                {active_card?.month}/
+                                                {active_card?.year}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div
+                                        className="card-back"
+                                        role="button"
+                                        onClick={() =>
+                                            toggleConfirmActionModal({
+                                                id: active_card?.id,
+                                                type: "card",
+                                                card_number: `**** **** ****${active_card?.last_four}`,
+                                                modalHeaderTitle:
+                                                    "Confirm deleting this card",
+                                                confirmAction: deleteCard
+                                            })
+                                        }>
+                                        <span className="delete-btn">
+                                            Delete Card
+                                        </span>
+                                    </div>
+                                </div>
+                            </motion.a>
                         </AnimatePresence>
                     </div>
                 </div>
