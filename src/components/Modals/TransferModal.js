@@ -85,11 +85,13 @@ const TransferModal = ({
             wallet_control.start({
                 x: 0,
                 position: "relative",
+                scaleY: 1,
                 opacity: 1,
                 transition: { duration: 0.5 }
             });
             bank_control.start({
                 x: "+100vw",
+                scaleY: 0,
                 opacity: 0,
                 position: "absolute",
                 transition: { duration: 0.5 }
@@ -100,12 +102,14 @@ const TransferModal = ({
                 x: "-100vw",
                 position: "absolute",
                 top: 0,
+                scaleY: 0,
                 opacity: 0,
                 transition: { duration: 0.5 }
             });
             bank_control.start({
                 x: 0,
                 position: "relative",
+                scaleY: 1,
                 opacity: 1,
                 transition: { duration: 0.5 }
             });
@@ -121,7 +125,8 @@ const TransferModal = ({
             account_number
         });
         const { status, data, response } = res;
-        if (response.status === 406) {
+        console.log("verifyAccountDetails -> res", res);
+        if (response.status === 200) {
             setValue2("account_name", response.data.name);
             setError2("account_name", response.data.message);
         }
@@ -216,7 +221,8 @@ const TransferModal = ({
                             opacity: 0,
                             top: 0,
                             x: "+100vw",
-                            position: "absolute"
+                            position: "absolute",
+                            scaleY: 0
                         }}>
                         <form
                             className="form-buy-airtime form"

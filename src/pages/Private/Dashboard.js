@@ -412,16 +412,6 @@ const Dashboard = () => {
                 </div>
                 <div className="cards-cont">
                     <h4 className="title-txt">My Cards ({cards.length})</h4>
-                    <div
-                        className={`next ${cards.length > 1 ? "show" : "hide"}`}
-                        onClick={() => paginate(1)}>
-                        <ArrowLeftSvg />
-                    </div>
-                    <div
-                        className={`prev ${cards.length > 1 ? "show" : "hide"}`}
-                        onClick={() => paginate(-1)}>
-                        <ArrowLeftSvg />
-                    </div>
 
                     <div className="cards">
                         <AnimatePresence>
@@ -501,6 +491,18 @@ const Dashboard = () => {
                                 </div>
                             </ATMCardWrapper>
                         </AnimatePresence>
+                    </div>
+
+                    <div
+                        className={`cards-control ${
+                            cards.length > 1 ? "show" : "hide"
+                        }`}>
+                        <div className="prev" onClick={() => paginate(-1)}>
+                            <ArrowLeftSvg />
+                        </div>
+                        <div className="next" onClick={() => paginate(1)}>
+                            <ArrowLeftSvg />
+                        </div>
                     </div>
                 </div>
                 <div className="analytics-cont">

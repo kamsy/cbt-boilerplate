@@ -123,8 +123,11 @@
 
     .middle-section {
         display: grid;
-        grid-template-columns: repeat(3, minmax(438px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
         grid-gap: 34px;
+        @include screen(600){
+            grid-template-columns: 1fr;
+        }
 
         .title-txt {
             font-family: Work Sans;
@@ -144,6 +147,7 @@
             padding: 24px 25px;
             background: $white;
             border-radius: 8px;
+            overflow: hidden;
         }
 
         .wallet-info {
@@ -157,13 +161,22 @@
             height: 190px;
             position: relative;
 
-            &-cont {
+            &-control {
                 position: relative;
+                display: flex;
+                justify-content: center;
+                margin-top: 24px;
+                transition: 0.5s ease-in-out all;
+                transform-origin: bottom;
+
+
+                &.hide {
+                    opacity: 0;
+                    transform: scaleY(0)
+                }
 
                 .next,
                 .prev {
-                    bottom: 24px;
-                    position: absolute;
                     background: rgba($blue, 0.1);
                     border-radius: 30px;
                     width: 40px;
@@ -173,36 +186,18 @@
                     align-items: center;
                     user-select: none;
                     cursor: pointer;
-                    font-weight: bold;
-                    font-size: 18px;
-                    z-index: 2;
-                    transition: 0.5s ease-in-out all;
-
                     svg {
                         width: 14px
                     }
-
-                    &.hide {
-                        opacity: 0;
-                        transform-origin: bottom;
-                        transform: scaleY(0)
-                    }
                 }
-
                 .next {
-                    right: 40%;
+                    margin-left: 24px;
                     transform: rotate(180deg)
                 }
 
-                .prev {
-                    left: 40%;
-                }
-
             }
-
-
-
         }
+
 
         .card {
             &-cont {
