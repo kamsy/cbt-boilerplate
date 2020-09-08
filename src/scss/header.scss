@@ -1,7 +1,54 @@
 @import 'variables';
 @import 'mixins';
 
+%userInfo {
+    .user-info {
+        height: 40px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-pack: start;
+        -ms-flex-pack: start;
+        justify-content: flex-start;
 
+        p {
+            margin: 0;
+            font-family: Open Sans;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 16px;
+            @include fluid-type(16px, 14px);
+            line-height: 22px;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            color: #333333;
+        }
+
+        span {
+            font-family: Open Sans;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 13px;
+            @include fluid-type(13px, 11px);
+            line-height: 18px;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            color: #333333;
+        }
+    }
+}
 
 .header {
     z-index: 3;
@@ -43,7 +90,7 @@
             letter-spacing: -0.02em;
 
             @include screen(1279) {
-                margin-left: 40px;
+                margin-left: 32px;
             }
         }
     }
@@ -83,8 +130,8 @@
         .hamburger-container {
             display: none;
             position: absolute;
-            width: 24px;
-            height: 24px;
+            width: 18px;
+            height: 18px;
             cursor: pointer;
         }
 
@@ -103,7 +150,7 @@
                 background: $blue;
                 width: 100%;
                 height: 0;
-                top: 12px;
+                top: 8px;
                 position: relative;
                 -webkit-transition: 0.7s all ease-in-out;
 
@@ -128,7 +175,7 @@
                 }
 
                 &.show {
-                    top: 8px;
+                    top: 6px;
 
                     &::after {
                         -webkit-transform: rotate(-45deg);
@@ -140,7 +187,6 @@
                         transform: rotate(45deg);
                         width: 100%;
                         top: 4px;
-
                     }
                 }
 
@@ -163,59 +209,22 @@
             height: 40px;
             border-radius: 50%;
             overflow: hidden;
-            margin-right: 10px;
             background: #C4C4C4;
 
             img {
                 max-width: 100%;
             }
+
         }
 
 
+        @extend %userInfo;
+
         .user-info {
-            height: 40px;
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-orient: vertical;
-            -webkit-box-direction: normal;
-            -ms-flex-direction: column;
-            flex-direction: column;
-            -webkit-box-pack: start;
-            -ms-flex-pack: start;
-            justify-content: flex-start;
+            margin-left: 10px;
 
-            p {
-                margin: 0;
-                font-family: Open Sans;
-                font-style: normal;
-                font-weight: bold;
-                font-size: 16px;
-                @include fluid-type(16px, 14px);
-                line-height: 22px;
-                display: -webkit-box;
-                display: -ms-flexbox;
-                display: flex;
-                -webkit-box-align: center;
-                -ms-flex-align: center;
-                align-items: center;
-                color: #333333;
-            }
-
-            span {
-                font-family: Open Sans;
-                font-style: normal;
-                font-weight: normal;
-                font-size: 13px;
-                @include fluid-type(13px, 11px);
-                line-height: 18px;
-                display: -webkit-box;
-                display: -ms-flexbox;
-                display: flex;
-                -webkit-box-align: center;
-                -ms-flex-align: center;
-                align-items: center;
-                color: #333333;
+            @include screen(1279) {
+                display: none;
             }
         }
     }
@@ -228,6 +237,18 @@
             -webkit-box-align: center;
             -ms-flex-align: center;
             align-items: center
+        }
+
+        @extend %userInfo;
+
+        .user-info {
+            display: none;
+
+            @include screen(1279) {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+            }
         }
     }
 

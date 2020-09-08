@@ -26,6 +26,12 @@ const Header = () => {
     }, []);
     const menu = (
         <Menu>
+            <Menu.Item key="10">
+                <div className="user-info">
+                    <p>{user_info.name}</p>
+                    <span>{`@${user_info.username}`}</span>
+                </div>
+            </Menu.Item>
             <Menu.Item key="0">
                 <Link to="/app/profile">
                     <ProfileUser />

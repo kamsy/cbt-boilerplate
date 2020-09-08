@@ -24,6 +24,15 @@
         top: -10px
     }
 
+    @include screen(1279) {
+        &::before {
+            display: none
+        }
+        top: 72px;
+        -webkit-box-shadow: none;
+                box-shadow: none
+    }
+
 
     &-list {
         list-style: none;
@@ -33,6 +42,12 @@
         &-item {
             margin-bottom: 4px;
 
+            @include screen(1279) {
+                &:first-of-type {
+                    padding-top: 20px
+                }
+            }
+
         }
 
         -webkit-transition: all 0.7s ease-in;
@@ -41,10 +56,10 @@
         @include screen(1279) {
             bottom: 0;
             height: 100%;
-            width: 160px;
+            width: 200px;
             background: $white;
-        }
 
+        }
     }
 
     &-link {
@@ -59,8 +74,8 @@
         -ms-flex-align: center;
         align-items: center;
         -webkit-box-pack: justify;
-            -ms-flex-pack: justify;
-                justify-content: space-between;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
         margin-bottom: 4px;
         position: relative;
         @include WS_semi_bld;
