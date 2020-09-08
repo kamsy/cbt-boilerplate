@@ -151,6 +151,7 @@
         }
 
         .cards {
+            border-radius: 10px;
             display: flex;
             overflow: hidden;
             height: 190px;
@@ -176,10 +177,12 @@
                     font-size: 18px;
                     z-index: 2;
                     transition: 0.5s ease-in-out all;
-                    svg{
+
+                    svg {
                         width: 14px
                     }
-                    &.hide{
+
+                    &.hide {
                         opacity: 0;
                         transform-origin: bottom;
                         transform: scaleY(0)

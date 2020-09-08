@@ -219,6 +219,8 @@
     -webkit-transition: all 0.5s ease-in-out;
     transition: all 0.5s ease-in-out;
 
+    border-radius: 10px;
+
     &:last-of-type {
         margin: 0
     }
@@ -228,6 +230,8 @@
     }
 
     .card-back {
+
+        border-radius: 10px;
         position: absolute;
         height: 100%;
         width: 100%;

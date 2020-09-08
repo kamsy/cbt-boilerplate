@@ -134,7 +134,16 @@ html {
                     color: #333333;
                     text-transform: uppercase;
                     margin-left: 27px;
-                    font-weight: bold
+                    font-weight: bold;
+                    display: -webkit-box;
+                    display: -ms-flexbox;
+                    display: flex;
+                    -webkit-box-pack: center;
+                        -ms-flex-pack: center;
+                            justify-content: center;
+                            &:hover{
+                                background: transparent
+                            }
                 }
 
                 li:last-of-type {

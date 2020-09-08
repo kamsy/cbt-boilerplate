@@ -32,7 +32,7 @@ const schema = yup.object().shape({
 
 const Bills = () => {
     const { user_info } = decryptAndRead(ENCRYPT_USER);
-    const [billers] = useBillers();
+    const [{ billers }] = useBillers();
     const [open_biller_modal, set_open_biller_modal] = useState(false);
     const [biller_info, set_biller_info] = useState([]);
 

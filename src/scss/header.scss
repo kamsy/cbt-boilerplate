@@ -41,6 +41,10 @@
             @include fluid-type(24px, 18px);
             line-height: 67px;
             letter-spacing: -0.02em;
+
+            @include screen(1279) {
+                margin-left: 40px;
+            }
         }
     }
 
