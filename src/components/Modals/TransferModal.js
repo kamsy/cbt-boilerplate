@@ -341,10 +341,12 @@ const TransferModal = ({
                                         onValueChange={({ value }) => {
                                             set_account_no(value);
                                             set_error(null);
-                                            verifyAccountDetails({
-                                                bank_code: paystack_bank_code,
-                                                account_number: value
-                                            });
+                                            if (value.length >= 10) {
+                                                verifyAccountDetails({
+                                                    bank_code: paystack_bank_code,
+                                                    account_number: value
+                                                });
+                                            }
                                         }}
                                         allowNegative={false}
                                         placeholder="Enter account number"

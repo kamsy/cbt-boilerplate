@@ -106,7 +106,7 @@ const postFunc = (path, payload) => {
     });
 };
 
-const updateFunc = (path, payload) => {
+const putFunc = (path, payload) => {
     return new Promise((resolve, reject) => {
         axios
             .put(path, payload)
@@ -121,4 +121,4 @@ const updateFunc = (path, payload) => {
     });
 };
 
-export { getFunc, delFunc, postFunc, updateFunc, axios };
+export { getFunc, delFunc, postFunc, putFunc, axios };

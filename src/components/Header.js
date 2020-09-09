@@ -9,6 +9,7 @@ import ProfileUser from "../assets/svgs/ProfileUser";
 import "../scss/header.scss";
 import { ENCRYPT_USER } from "../variables";
 import UpdatePinModal from "./Modals/UpdatePinModal";
+import HeaderDropdownSvg from "../assets/svgs/HeaderDropdownSvg";
 const Header = () => {
     const { user_info } = decryptAndRead(ENCRYPT_USER);
     const history = useHistory();
@@ -82,7 +83,7 @@ const Header = () => {
                     overlay={menu}
                     trigger={["click"]}
                     getPopupContainer={() => document.querySelector(".header")}>
-                    <span className="ant-dropdown-link">
+                    <div className="ant-dropdown-link">
                         <div className="avatar-cont">
                             <img src={Avatar} alt="user avatar" />
                         </div>
@@ -90,7 +91,10 @@ const Header = () => {
                             <p>{user_info.name}</p>
                             <span>{`@${user_info.username}`}</span>
                         </div>
-                    </span>
+                        <span className="svg-cont">
+                            <HeaderDropdownSvg />
+                        </span>
+                    </div>
                 </Dropdown>
             </ul>
         </div>

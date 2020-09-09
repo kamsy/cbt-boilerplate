@@ -3,7 +3,7 @@
 @import 'mixins';
 
 body {
-    font-family: 'Lato', sans-serif;
+    font-family: Work Sans, sans-serif;
     background-color: rgba($blue, 0.02);
 }
 
@@ -79,7 +79,7 @@ body {
                     font-family: Work Sans;
                     font-style: normal;
                     font-weight: normal;
-                    @include fluid-type(16px, 12px);
+                    @include fluid-type(16px);
                     line-height: 120%;
                     display: flex;
                     align-items: center;

@@ -1,4 +1,4 @@
-import { postFunc, updateFunc } from "./httpService";
+import { postFunc, putFunc } from "./httpService";
 import { base_url } from "./authServices";
 
 const PinServices = {
@@ -9,7 +9,7 @@ const PinServices = {
         return postFunc(`${base_url}user/pin/verify`, payload);
     },
     updatePinService: payload => {
-        return updateFunc(`${base_url}user/pin`, payload);
+        return putFunc(`${base_url}user/pin`, payload);
     }
 };
 

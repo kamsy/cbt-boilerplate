@@ -3,26 +3,86 @@
 
 .create-loan {
     p {
-        font-size: 16px;
+        @include fluid-type(16px);
         margin-bottom: 0;
 
         strong {
             font-size: 12px
         }
+    }
 
-        &.penalty-note {
-            margin-top: 12px
+    .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        grid-gap: 37px;
+        margin-top: 20px;
+
+        @include screen(768) {
+            grid-template-columns: 1fr
+        }
+    }
+
+    .loan-form-container,
+    .loan-breakdown-container {
+        background: $white;
+        border-radius: 4px;
+        @include shadowMixin;
+        padding: 24px 25px;
+
+        @include screen(375) {
+            padding: 16px
+        }
+
+        .cont-hdr {
+            font-family: Work Sans;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 24px;
+            line-height: 120%;
+            @include fluid-type(24px);
+            display: flex;
+            align-items: center;
+            letter-spacing: -0.02em;
+            color: #333333;
         }
     }
 
     .loan-form-container {
-        background: $white;
-        border-radius: 4px;
-        @include shadowMixin;
-        padding: 16px;
 
-        @include screen(375) {
-            padding: 16px 0
+        .ant-radio-group {
+            display: flex;
+
+            @include screen(460) {
+                flex-wrap: wrap;
+            }
+
+            .radio_btn {
+                margin-bottom: 24px;
+                transition: 0.5s all ease-in-out;
+                border-radius: 4px;
+                justify-content: center;
+                border: 1px solid #d9d9d9;
+
+                &::before {
+                    display: none
+                }
+
+                &+.radio_btn {
+                    margin-left: 16px
+                }
+
+                &.ant-radio-button-wrapper-checked {
+                    background: $blue;
+                    border-color: transparent
+                }
+
+                @include screen(460) {
+                        width: 100%;
+                        align-items: center;
+                        margin-left: 0 !important
+                }
+
+            }
         }
 
         form {
@@ -30,39 +90,110 @@
             display: -webkit-box;
             display: -ms-flexbox;
             display: flex;
-            -ms-flex-wrap: wrap;
-            flex-wrap: wrap;
+            flex-direction: column
         }
 
-        .left-col,
-        .right-col {
-            width: 50%;
-            padding: 16px;
 
-            @include screen(929) {
+        .uploader {
+            width: 100%;
+            margin-bottom: 36px;
+
+            &-label {
+                margin-bottom: 12px
+            }
+        }
+
+
+        .ant-upload-list-picture-card .ant-upload-list-item-file+.ant-upload-list-item-name {
+            position: relative !important;
+        }
+
+        .ant-upload-list-picture-card .ant-upload-list-item-actions .anticon-delete {
+            color: $red
+        }
+
+        .ant-upload-list-item-card-actions-btn {
+            opacity: 1;
+        }
+
+        .ant-upload-list-item-actions {
+            right: 20px;
+            left: unset;
+            opacity: 1;
+
+            a {
+                display: none
+            }
+        }
+
+        .ant-upload-list-item-list-type-picture-card {
+
+            &:hover {
+                .ant-upload-list-item-info::before {
+                    display: none
+                }
+            }
+        }
+
+
+        .ant-upload {
+            height: 72px !important;
+            background: $white;
+
+            &-disabled {
+                background: rgba($grey, 0.2)
+            }
+
+            input+div {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-orient: vertical;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: column;
+                flex-direction: column;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                justify-content: center;
+                height: 100%;
+            }
+
+
+
+
+            &-list-item {
+                &-list-type-picture-card {
+                    height: 72px !important
+                }
+
+
+                &-thumbnail {
+                    display: none
+                }
+
+            }
+
+            &-picture-card-wrapper {
+                height: 74px;
+                overflow: hidden;
+            }
+
+            &-select-picture-card {
                 width: 100%;
+                height: 100%;
+                margin: 0;
+
             }
 
-            .repayment {
-                span {
-                    font-size: 12px;
-                    text-transform: uppercase;
-                    margin-bottom: 6px;
-                    display: block;
-
-                    &:last-of-type {
-                        font-size: 24px;
-                        font-weight: bold;
-                    }
-                }
-
-                &-brkdwn{
-                  @include breakdown-style
-                }
+            &-text {
+                @include fluid-type(12px, 12px);
+                text-transform: none;
+                display: flex
             }
         }
-
-
 
         .right-col {
             display: -webkit-box;
@@ -74,66 +205,12 @@
             -ms-flex-wrap: wrap;
             flex-wrap: wrap;
 
-            .uploader {
-                width: 46.5%;
-                min-width: 177px;
-
-                @include screen(500) {
-                    width: 100%;
-                }
-            }
-
-            label {
-                display: inline-block;
-                margin-bottom: 0;
-
-                span {
-                    display: block;
-                    margin-bottom: 8px;
-                }
-
-
-            }
-
-            .ant-upload {
-                input+div {
-                    display: -webkit-box;
-                    display: -ms-flexbox;
-                    display: flex;
-                    -webkit-box-orient: vertical;
-                    -webkit-box-direction: normal;
-                    -ms-flex-direction: column;
-                    flex-direction: column;
-                    -webkit-box-align: center;
-                    -ms-flex-align: center;
-                    align-items: center;
-                    -webkit-box-pack: center;
-                    -ms-flex-pack: center;
-                    justify-content: center;
-                    height: 100%;
-                }
-
-                &-picture-card-wrapper {
-                    height: 144px;
-                    margin-bottom: 36px;
-                }
-
-                &-select-picture-card {
-                    width: 100%;
-                    height: 100%
-                }
-
-                &-text {
-                    font-size: 12px;
-                    text-transform: none
-                }
-            }
         }
 
         label {
             font-style: normal;
             font-weight: normal;
-            font-size: 12px;
+            @include fluid-type(12px, 12px);
             line-height: 137.5%;
             /* or 18px */
 
@@ -149,7 +226,7 @@
             -webkit-box-direction: normal;
             -ms-flex-direction: column;
             flex-direction: column;
-            text-transform: uppercase;
+            text-transform: capitalize;
             margin-bottom: 36px;
             position: relative;
 
@@ -231,25 +308,8 @@
         }
 
         .submit-btn {
-            &-cont {
-                padding: 0 16px;
-                display: -webkit-box;
-                display: -ms-flexbox;
-                display: flex;
-                -webkit-box-orient: vertical;
-                -webkit-box-direction: normal;
-                -ms-flex-direction: column;
-                flex-direction: column;
-                -webkit-box-align: end;
-                -ms-flex-align: end;
-                align-items: flex-end;
-            }
-
-            margin-top: 0;
-
-            @include screen(500) {
-                width: 100%;
-            }
+            width: 100%;
+            margin: 0
         }
 
         .ant-upload-list-picture-card-container {
@@ -283,6 +343,79 @@
             .ant-upload {
                 border-color: $red;
             }
+        }
+    }
+
+    .loan-breakdown-container {
+        .bdy {
+            justify-content: space-between;
+            display: flex;
+            flex-direction: column;
+            height: calc((628px - 48px - 28px))
+        }
+
+        .brk-dwn {
+            margin-top: 24px;
+
+            .item {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                transition: 0.5s all ease-in-out;
+
+                span {
+                    @include fluid-type(16px)
+                }
+
+                &+.item {
+                    margin-top: 33px
+                }
+
+                .bld_txt {
+                    font-weight: bold
+                }
+
+                .brk-dwn-item {
+                    &+.brk-dwn-item {
+                        margin-top: 24px
+                    }
+
+                    span:last-of-type {
+                        margin-left: 24px;
+                        display: inline-block
+                    }
+                }
+            }
+        }
+
+        .penalty-note {
+            border-radius: 8px;
+            padding: 24px;
+            background: #F7F7FA;
+            transform-origin: top;
+            transform: scaleY(0);
+            transition: 0.5s all ease-in-out;
+
+            &.show {
+                transform-origin: bottom;
+                transform: scaleY(1)
+            }
+
+            @include screen(425) {
+                padding: 16px;
+            }
+
+            h3 {
+                @include fluid-type(16px);
+                font-weight: bold;
+                line-height: 20px;
+                color: #333333;
+            }
+
+            strong {
+                @include fluid-type(16px);
+            }
+
         }
     }
 }

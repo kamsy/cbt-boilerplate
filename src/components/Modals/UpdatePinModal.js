@@ -10,7 +10,7 @@ const UpdatePinModal = ({ open_update_pin_modal, closeModal }) => {
     const [current_pin, set_current_pin] = useState("");
     const [new_pin, set_new_pin] = useState("");
 
-    const verifyPin = async () => {
+    const updatePIN = async () => {
         setLoading(true);
         const res = await PinServices.updatePinService({
             current_pin,
@@ -91,7 +91,7 @@ const UpdatePinModal = ({ open_update_pin_modal, closeModal }) => {
                         new_pin.length !== 4 ||
                         current_pin === new_pin,
                     text: "Update PIN",
-                    onClick: verifyPin
+                    onClick: updatePIN
                 }}
             />
         </Modal>
