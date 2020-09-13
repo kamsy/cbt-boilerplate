@@ -45,9 +45,7 @@ const CreateLoan = () => {
         bank_statement: false,
         identification_document: false
     });
-    console.log("CreateLoan -> errors", errors);
     const [amount, set_amount] = useState("");
-    console.log("CreateLoan -> amount", amount);
     const [repay_amount, set_repay_amount] = useState("");
     const [duration, set_duration] = useState("");
     const [bank_statement, set_bank_statement] = useState(null);
@@ -85,7 +83,7 @@ const CreateLoan = () => {
             }, 500);
             const { status } = res;
             if (status === 201) {
-                NotifySuccess("Loan requested successful");
+                NotifySuccess("Loan requested successfully");
                 setTimeout(() => {
                     history.push(`${url}loans`);
                 }, 700);
@@ -104,7 +102,6 @@ const CreateLoan = () => {
     };
     const _handleAmount = ({ value }) => {
         const amt = Number(value);
-        console.log("_handleAmount -> amt", amt);
         if (amt > 0) set_errors({ ...errors, amount: false });
         set_amount(amt);
         if (duration < 1) return;

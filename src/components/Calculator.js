@@ -22,7 +22,7 @@ const Calculator = () => {
     const _handleAmount = ({ value }) => {
         const amt = Number(value);
         set_amount(amt);
-        if (duration < 30) return;
+        if (duration < 1) return;
         calculateRepayment({ amt, time: duration });
     };
     const calculateRepayment = ({ amt, time }) => {
@@ -101,7 +101,7 @@ const Calculator = () => {
         const time = Number(value);
         set_duration(time);
         set_errors({ ...errors, duration: false });
-        if (amount < 1) return;
+        if (amount < 10000) return;
         calculateRepayment({ amt: amount, time });
     };
 
