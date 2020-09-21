@@ -24,7 +24,7 @@ import Wallet from "./pages/Private/Wallet";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import { AnimatePresence } from "framer";
 import Profile from "./pages/Private/Profile";
-import CreateLoan from "./pages/Private/CreateLoan";
+import CreateLoan from "./pages/Private/RequestLoan";
 import { ENCRYPT_USER } from "./variables";
 import Page500 from "./pages/500";
 import Page404 from "./pages/404";
