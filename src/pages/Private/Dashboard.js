@@ -5,7 +5,11 @@ import {
 } from "../../components/ProtectedLayout";
 import "../../scss/dashboard.scss";
 import EmptyTable from "../../components/EmptyTable";
-import { _formatMoney, _limitText } from "../../services/utils";
+import {
+    _formatMoney,
+    _limitText,
+    _currencyToInteger
+} from "../../services/utils";
 import MomentAdapter from "@date-io/moment";
 import AirtimeSvg from "../../assets/svgs/AirtimeSvg";
 import InternetSvg from "../../assets/svgs/InternetSvg";
@@ -110,11 +114,7 @@ const Dashboard = () => {
         const { response, status, data } = await BillServices.buyAirtimeService(
             {
                 phone: `+234${payload.phone.substring(1)}`,
-                amount:
-                    payload.amount
-                        .split("₦")[1]
-                        .split(",")
-                        .join("") * 100
+                amount: _currencyToInteger(payload.amount)
             }
         );
 
@@ -177,11 +177,8 @@ const Dashboard = () => {
     const fundWallet = async () => {
         const payload = transaction_payload;
         const amount =
-            payload.amount
-                .split(",")
-                .join("")
-                .split("₦")
-                .join("") * 100;
+            _currencyToInteger(payload.amount)
+
 
         window._toggleLoader();
         const res = await WalletServices.fundWalletService({

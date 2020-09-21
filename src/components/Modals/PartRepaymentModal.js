@@ -7,7 +7,7 @@ import CustomInput from "../CustomInput";
 import CustomButton from "../CustomButton";
 import { NotifySuccess } from "../Notification";
 import LoanServices from "../../services/loanServices";
-import { _formatMoney } from "../../services/utils";
+import { _formatMoney, _currencyToInteger } from "../../services/utils";
 
 const schema = yup.object().shape({
     amount: yup.string().required("Enter the amount you want to repay!")
@@ -36,12 +36,7 @@ const PartRepaymentModal = ({
     } = methods;
 
     const onSubmit = async payload => {
-        const amount =
-            payload.amount
-                .split(",")
-                .join("")
-                .split("₦")
-                .join("") * 100;
+        const amount = _currencyToInteger(payload.amount);
 
         if (amount > balance) {
             return setError("amount", {

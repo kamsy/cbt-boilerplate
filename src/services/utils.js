@@ -224,6 +224,15 @@ const _formatNumber = amount => (
     />
 );
 
+const _currencyToInteger = amt =>
+    Number(
+        amt
+            .split(",")
+            .join("")
+            .split("₦")
+            .join("")
+    ) * 100;
+
 export {
     _emailHandler,
     _phoneHandler,
@@ -234,5 +243,6 @@ export {
     capitalizer,
     stateMapper,
     _formatMoney,
-    _formatNumber
+    _formatNumber,
+    _currencyToInteger
 };

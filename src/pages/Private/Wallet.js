@@ -4,7 +4,11 @@ import {
     pageVariants,
     pageTransitions
 } from "../../components/ProtectedLayout";
-import { _formatMoney, _limitText } from "../../services/utils";
+import {
+    _formatMoney,
+    _limitText,
+    _currencyToInteger
+} from "../../services/utils";
 import { Button, Pagination, Tabs } from "antd";
 import "../../scss/wallet.scss";
 import { PaystackConsumer } from "react-paystack";
@@ -145,12 +149,7 @@ const Wallet = () => {
     };
 
     const fundWallet = async () => {
-        const amount =
-            transaction_payload.amount
-                .split(",")
-                .join("")
-                .split("₦")
-                .join("") * 100;
+        const amount = _currencyToInteger(transaction_payload.amount);
 
         window._toggleLoader();
         const res = await WalletServices.fundWalletService({
@@ -173,12 +172,7 @@ const Wallet = () => {
     };
 
     const walletTransfer = async () => {
-        const amount =
-            transaction_payload.amount
-                .split(",")
-                .join("")
-                .split("₦")
-                .join("") * 100;
+        const amount = _currencyToInteger(transaction_payload.amount);
 
         window._toggleLoader();
         const res = await TransferServices.transferToWalletService({
@@ -201,12 +195,7 @@ const Wallet = () => {
     };
 
     const bankTransfer = async () => {
-        const amount =
-            transaction_payload.amount
-                .split(",")
-                .join("")
-                .split("₦")
-                .join("") * 100;
+        const amount = _currencyToInteger(transaction_payload.amount);
 
         window._toggleLoader();
         const res = await TransferServices.transferToBankService({

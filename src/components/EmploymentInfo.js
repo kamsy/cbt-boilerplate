@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 import UserServices from "../services/userServices";
 import MomentAdapter from "@date-io/moment";
+import { _currencyToInteger } from "../services/utils";
 
 const moment = new MomentAdapter();
 
@@ -61,18 +62,10 @@ const EmploymentInfo = ({ tab_key }) => {
         const start_date = moment
             .moment(new Date(payload.start_date))
             .format("YYYY-MM-DD");
-        const monthly_income =
-            payload.monthly_income
-                .split(",")
-                .join("")
-                .split("₦")
-                .join("") * 100;
-        const annual_income =
-            payload.annual_income
-                .split(",")
-                .join("")
-                .split("₦")
-                .join("") * 100;
+        const monthly_income = _currencyToInteger(payload.monthly_income);
+
+        const annual_income = _currencyToInteger(payload.annual_income);
+
         const res = await UserServices.addEmploymentService({
             ...payload,
             start_date,

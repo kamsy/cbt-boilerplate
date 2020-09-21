@@ -18,6 +18,7 @@ import ConfirmTransactionModal from "../../components/Modals/ConfirmTransactionM
 import { decryptAndRead } from "../../services/localStorageHelper";
 import { ENCRYPT_USER } from "../../variables";
 import useBillers from "../../hooks/useBillers";
+import {_currencyToInteger} from "../../services/utils";
 
 const schema = yup.object().shape({
     phone: yup
@@ -67,10 +68,8 @@ const Bills = () => {
             {
                 phone: `+234${payload.phone.substring(1)}`,
                 amount:
-                    payload.amount
-                        .split("₦")[1]
-                        .split(",")
-                        .join("") * 100
+                _currencyToInteger(payload.amount)
+
             }
         );
 
