@@ -12,7 +12,7 @@ const schema = yup.object().shape({
         .required("Enter a phone number!")
         .matches(
             /^([0]?\d([7](?=0)|[8](?=0|1)|[9](?=0))\d{9}(?!\d))$/,
-            "Alaye focus!... na 9ja number be this?😐"
+            "Enter a valid phone number"
         ),
     amount: yup.string().required("Enter an amount!")
 });

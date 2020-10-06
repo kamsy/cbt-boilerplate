@@ -18,7 +18,7 @@ import ConfirmTransactionModal from "../../components/Modals/ConfirmTransactionM
 import { decryptAndRead } from "../../services/localStorageHelper";
 import { ENCRYPT_USER } from "../../variables";
 import useBillers from "../../hooks/useBillers";
-import {_currencyToInteger} from "../../services/utils";
+import { _currencyToInteger } from "../../services/utils";
 
 const schema = yup.object().shape({
     phone: yup
@@ -26,7 +26,7 @@ const schema = yup.object().shape({
         .required("Enter a phone number!")
         .matches(
             /^([0]?\d([7](?=0)|[8](?=0|1)|[9](?=0))\d{9}(?!\d))$/,
-            "Alaye focus!... na 9ja number be this?😐"
+            "Enter a valid phone number"
         ),
     amount: yup.string().required("Enter an amount!")
 });
@@ -67,9 +67,7 @@ const Bills = () => {
         const { response, status, data } = await BillServices.buyAirtimeService(
             {
                 phone: `+234${payload.phone.substring(1)}`,
-                amount:
-                _currencyToInteger(payload.amount)
-
+                amount: _currencyToInteger(payload.amount)
             }
         );
 

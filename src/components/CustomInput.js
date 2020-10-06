@@ -14,12 +14,13 @@ const CustomInput = ({
     defaultValue = "",
     type,
     disabled = false,
-    prefix
+    prefix,
+    inputProps
 }) => {
     const InputComponent =
         type === "password"
             ? Input.Password
-            : type === "money"
+            : type === "money" || type === "token"
             ? NumberFormat
             : type === "date"
             ? DatePicker
@@ -39,10 +40,13 @@ const CustomInput = ({
                                 disabled,
                                 type,
                                 name,
-                                prefix
+                                prefix,
+                                ...inputProps
                             }}
                             className={`form-input ${
-                                type === "date" || type === "money"
+                                type === "date" ||
+                                type === "money" ||
+                                type === "token"
                                     ? "ant-input"
                                     : ""
                             } ${
@@ -56,6 +60,12 @@ const CustomInput = ({
                         ? {
                               prefix: "₦",
                               thousandSeparator: true
+                          }
+                        : null)}
+                    {...(type === "token"
+                        ? {
+                              prefix: "",
+                              thousandSeparator: false
                           }
                         : null)}
                     {...{

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { message } from "antd";
-import { Link, Redirect } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { url } from "../../App";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
@@ -12,6 +12,7 @@ import {
     auth_pageVariants,
     auth_pageTransitions
 } from "../../components/ProtectedLayout";
+import AuthServices from "../../services/authServices";
 const schema = yup.object().shape({
     email: yup
         .string()
@@ -19,23 +20,26 @@ const schema = yup.object().shape({
         .required("Enter your email!")
 });
 
-export default () => {
-    const [redirectToReferrer, set_redirectToReferrer] = useState(false);
+const ForgotPassword = () => {
+    const history = useHistory();
     const methods = useForm({
         resolver: yupResolver(schema)
     });
     const { handleSubmit, control, errors, register } = methods;
+    const [loading, set_loading] = useState(false);
 
-    const onSubmit = data => {
-        setTimeout(() => {
-            message.success("A reset link has been sent to your email.");
-            setTimeout(() => {
-                set_redirectToReferrer(true);
-            }, 2000);
-        }, 1500);
+    const onSubmit = async payload => {
+        set_loading(true);
+        const res = await AuthServices.forgotPasswordService(payload);
+        set_loading(false);
+        const { status, data } = res;
+        if (status === 200) {
+            message.success(data.message);
+            history.push(`${url}reset-password`);
+        } else {
+            message.error(data.message);
+        }
     };
-    if (redirectToReferrer)
-        return <Redirect to={{ pathname: `${url}login` }} />;
     return (
         <motion.div
             className="forgot"
@@ -56,15 +60,17 @@ export default () => {
                         name: "email",
                         register,
                         placeholder: "Email address",
-                        // defaultValue: "olekakamsy@gmail.com",
                         errors,
                         control
                     }}
                 />
 
                 <CustomButton
-                    text="Reset Password"
-                    onClick={handleSubmit(onSubmit)}
+                    {...{
+                        loading,
+                        onClick: handleSubmit(onSubmit),
+                        text: "Send Token"
+                    }}
                 />
             </form>
             <div className="new-user-container">
@@ -76,3 +82,5 @@ export default () => {
         </motion.div>
     );
 };
+
+export default ForgotPassword;

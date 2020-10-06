@@ -46,10 +46,11 @@ const Login = () => {
         payload.username = payload.username.toLowerCase();
         const res = await AuthServices.loginService(payload);
         const { status, data } = res;
+        console.log("Login -> res", { res });
         set_loading(false);
         if (status === 401) {
-            setError("username", { type: "manual", message: data.message });
-            setError("password", { type: "manual", message: "" });
+            setError("username", { message: data.message });
+            setError("password", { message: "" });
         } else if (status === 200) {
             fakeAuth.authenticate();
             localStorage.setItem("loggedIn", JSON.stringify(true));

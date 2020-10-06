@@ -14,7 +14,7 @@ const schema = yup.object().shape({
         .required("Enter your phone number!")
         .matches(
             /^([0]?\d([7](?=0)|[8](?=0|1)|[9](?=0))\d{9}(?!\d))$/,
-            "Alaye focus!... na 9ja number be this?😐"
+            "Enter a valid phone number"
         ),
     bundle: yup.string().required("Please select a data bundle!")
 });

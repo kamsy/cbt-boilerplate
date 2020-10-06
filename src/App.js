@@ -29,6 +29,7 @@ import { ENCRYPT_USER } from "./variables";
 import Page500 from "./pages/500";
 import Page404 from "./pages/404";
 import Bills from "./pages/Private/Bills";
+import ResetPassword from "./pages/Auth/ResetPassword";
 const { localStorage } = window;
 export const url = "/app/";
 // variable to hold auth status and also functions to convert it
@@ -189,6 +190,10 @@ const App = () => {
                         <AuthRoute
                             path={`${url}forgot-password`}
                             component={ForgotPassword}
+                        />
+                        <AuthRoute
+                            path={`${url}reset-password`}
+                            component={ResetPassword}
                         />
                         <AuthRoute
                             path={`${url}register`}
